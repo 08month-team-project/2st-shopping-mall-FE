@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { type } from "@testing-library/user-event/dist/type";
 
-const InputField = ({ label, type, value, onchange, placeholder }) => {
+const InputField = ({ label, type, value, onChange, placeholder }) => {
   return (
     <div className="input-field">
       <label>{label}</label>
@@ -17,7 +16,7 @@ const InputField = ({ label, type, value, onchange, placeholder }) => {
   );
 };
 
-InputField.PropTypes = {
+InputField.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
