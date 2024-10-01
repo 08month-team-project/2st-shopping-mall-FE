@@ -15,12 +15,13 @@ function Login() {
     event.preventDefault();
     setIsLoading(true);
 
+
     if (!isValidEmail(email)) {
       setError("유효한 이메일 주소를 입력해 주세요.");
       setIsLoading(false);
       return;
     }
-
+    
     try {
       const response = await axios.post("http://localhost:8080/signin", {
         email,
@@ -60,6 +61,7 @@ function Login() {
           value={password}
           onChange={(event) => setEmail(event.target.value)}
           placeholder="비밀번호를 입력해 주세요."
+          placeholder="email 주소를 정확하게 입력해주세요."
         />
 
         {error && <p className="login-error">{error}</p>}
