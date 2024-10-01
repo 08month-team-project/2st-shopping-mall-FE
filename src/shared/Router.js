@@ -6,12 +6,10 @@ import Profile from "../components/userProfile/Profile";
 import Register from "../pages/Register";
 import Selling from "../pages/Selling";
 import Buying from "../pages/Buying";
-import MainHeader from "../components/mainHeader/MainHeader";
 
 const Router = () => {
   return (
     <BrowserRouter>
-      <MainHeader />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="user" element={<User />}>
