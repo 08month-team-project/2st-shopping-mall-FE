@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/auth/InputField";
+import { isValidEmail } from "../utils/Validation";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -13,6 +14,12 @@ function Login() {
   const handleLogin = async (event) => {
     event.preventDefault();
     setIsLoading(true);
+
+    if (!isValidEmail(email)) {
+      setError("유효한 이메일 주소를 입력해 주세요.");
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await axios.post("http://localhost:8080/signin", {
@@ -37,7 +44,7 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
+    <Container>
       <h1>로그인</h1>
       <form onSubmit={handleLogin}>
         <InputField
@@ -45,13 +52,14 @@ function Login() {
           type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          placeholder="email 주소를 정확하게 입력해주세요."
+          placeholder="이메일(example.supercoding.com)"
         />
-
-        <input
+        <InputField
+          label="비밀번호"
           type="password"
           value={password}
-          onChange={(event) => setPassword(event.target.value)}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder="비밀번호를 입력해 주세요."
         />
 
         {error && <p className="login-error">{error}</p>}
@@ -59,7 +67,7 @@ function Login() {
           {isLoading ? "로그인 중입니다." : "Sign In"}
         </button>
       </form>
-    </div>
+    </Container>
   );
 }
 

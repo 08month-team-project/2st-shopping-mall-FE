@@ -1,47 +1,120 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+
+// style
+import {
+  Wrapper,
+  UserInfo,
+  Img,
+  Title,
+  Text,
+  InfoWarpper,
+  ModiInfoBox,
+  InfoBox,
+  InfoBoxIntro,
+  InfoText,
+  InfoTextIntro,
+  Label,
+  Input,
+  InputAddress,
+  InputIntro,
+  ModifyBtn,
+} from "../../styles/profileStyle";
 
 const Profile = () => {
+  const [userInfo, setUserInfo] = useState({
+    name: "사용자",
+    phone: "010-0000-0000",
+    email: "sldkfjsdf@naver.com",
+    address: "주소입니다",
+    intro: "소개글입니다",
+  });
+  const [inputValues, setInputValues] = useState({ ...userInfo });
+
+  const changeInputValue = (e) => {
+    const { id, value } = e.target;
+    setInputValues((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleModify = () => {
+    setUserInfo(inputValues);
+  };
+
   return (
     <Wrapper>
       <UserInfo>
         <Img>img</Img>
-        <Name>하수현님, 환영합니다</Name>
-        <Text>000-0000-0000</Text>
-        <Text>msldml@naver.com</Text>
+        <Title>{userInfo.name}님, 환영합니다</Title>
+        <Text>{userInfo.phone}</Text>
+        <Text>{userInfo.email}</Text>
+        <Text>{userInfo.address}</Text>
+        <Text>{userInfo.intro}</Text>
       </UserInfo>
+
+      <InfoWarpper>
+        <ModiInfoBox>
+          <InfoBox>
+            <InfoText>
+              <Label htmlFor="name">이름</Label>
+              <Input
+                id="name"
+                type="text"
+                value={inputValues.name}
+                onChange={changeInputValue}
+              />
+            </InfoText>
+          </InfoBox>
+          <InfoBox>
+            <InfoText>
+              <Label htmlFor="phone">전화번호</Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={inputValues.phone}
+                onChange={changeInputValue}
+              />
+            </InfoText>
+          </InfoBox>
+          <InfoBox>
+            <InfoText>
+              <Label htmlFor="email">이메일</Label>
+              <Input
+                id="email"
+                type="email"
+                value={inputValues.email}
+                onChange={changeInputValue}
+              />
+            </InfoText>
+          </InfoBox>
+          <InfoBox>
+            <InfoText>
+              <Label htmlFor="address">주소</Label>
+              <InputAddress
+                id="address"
+                type="text"
+                value={inputValues.address}
+                onChange={changeInputValue}
+              />
+            </InfoText>
+          </InfoBox>
+          <InfoBoxIntro>
+            <InfoTextIntro>
+              <Label htmlFor="intro">소개</Label>
+              <InputIntro
+                id="intro"
+                type="text"
+                value={inputValues.intro}
+                onChange={changeInputValue}
+              />
+            </InfoTextIntro>
+          </InfoBoxIntro>
+        </ModiInfoBox>
+        <ModifyBtn onClick={handleModify}>프로필수정</ModifyBtn>
+      </InfoWarpper>
     </Wrapper>
   );
 };
 
 export default Profile;
-
-// style
-const Wrapper = styled.div`
-  width: 80vw;
-  padding-top: 4rem;
-  float: left;
-`;
-const UserInfo = styled.div`
-  width: 50vw;
-  margin: auto;
-  text-align: center;
-`;
-const Img = styled.div`
-  margin: auto;
-  width: 100px;
-  aspect-ratio: 1 / 1;
-  background-color: #458af1;
-  color: #fff;
-  border-radius: 100%;
-  font-size: 3rem;
-  text-align: center;
-  line-height: 90px;
-`;
-const Name = styled.h2`
-  margin: 2rem 0;
-`;
-const Text = styled.p`
-  margin-bottom: 1rem;
-`;
-const ModifyBtn = styled.button``;
