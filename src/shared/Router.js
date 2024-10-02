@@ -20,13 +20,11 @@ const Router = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="user" element={<User />}>
-          <Route index element={<Profile />} />
+        <Route index element={<Profile />} />
           <Route path="register" element={<Register />} />
           <Route path="selling" element={<Selling />} />
           <Route path="buying" element={<Buying />} />
           <Route path="signup" element={<Signup />} />
-        </Route>
-
         <Route path="basket" element={<Basket />} />
         <Route path="payment" element={<Payment />} />
       </Routes>
@@ -35,3 +33,5 @@ const Router = () => {
 };
 
 export default Router;
+
+
