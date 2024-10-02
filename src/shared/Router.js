@@ -6,14 +6,14 @@ import Profile from '../components/userProfile/Profile';
 import Register from '../pages/Register';
 import Selling from '../pages/Selling';
 import Buying from '../pages/Buying';
-import MainHeader from '../components/mainHeader/MainHeader';
+// import MainHeader from '../components/mainHeader/MainHeader';
 import Basket from '../pages/Basket';
 import Payment from '../pages/Payment';
 
 const Router = () => {
   return (
     <BrowserRouter>
-      <MainHeader />
+      {/* <MainHeader /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="user" element={<User />}>
