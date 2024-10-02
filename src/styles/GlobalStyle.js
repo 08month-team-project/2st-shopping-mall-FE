@@ -1,5 +1,3 @@
-const GlobalStyle = () => {
-  return <div>hi</div>;
-};
 
+const GlobalStyle = {};
 export default GlobalStyle;
