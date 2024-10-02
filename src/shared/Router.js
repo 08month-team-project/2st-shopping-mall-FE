@@ -20,7 +20,7 @@ const Router = () => {
           <Route path="register" element={<Register />} />
           <Route path="selling" element={<Selling />} />
           <Route path="buying" element={<Buying />} />
-              <Route path="signup" element={<Signup />} />
+          <Route path="signup" element={<Signup />} />
         </Route>
       </Routes>
     </BrowserRouter>
