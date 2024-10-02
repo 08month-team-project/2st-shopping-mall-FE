@@ -1,7 +1,14 @@
 import React from "react";
+import UserNav from "../components/userProfile/UserNav";
+import { Outlet } from "react-router-dom";
 
 const User = () => {
-  return <div>user</div>;
+  return (
+    <>
+      <UserNav />
+      <Outlet />
+    </>
+  );
 };
 
 export default User;
