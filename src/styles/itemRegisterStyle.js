@@ -53,7 +53,7 @@ export const ItemImage = styled.img`
 `;
 
 export const ForemostImgBox = styled.div`
-  margin-left: 2rem;
+  margin-right: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;

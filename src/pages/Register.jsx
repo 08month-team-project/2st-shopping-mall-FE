@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
+
+// style
 import {
   ForemostImg,
   ForemostImgBox,
@@ -30,9 +33,10 @@ const Register = () => {
   });
   const [images, setImages] = useState([]);
   const [foremostImg, setForemostImg] = useState(null);
+  const [itemId, setItemId] = useState(null); // itemId 저장을 위한 상태
   const [successMsg, setSuccessMsg] = useState("");
 
-  // 여러장추가이미지
+  // 여러장이미지
   const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
     setImages(files);
@@ -54,12 +58,70 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  // 데이터 POST
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     console.log("상품 정보:", formData);
-    console.log("이미지 목록:", images, foremostImg);
+    console.log("이미지 목록:", images);
+    console.log("대표이미지:", foremostImg);
+
     setSuccessMsg("물품등록에 성공하였습니다!");
+
+    // 1. 상품정보 데이터
+    // const formDataToSend = new FormData();
+    // Object.entries(formData).forEach(([key, value]) => {
+    //   formDataToSend.append(key, value);
+    // });
+    // try {
+    //   const response = await axios.post(
+    //     "/items/seller/register",
+    //     formDataToSend
+    //   );
+    //   setItemId(response.data.itemId);
+
+    //   console.log("등록결과:", response.data);
+    //   setSuccessMsg("물품등록에 성공하였습니다!");
+    // } catch (error) {
+    //   console.error("등록오류:", error.message);
+    //   setSuccessMsg("물품등록에 실패하였습니다.");
+    //   return;
+    // }
+
+    // 2. 여러장 이미지 데이터
+    // const imagesFormData = new FormData();
+    // images.forEach((image) => {
+    //   imagesFormData.append("images", image);
+    // });
+    // try {
+    //   await axios.post("/items/images/upload", imagesFormData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   });
+    //   setSuccessMsg("이미지 업로드에 성공하였습니다!");
+    // } catch (error) {
+    //   console.error("이미지 업로드 오류:", error);
+    //   return;
+    // }
+
+    // 3. 대표이미지 데이터
+    //   if (foremostImg) {
+    //     const foremostImageFormData = new FormData();
+    //     foremostImageFormData.append("thumbnail", foremostImg);
+
+    //     try {
+    //       await axios.post(`/items/${itemId}/thumbnail`, foremostImageFormData, {
+    //         headers: {
+    //           "Content-Type": "multipart/form-data",
+    //         },
+    //       });
+    //       setSuccessMsg("대표 이미지 업로드에 성공하였습니다!");
+    //     } catch (error) {
+    //       console.error("대표 이미지 업로드 오류:", error);
+    //       setSuccessMsg("대표 이미지 업로드에 실패하였습니다.");
+    //     }
+    //   }
   };
 
   // 현재날짜
@@ -70,6 +132,14 @@ const Register = () => {
       <RegisterBtn type="submit">물품등록하기</RegisterBtn>
       {successMsg && <p style={{ color: "red" }}>{successMsg}</p>}
       <RegisterInfo>
+        <ForemostImgBox>
+          {foremostImg ? (
+            <ForemostImg src={foremostImg} alt="대표이미지" />
+          ) : (
+            <ImgBox>대표이미지를 등록하세요</ImgBox>
+          )}
+          <InfoInput type="file" onChange={handleForemostImgChange} required />
+        </ForemostImgBox>
         <ItemInfoBox>
           <ItemInfo>
             <InfoLabel>이미지</InfoLabel>
@@ -168,14 +238,6 @@ const Register = () => {
             />
           </ItemInfoScript>
         </ItemInfoBox>
-        <ForemostImgBox>
-          {foremostImg ? (
-            <ForemostImg src={foremostImg} alt="대표이미지" />
-          ) : (
-            <ImgBox>대표이미지를 등록하세요</ImgBox>
-          )}
-          <InfoInput type="file" onChange={handleForemostImgChange} required />
-        </ForemostImgBox>
       </RegisterInfo>
     </Warpper>
   );

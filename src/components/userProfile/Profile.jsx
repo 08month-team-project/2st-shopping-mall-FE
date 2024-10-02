@@ -8,6 +8,7 @@ import FemaleIcon from "../../icons/female.svg";
 import AddressIcon from "../../icons/address.svg";
 import PencilIcon from "../../icons/pencil.svg";
 import UserIcon from "../../icons/user.svg";
+import SmileIcon from "../../icons/smile.svg";
 
 // style
 import {
@@ -42,6 +43,7 @@ import {
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
     name: "사용자",
+    nickname: "닉네임",
     phone: "010-0000-0000",
     email: "sldkfjsdf@naver.com",
     address: "주소입니다",
@@ -100,6 +102,10 @@ const Profile = () => {
         </UserImg>
         <UserInfo>
           <TextBox>
+            <Icon src={SmileIcon} alt="phone-icon" />
+            <Text>{userInfo.nickname}</Text>
+          </TextBox>
+          <TextBox>
             <Icon src={PhoneIcon} alt="phone-icon" />
             <Text>{userInfo.phone}</Text>
           </TextBox>
@@ -140,6 +146,17 @@ const Profile = () => {
                 id="name"
                 type="text"
                 value={inputValues.name}
+                onChange={changeInputValue}
+              />
+            </InfoText>
+          </InfoBox>
+          <InfoBox>
+            <InfoText>
+              <Label htmlFor="nickname">닉네임</Label>
+              <Input
+                id="nickname"
+                type="text"
+                value={inputValues.nickname}
                 onChange={changeInputValue}
               />
             </InfoText>
