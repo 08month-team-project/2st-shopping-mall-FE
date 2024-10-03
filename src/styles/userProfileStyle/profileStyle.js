@@ -2,14 +2,13 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   width: 80vw;
-  margin-top: 10vh;
 `;
 export const UserInfoBox = styled.div`
   width: 100%;
-  padding: 2rem 0;
+  padding: 3rem 0;
   margin: auto;
   text-align: center;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ccd3d750;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -48,12 +47,20 @@ export const GenderIcon = styled(Icon)`
 export const Text = styled.p``;
 
 // 프로필 수정 css
-export const InfoWarpper = styled.div`
+export const ModifyWarpper = styled.div`
+  width: 100%;
+  padding: 2rem;
+  background-color: #f4f6f8;
+`;
+export const ModifyBox = styled.form`
   margin: auto;
   width: 60%;
   padding: 2rem;
   display: flex;
   flex-direction: column;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px 1px #d6d8db;
+  background-color: #fff;
 `;
 export const ModiInfoBox = styled.div``;
 export const PreviewImg = styled.img`
@@ -107,18 +114,34 @@ export const InputIntro = styled(Input)`
 `;
 
 export const ModifyBtn = styled.button`
-  display: block;
-  width: fit-content;
-  height: fit-content;
+  margin-left: 1rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.9;
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 export const ErrorMsg = styled.span`
   display: block;
   color: #ed1e25;
+  font-size: 0.9rem;
+  font-weight: 500;
 `;
 export const LabelBox = styled.div`
   display: flex;
   align-items: flex-start;
+`;
+export const ExplainBox = styled.div`
+  display: flex;
+  margin-top: 1rem;
+`;
+export const ExplainText = styled.p`
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
 `;
 export const Dot = styled.span`
   display: block;
@@ -128,16 +151,8 @@ export const Dot = styled.span`
   border-radius: 100%;
 `;
 export const BottomBox = styled.div`
-  margin-top: 2rem;
+  margin-top: 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-`;
-export const ExplainBox = styled.div`
-  display: flex;
-`;
-export const ExplainText = styled.p`
-  color: #666;
-  font-size: 14px;
-  font-weight: 600;
+  justify-content: flex-end;
 `;
