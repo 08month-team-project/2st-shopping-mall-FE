@@ -6,8 +6,7 @@ import Input from "../components/input/Input";
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
-  const [emailStatus, setEmailStatus] = useState(null); // null: no check, true: available, false: in use
-
+  const [emailStatus, setEmailStatus] = useState(null);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,17 +17,22 @@ const Signup = () => {
     nickname: "",
   });
 
+  // 이메일 중복 체크
   const handleEmailCheck = async () => {
-    const response = await axios.post("/users/check-email", { email });
-    if (response.data.available) {
-      setEmailMessage("사용 가능한 이메일 입니다.");
-      setEmailStatus(true);
-    } else {
-      setEmailMessage("이미 사용중인 이메일 입니다.");
-      setEmailStatus(false);
+    try {
+      const response = await axios.post("/users/check-email", { email });
+      setEmailMessage(
+        response.data.available
+          ? "사용 가능한 이메일 입니다."
+          : "이미 사용중인 이메일 입니다."
+      );
+      setEmailStatus(response.data.available);
+    } catch (error) {
+      console.error("이메일 체크 중 오류 발생:", error);
     }
   };
 
+  // 입력 필드 변경 처리
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -37,19 +41,40 @@ const Signup = () => {
     }));
   };
 
+  // 주소 검색 처리
+  const handleAddressSearch = () => {
+    const script = document.createElement("script");
+    script.src =
+      "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    script.async = true;
+    script.onload = () => {
+      new window.daum.Postcode({
+        oncomplete: function (data) {
+          const postalCode = data.zonecode;
+          const fullAddr = data.address;
+
+          setFormData((prevData) => ({
+            ...prevData,
+            postalCode: postalCode,
+            address: fullAddr,
+          }));
+        },
+      }).open();
+    };
+    document.body.appendChild(script);
+  };
+
+  // 폼 제출 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await axios.post("users/signup", {
-      email: formData.email,
-      password: formData.password,
-      phoneNumber: formData.phoneNumber,
-      address: formData.address,
-      gender: formData.gender,
-      name: formData.name,
-      nickname: formData.nickname,
-    });
-    if (response.status === 200) {
-      //리다이렉션?
+    try {
+      const response = await axios.post("users/signup", formData);
+      if (response.status === 200) {
+        // 리다이렉션 처리
+        console.log("회원가입 성공");
+      }
+    } catch (error) {
+      console.error("회원가입 중 오류 발생:", error);
     }
   };
 
@@ -57,7 +82,7 @@ const Signup = () => {
     <T.Container>
       <T.FormContainer>
         <T.Header>회원가입</T.Header>
-        <form>
+        <form onSubmit={handleSubmit}>
           <Input
             label="이름"
             type="text"
@@ -74,6 +99,7 @@ const Signup = () => {
             value={formData.nickname}
             onChange={handleChange}
           />
+
           <T.InputContainer>
             <Input
               label="이메일"
@@ -81,17 +107,26 @@ const Signup = () => {
               name="email"
               placeholder="이메일을 입력하세요"
               value={formData.email}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e);
+                setEmail(e.target.value); // 이메일 상태 업데이트
+              }}
             />
-            <T.Button style={{ width: "150px" }} onClick={handleEmailCheck}>
+            <T.Button
+              type="button"
+              style={{ width: "150px" }}
+              onClick={handleEmailCheck}
+            >
               이메일 확인
             </T.Button>
           </T.InputContainer>
+
           {emailMessage && (
             <div style={{ color: emailStatus ? "green" : "red" }}>
               {emailMessage}
             </div>
           )}
+
           <Input
             label="비밀번호"
             type="password"
@@ -105,6 +140,7 @@ const Signup = () => {
             type="password"
             name="confirmPassword"
             placeholder="비밀번호 확인"
+            onChange={handleChange}
           />
           <Input
             label="전화번호"
@@ -114,17 +150,32 @@ const Signup = () => {
             value={formData.phoneNumber}
             onChange={handleChange}
           />
+
           <T.InputContainer>
             <Input
-              label="주소"
+              label="우편번호"
               type="text"
-              name="address"
-              placeholder="주소를 입력하세요"
-              value={formData.address}
-              onChange={handleChange}
+              name="postalCode"
+              placeholder="우편번호"
+              value={formData.postalCode}
+              readOnly
             />
-            <T.Button style={{ width: "150px" }}>주소찾기</T.Button>
+            <T.Button
+              type="button"
+              style={{ width: "150px" }}
+              onClick={handleAddressSearch}
+            >
+              주소찾기
+            </T.Button>
           </T.InputContainer>
+          <Input
+            label="주소"
+            type="text"
+            name="address"
+            placeholder="주소를 입력하세요"
+            value={formData.address}
+            readOnly
+          />
           <T.InputContainer>
             <div>
               <label>성별</label>
@@ -137,7 +188,7 @@ const Signup = () => {
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        gender: e.target.checked ? "male" : "", // 체크 해제 시 gender 값 초기화
+                        gender: e.target.checked ? "male" : "",
                       })
                     }
                   />
@@ -151,7 +202,7 @@ const Signup = () => {
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        gender: e.target.checked ? "female" : "", // 체크 해제 시 gender 값 초기화
+                        gender: e.target.checked ? "female" : "",
                       })
                     }
                   />
@@ -160,7 +211,7 @@ const Signup = () => {
               </div>
             </div>
           </T.InputContainer>
-          <br />
+
           <T.Button type="submit">가입</T.Button>
         </form>
       </T.FormContainer>
