@@ -7,7 +7,7 @@ import MaleIcon from "../../icons/male.svg";
 import FemaleIcon from "../../icons/female.svg";
 import AddressIcon from "../../icons/address.svg";
 import PencilIcon from "../../icons/pencil.svg";
-import UserIcon from "../../icons/user.svg";
+import UserFillIcon from "../../icons/userFill.svg";
 import SmileIcon from "../../icons/smile.svg";
 
 // style
@@ -59,10 +59,10 @@ const Profile = () => {
     address: "들안로00길 00",
     intro: "소개글을 작성해주세요.",
     gender: "male",
-    profileImg: UserIcon,
+    profileImg: UserFillIcon,
   });
   const [inputValues, setInputValues] = useState({ ...userInfo });
-  const [previewImg, setPreviewImg] = useState(UserIcon);
+  const [previewImg, setPreviewImg] = useState(UserFillIcon);
   const [phoneError, setPhoneError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [slangError, setSlangError] = useState({});
@@ -165,7 +165,7 @@ const Profile = () => {
   const handleImgChange = (e) => {
     const file = e.target.files[0];
     setImgError("");
-    setPreviewImg(UserIcon);
+    setPreviewImg(UserFillIcon);
 
     // 파일형식 유효성검사
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
@@ -212,196 +212,182 @@ const Profile = () => {
   };
 
   return (
-    <>
-      <header
-        style={{
-          width: "100%",
-          height: "10vh",
-          backgroundColor: "darkblue",
-          position: "fixed",
-          top: "0",
-          zIndex: "999",
-        }}
-      />
-      <Wrapper>
-        <UserInfoBox>
-          <UserImg>
-            <ProfileImg>
-              <Image src={userInfo.profileImg} alt="프로필사진" />
-            </ProfileImg>
-            <Title>{userInfo.name}님, 환영합니다</Title>
-          </UserImg>
-          <UserInfo>
-            <TextBox>
-              <Icon src={SmileIcon} alt="phone-icon" />
-              <Text>{userInfo.nickname}</Text>
-            </TextBox>
-            <TextBox>
-              <Icon src={PhoneIcon} alt="phone-icon" />
-              <Text>{userInfo.phone}</Text>
-            </TextBox>
-            <TextBox>
-              <Icon src={EmailIcon} alt="email-icon" />
-              <Text>{userInfo.email}</Text>
-            </TextBox>
-            <TextBox>
-              <GenderIcon
-                src={userInfo.gender === "male" ? MaleIcon : FemaleIcon}
-              />
-              <Text>{userInfo.gender === "male" ? "남성" : "여성"}</Text>
-            </TextBox>
-            <TextBox>
-              <Icon src={AddressIcon} alt="address-icon" />
-              <Text>{userInfo.address}</Text>
-            </TextBox>
-            <TextBox>
-              <Icon src={PencilIcon} alt="pencil-icon" />
-              <Text>{userInfo.intro}</Text>
-            </TextBox>
-          </UserInfo>
-        </UserInfoBox>
+    <Wrapper>
+      <UserInfoBox>
+        <UserImg>
+          <ProfileImg>
+            <Image src={userInfo.profileImg} alt="프로필사진" />
+          </ProfileImg>
+          <Title>{userInfo.name}님, 환영합니다</Title>
+        </UserImg>
+        <UserInfo>
+          <TextBox>
+            <Icon src={SmileIcon} alt="phone-icon" />
+            <Text>{userInfo.nickname}</Text>
+          </TextBox>
+          <TextBox>
+            <Icon src={PhoneIcon} alt="phone-icon" />
+            <Text>{userInfo.phone}</Text>
+          </TextBox>
+          <TextBox>
+            <Icon src={EmailIcon} alt="email-icon" />
+            <Text>{userInfo.email}</Text>
+          </TextBox>
+          <TextBox>
+            <GenderIcon
+              src={userInfo.gender === "male" ? MaleIcon : FemaleIcon}
+            />
+            <Text>{userInfo.gender === "male" ? "남성" : "여성"}</Text>
+          </TextBox>
+          <TextBox>
+            <Icon src={AddressIcon} alt="address-icon" />
+            <Text>{userInfo.address}</Text>
+          </TextBox>
+          <TextBox>
+            <Icon src={PencilIcon} alt="pencil-icon" />
+            <Text>{userInfo.intro}</Text>
+          </TextBox>
+        </UserInfo>
+      </UserInfoBox>
 
-        <InfoWarpper as="form" onSubmit={handleModify}>
-          <ModiInfoBox>
-            <InfoBoxImg>
-              {previewImg && <PreviewImg src={previewImg} alt="미리보기" />}
-              <InfoBoxImgText>
-                <Label>프로필사진</Label>
-                <Input id="img" type="file" onChange={handleImgChange} />
-              </InfoBoxImgText>
-              {imgError && <ErrorMsg>{imgError}</ErrorMsg>}
-            </InfoBoxImg>
-            <InfoBox>
-              <InfoText>
-                <LabelBox>
-                  <Label htmlFor="name">이름</Label>
-                  <Dot />
-                </LabelBox>
-                <Input
-                  id="name"
-                  type="text"
-                  value={inputValues.name}
-                  onChange={changeInputValue}
-                  onKeyDown={handleKeyDown}
-                  required
+      <InfoWarpper as="form" onSubmit={handleModify}>
+        <ModiInfoBox>
+          <InfoBoxImg>
+            {previewImg && <PreviewImg src={previewImg} alt="미리보기" />}
+            <InfoBoxImgText>
+              <Label>프로필사진</Label>
+              <Input id="img" type="file" onChange={handleImgChange} />
+            </InfoBoxImgText>
+            {imgError && <ErrorMsg>{imgError}</ErrorMsg>}
+          </InfoBoxImg>
+          <InfoBox>
+            <InfoText>
+              <LabelBox>
+                <Label htmlFor="name">이름</Label>
+                <Dot />
+              </LabelBox>
+              <Input
+                id="name"
+                type="text"
+                value={inputValues.name}
+                onChange={changeInputValue}
+                onKeyDown={handleKeyDown}
+                required
+              />
+            </InfoText>
+            {slangError.name && <ErrorMsg>{slangError.name}</ErrorMsg>}
+          </InfoBox>
+          <InfoBox>
+            <InfoText>
+              <LabelBox>
+                <Label htmlFor="nickname">닉네임</Label>
+                <Dot />
+              </LabelBox>
+              <Input
+                id="nickname"
+                type="text"
+                value={inputValues.nickname}
+                onChange={changeInputValue}
+                onKeyDown={handleKeyDown}
+                required
+              />
+            </InfoText>
+            {slangError.nickname && <ErrorMsg>{slangError.nickname}</ErrorMsg>}
+          </InfoBox>
+          <InfoBox>
+            <InfoText>
+              <LabelBox>
+                <Label htmlFor="phone">전화번호</Label>
+                <Dot />
+              </LabelBox>
+              <Input
+                id="phone"
+                type="tel"
+                value={inputValues.phone}
+                onChange={changeInputValue}
+                onKeyDown={handleKeyDown}
+              />
+            </InfoText>
+            {phoneError && <ErrorMsg>{phoneError}</ErrorMsg>}
+          </InfoBox>
+          <InfoBox>
+            <InfoText>
+              <LabelBox>
+                <Label htmlFor="email">이메일</Label>
+                <Dot />
+              </LabelBox>
+              <Input
+                id="email"
+                type="text"
+                value={inputValues.email}
+                onChange={changeInputValue}
+                onKeyDown={handleKeyDown}
+              />
+            </InfoText>
+            {emailError && <ErrorMsg>{emailError}</ErrorMsg>}
+          </InfoBox>
+          <InfoBox>
+            <InfoText>
+              <LabelBox>
+                <Label>성별</Label>
+                <Dot />
+              </LabelBox>
+              <RadioLabel>
+                <RadioInput
+                  type="radio"
+                  value="male"
+                  checked={inputValues.gender === "male"}
+                  onChange={handleGenderChange}
                 />
-              </InfoText>
-              {slangError.name && <ErrorMsg>{slangError.name}</ErrorMsg>}
-            </InfoBox>
-            <InfoBox>
-              <InfoText>
-                <LabelBox>
-                  <Label htmlFor="nickname">닉네임</Label>
-                  <Dot />
-                </LabelBox>
-                <Input
-                  id="nickname"
-                  type="text"
-                  value={inputValues.nickname}
-                  onChange={changeInputValue}
-                  onKeyDown={handleKeyDown}
-                  required
+                남성
+              </RadioLabel>
+              <RadioLabel>
+                <RadioInput
+                  type="radio"
+                  value="female"
+                  checked={inputValues.gender === "female"}
+                  onChange={handleGenderChange}
                 />
-              </InfoText>
-              {slangError.nickname && (
-                <ErrorMsg>{slangError.nickname}</ErrorMsg>
-              )}
-            </InfoBox>
-            <InfoBox>
-              <InfoText>
-                <LabelBox>
-                  <Label htmlFor="phone">전화번호</Label>
-                  <Dot />
-                </LabelBox>
-                <Input
-                  id="phone"
-                  type="tel"
-                  value={inputValues.phone}
-                  onChange={changeInputValue}
-                  onKeyDown={handleKeyDown}
-                />
-              </InfoText>
-              {phoneError && <ErrorMsg>{phoneError}</ErrorMsg>}
-            </InfoBox>
-            <InfoBox>
-              <InfoText>
-                <LabelBox>
-                  <Label htmlFor="email">이메일</Label>
-                  <Dot />
-                </LabelBox>
-                <Input
-                  id="email"
-                  type="text"
-                  value={inputValues.email}
-                  onChange={changeInputValue}
-                  onKeyDown={handleKeyDown}
-                />
-              </InfoText>
-              {emailError && <ErrorMsg>{emailError}</ErrorMsg>}
-            </InfoBox>
-            <InfoBox>
-              <InfoText>
-                <LabelBox>
-                  <Label>성별</Label>
-                  <Dot />
-                </LabelBox>
-                <RadioLabel>
-                  <RadioInput
-                    type="radio"
-                    value="male"
-                    checked={inputValues.gender === "male"}
-                    onChange={handleGenderChange}
-                  />
-                  남성
-                </RadioLabel>
-                <RadioLabel>
-                  <RadioInput
-                    type="radio"
-                    value="female"
-                    checked={inputValues.gender === "female"}
-                    onChange={handleGenderChange}
-                  />
-                  여성
-                </RadioLabel>
-              </InfoText>
-            </InfoBox>
-            <InfoBox>
-              <InfoText>
-                <Label htmlFor="address">주소</Label>
-                <InputAddress
-                  id="address"
-                  type="text"
-                  value={inputValues.address}
-                  onChange={changeInputValue}
-                  onKeyDown={handleKeyDown}
-                />
-              </InfoText>
-              {slangError.address && <ErrorMsg>{slangError.address}</ErrorMsg>}
-            </InfoBox>
-            <InfoBoxIntro>
-              <InfoTextIntro>
-                <Label htmlFor="intro">소개</Label>
-                <InputIntro
-                  id="intro"
-                  as="textarea"
-                  value={inputValues.intro}
-                  onChange={changeInputValue}
-                  onKeyDown={handleKeyDown}
-                />
-              </InfoTextIntro>
-              {slangError.intro && <ErrorMsg>{slangError.intro}</ErrorMsg>}
-            </InfoBoxIntro>
-          </ModiInfoBox>
-          <BottomBox>
-            <ExplainBox>
-              <Dot />
-              <ExplainText>표시된 항목은 필수입력 항목입니다.</ExplainText>
-            </ExplainBox>
-            <ModifyBtn type="submit">프로필수정</ModifyBtn>
-          </BottomBox>
-        </InfoWarpper>
-      </Wrapper>
-    </>
+                여성
+              </RadioLabel>
+            </InfoText>
+          </InfoBox>
+          <InfoBox>
+            <InfoText>
+              <Label htmlFor="address">주소</Label>
+              <InputAddress
+                id="address"
+                type="text"
+                value={inputValues.address}
+                onChange={changeInputValue}
+                onKeyDown={handleKeyDown}
+              />
+            </InfoText>
+            {slangError.address && <ErrorMsg>{slangError.address}</ErrorMsg>}
+          </InfoBox>
+          <InfoBoxIntro>
+            <InfoTextIntro>
+              <Label htmlFor="intro">소개</Label>
+              <InputIntro
+                id="intro"
+                as="textarea"
+                value={inputValues.intro}
+                onChange={changeInputValue}
+                onKeyDown={handleKeyDown}
+              />
+            </InfoTextIntro>
+            {slangError.intro && <ErrorMsg>{slangError.intro}</ErrorMsg>}
+          </InfoBoxIntro>
+        </ModiInfoBox>
+        <BottomBox>
+          <ExplainBox>
+            <Dot />
+            <ExplainText>표시된 항목은 필수입력 항목입니다.</ExplainText>
+          </ExplainBox>
+          <ModifyBtn type="submit">프로필수정</ModifyBtn>
+        </BottomBox>
+      </InfoWarpper>
+    </Wrapper>
   );
 };
 
