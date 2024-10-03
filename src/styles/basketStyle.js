@@ -1,145 +1,100 @@
 import styled from 'styled-components';
 
 export const BasketContainer = styled.div`
-  max-width: 800px;
+  width: 80%;
   margin: 0 auto;
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
   background-color: #f9f9f9;
 `;
 
+export const Header = styled.h1`
+  text-align: center;
+  padding: 20px;
+  background-color: #ccc;
+  font-size: 24px;
+  font-weight: bold;
+`;
+
 export const BasketItems = styled.div`
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
 export const BasketItem = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 150px 2fr 1fr 100px;
   align-items: center;
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
 `;
 
 export const ItemImage = styled.div`
-  width: 100px;
-  height: 100px;
-  background-color: #eaeaea;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
+  width: 150px;
+  height: 150px;
+  background-color: #e0e0e0;
+  font-size: 18px;
+  text-align: center;
+  line-height: 150px;
+  margin-right: 20px; /* 이미지와 옵션 간 간격 추가 */
 `;
 
 export const ItemDetails = styled.div`
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 16px;
+
   p {
-    margin: 5px 0;
+    margin: 0;
+  }
+`;
+
+export const QuantityControls = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  button {
+    padding: 5px 10px;
+    font-size: 14px;
   }
 `;
 
 export const ItemActions = styled.div`
-  button {
-    padding: 10px 15px;
-    margin-right: 5px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
 
-    &:hover {
-      background-color: #0056b3;
-    }
+  button {
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    cursor: pointer;
   }
 `;
 
 export const CheckoutSection = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* 좌우로 배치 */
   align-items: center;
   margin-top: 20px;
-
-  button {
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
+  padding: 10px 0;
 `;
 
-// .basket-container {
-//   max-width: 800px;
-//   margin: 0 auto;
-//   padding: 20px;
-//   border: 1px solid #ddd;
-//   border-radius: 8px;
-//   background-color: #f9f9f9;
-// }
+export const OrderButton = styled.button`
+  padding: 15px 30px;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+`;
 
-// .basket-items {
-//   margin-bottom: 20px;
-// }
-
-// .basket-item {
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   padding: 15px;
-//   border: 1px solid #ccc;
-//   border-radius: 4px;
-//   margin-bottom: 10px;
-//   background-color: #fff;
-// }
-
-// .item-image {
-//   width: 100px;
-//   height: 100px;
-//   background-color: #eaeaea;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   border-radius: 4px;
-// }
-
-// .item-details p {
-//   margin: 5px 0;
-// }
-
-// .item-actions button {
-//   padding: 10px 15px;
-//   margin-right: 5px;
-//   border: none;
-//   border-radius: 4px;
-//   background-color: #007bff;
-//   color: #fff;
-//   cursor: pointer;
-//   transition: background-color 0.3s;
-// }
-
-// .item-actions button:hover {
-//   background-color: #0056b3;
-// }
-
-// .checkout-section {
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   margin-top: 20px;
-// }
-
-// .checkout-section button {
-//   padding: 10px 20px;
-//   background-color: #28a745;
-//   color: #fff;
-//   border: none;
-//   border-radius: 4px;
-//   cursor: pointer;
-//   transition: background-color 0.3s;
-// }
+export const TotalPrice = styled.p`
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+`;
