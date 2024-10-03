@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import {
+  containSlang,
+  isValidEmail,
+  isValidPhone,
+} from "../../utils/Validation";
 
 // icon
 import PhoneIcon from "../../icons/phone.svg";
@@ -16,7 +21,6 @@ import {
   UserInfo,
   Title,
   Text,
-  InfoWarpper,
   ModiInfoBox,
   InfoBox,
   InfoBoxIntro,
@@ -45,10 +49,10 @@ import {
   ExplainText,
   ExplainBox,
   BottomBox,
-} from "../../styles/profileStyle";
-
-// 비속어목록
-const slangList = ["바보", "멍청이", "시발", "병신"];
+  ModifyWarpper,
+  ModifyBox,
+} from "../../styles/userProfileStyle/profileStyle";
+import InputField from "../auth/InputField";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
@@ -67,21 +71,7 @@ const Profile = () => {
   const [emailError, setEmailError] = useState("");
   const [slangError, setSlangError] = useState({});
   const [imgError, setImgError] = useState("");
-
-  // 전화번호 유효성검사
-  const validatePhone = (phone) => {
-    const regex = /^\d{3}-\d{4}-\d{4}$/;
-    return regex.test(phone);
-  };
-  // 이메일 유효성검사
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
-  // 비속어 유효성검사
-  const containSlang = (input) => {
-    return slangList.some((word) => input.includes(word));
-  };
+  const [isValidModify, setIsValidModify] = useState("");
 
   const changeInputValue = (e) => {
     const { id, value } = e.target;
@@ -92,7 +82,7 @@ const Profile = () => {
 
     // 전화번호 유효성검사
     if (id === "phone") {
-      if (!validatePhone(value)) {
+      if (!isValidPhone(value)) {
         setPhoneError("유효하지 않은 전화번호 형식입니다. (예: 000-0000-0000)");
       } else {
         setPhoneError("");
@@ -101,7 +91,7 @@ const Profile = () => {
 
     // 이메일 유효성검사
     if (id === "email") {
-      if (!validateEmail(value)) {
+      if (!isValidEmail(value)) {
         setEmailError("유효하지 않은 이메일 형식입니다.");
       } else {
         setEmailError("");
@@ -135,7 +125,7 @@ const Profile = () => {
 
     if (isImgValid && isEmailValid && isPhoneValid && isSlangValid) {
       setUserInfo(inputValues);
-      alert("프로필이 수정되었습니다.");
+      setIsValidModify("프로필이 수정되었습니다.");
     } else {
       const errorInputs = [
         { id: "img", error: imgError },
@@ -150,6 +140,7 @@ const Profile = () => {
       if (firstErrorInput) {
         document.getElementById(firstErrorInput.id).focus();
       }
+      setIsValidModify("잘못 입력된 정보가 존재합니다.");
     }
   };
 
@@ -177,7 +168,7 @@ const Profile = () => {
         return;
       }
 
-      // 파일 용량(1MB) 유효서검사
+      // 파일 용량(1MB) 유효성검사
       if (file.size > 1 * 1024 * 1024) {
         setImgError("이미지 파일 크기는 1MB를 초과할 수 없습니다.");
         return;
@@ -250,143 +241,149 @@ const Profile = () => {
         </UserInfo>
       </UserInfoBox>
 
-      <InfoWarpper as="form" onSubmit={handleModify}>
-        <ModiInfoBox>
-          <InfoBoxImg>
-            {previewImg && <PreviewImg src={previewImg} alt="미리보기" />}
-            <InfoBoxImgText>
-              <Label>프로필사진</Label>
-              <Input id="img" type="file" onChange={handleImgChange} />
-            </InfoBoxImgText>
-            {imgError && <ErrorMsg>{imgError}</ErrorMsg>}
-          </InfoBoxImg>
-          <InfoBox>
-            <InfoText>
-              <LabelBox>
-                <Label htmlFor="name">이름</Label>
-                <Dot />
-              </LabelBox>
-              <Input
-                id="name"
-                type="text"
-                value={inputValues.name}
-                onChange={changeInputValue}
-                onKeyDown={handleKeyDown}
-                required
-              />
-            </InfoText>
-            {slangError.name && <ErrorMsg>{slangError.name}</ErrorMsg>}
-          </InfoBox>
-          <InfoBox>
-            <InfoText>
-              <LabelBox>
-                <Label htmlFor="nickname">닉네임</Label>
-                <Dot />
-              </LabelBox>
-              <Input
-                id="nickname"
-                type="text"
-                value={inputValues.nickname}
-                onChange={changeInputValue}
-                onKeyDown={handleKeyDown}
-                required
-              />
-            </InfoText>
-            {slangError.nickname && <ErrorMsg>{slangError.nickname}</ErrorMsg>}
-          </InfoBox>
-          <InfoBox>
-            <InfoText>
-              <LabelBox>
-                <Label htmlFor="phone">전화번호</Label>
-                <Dot />
-              </LabelBox>
-              <Input
-                id="phone"
-                type="tel"
-                value={inputValues.phone}
-                onChange={changeInputValue}
-                onKeyDown={handleKeyDown}
-              />
-            </InfoText>
-            {phoneError && <ErrorMsg>{phoneError}</ErrorMsg>}
-          </InfoBox>
-          <InfoBox>
-            <InfoText>
-              <LabelBox>
-                <Label htmlFor="email">이메일</Label>
-                <Dot />
-              </LabelBox>
-              <Input
-                id="email"
-                type="text"
-                value={inputValues.email}
-                onChange={changeInputValue}
-                onKeyDown={handleKeyDown}
-              />
-            </InfoText>
-            {emailError && <ErrorMsg>{emailError}</ErrorMsg>}
-          </InfoBox>
-          <InfoBox>
-            <InfoText>
-              <LabelBox>
-                <Label>성별</Label>
-                <Dot />
-              </LabelBox>
-              <RadioLabel>
-                <RadioInput
-                  type="radio"
-                  value="male"
-                  checked={inputValues.gender === "male"}
-                  onChange={handleGenderChange}
+      <ModifyWarpper>
+        <ModifyBox onSubmit={handleModify}>
+          <ModiInfoBox>
+            <InfoBoxImg>
+              {previewImg && <PreviewImg src={previewImg} alt="미리보기" />}
+              <InfoBoxImgText>
+                <Label>프로필사진</Label>
+                <Input id="img" type="file" onChange={handleImgChange} />
+              </InfoBoxImgText>
+              {imgError && <ErrorMsg>{imgError}</ErrorMsg>}
+            </InfoBoxImg>
+            <InfoBox>
+              <InfoText>
+                <LabelBox>
+                  <Label htmlFor="name">이름</Label>
+                  <Dot />
+                </LabelBox>
+                <InputField />
+                <Input
+                  id="name"
+                  type="text"
+                  value={inputValues.name}
+                  onChange={changeInputValue}
+                  onKeyDown={handleKeyDown}
+                  required
                 />
-                남성
-              </RadioLabel>
-              <RadioLabel>
-                <RadioInput
-                  type="radio"
-                  value="female"
-                  checked={inputValues.gender === "female"}
-                  onChange={handleGenderChange}
+              </InfoText>
+              {slangError.name && <ErrorMsg>{slangError.name}</ErrorMsg>}
+            </InfoBox>
+            <InfoBox>
+              <InfoText>
+                <LabelBox>
+                  <Label htmlFor="nickname">닉네임</Label>
+                  <Dot />
+                </LabelBox>
+                <Input
+                  id="nickname"
+                  type="text"
+                  value={inputValues.nickname}
+                  onChange={changeInputValue}
+                  onKeyDown={handleKeyDown}
+                  required
                 />
-                여성
-              </RadioLabel>
-            </InfoText>
-          </InfoBox>
-          <InfoBox>
-            <InfoText>
-              <Label htmlFor="address">주소</Label>
-              <InputAddress
-                id="address"
-                type="text"
-                value={inputValues.address}
-                onChange={changeInputValue}
-                onKeyDown={handleKeyDown}
-              />
-            </InfoText>
-            {slangError.address && <ErrorMsg>{slangError.address}</ErrorMsg>}
-          </InfoBox>
-          <InfoBoxIntro>
-            <InfoTextIntro>
-              <Label htmlFor="intro">소개</Label>
-              <InputIntro
-                id="intro"
-                as="textarea"
-                value={inputValues.intro}
-                onChange={changeInputValue}
-                onKeyDown={handleKeyDown}
-              />
-            </InfoTextIntro>
-            {slangError.intro && <ErrorMsg>{slangError.intro}</ErrorMsg>}
-          </InfoBoxIntro>
-        </ModiInfoBox>
-        <BottomBox>
+              </InfoText>
+              {slangError.nickname && (
+                <ErrorMsg>{slangError.nickname}</ErrorMsg>
+              )}
+            </InfoBox>
+            <InfoBox>
+              <InfoText>
+                <LabelBox>
+                  <Label htmlFor="phone">전화번호</Label>
+                  <Dot />
+                </LabelBox>
+                <Input
+                  id="phone"
+                  type="tel"
+                  value={inputValues.phone}
+                  onChange={changeInputValue}
+                  onKeyDown={handleKeyDown}
+                />
+              </InfoText>
+              {phoneError && <ErrorMsg>{phoneError}</ErrorMsg>}
+            </InfoBox>
+            <InfoBox>
+              <InfoText>
+                <LabelBox>
+                  <Label htmlFor="email">이메일</Label>
+                  <Dot />
+                </LabelBox>
+                <Input
+                  id="email"
+                  type="text"
+                  value={inputValues.email}
+                  onChange={changeInputValue}
+                  onKeyDown={handleKeyDown}
+                />
+              </InfoText>
+              {emailError && <ErrorMsg>{emailError}</ErrorMsg>}
+            </InfoBox>
+            <InfoBox>
+              <InfoText>
+                <LabelBox>
+                  <Label>성별</Label>
+                  <Dot />
+                </LabelBox>
+                <RadioLabel>
+                  <RadioInput
+                    type="radio"
+                    value="male"
+                    checked={inputValues.gender === "male"}
+                    onChange={handleGenderChange}
+                  />
+                  남성
+                </RadioLabel>
+                <RadioLabel>
+                  <RadioInput
+                    type="radio"
+                    value="female"
+                    checked={inputValues.gender === "female"}
+                    onChange={handleGenderChange}
+                  />
+                  여성
+                </RadioLabel>
+              </InfoText>
+            </InfoBox>
+            <InfoBox>
+              <InfoText>
+                <Label htmlFor="address">주소</Label>
+                <InputAddress
+                  id="address"
+                  type="text"
+                  value={inputValues.address}
+                  onChange={changeInputValue}
+                  onKeyDown={handleKeyDown}
+                />
+              </InfoText>
+              {slangError.address && <ErrorMsg>{slangError.address}</ErrorMsg>}
+            </InfoBox>
+            <InfoBoxIntro>
+              <InfoTextIntro>
+                <Label htmlFor="intro">소개</Label>
+                <InputIntro
+                  id="intro"
+                  as="textarea"
+                  value={inputValues.intro}
+                  onChange={changeInputValue}
+                  onKeyDown={handleKeyDown}
+                />
+              </InfoTextIntro>
+              {slangError.intro && <ErrorMsg>{slangError.intro}</ErrorMsg>}
+            </InfoBoxIntro>
+          </ModiInfoBox>
           <ExplainBox>
             <Dot />
             <ExplainText>표시된 항목은 필수입력 항목입니다.</ExplainText>
           </ExplainBox>
-          <ModifyBtn type="submit">프로필수정</ModifyBtn>
-        </BottomBox>
-      </InfoWarpper>
+          <BottomBox>
+            <ErrorMsg>{isValidModify}</ErrorMsg>
+            <ModifyBtn type="submit">프로필수정</ModifyBtn>
+          </BottomBox>
+        </ModifyBox>
+      </ModifyWarpper>
     </Wrapper>
   );
 };
