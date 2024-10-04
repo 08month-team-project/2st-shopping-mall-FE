@@ -1,12 +1,19 @@
-import React, { useState } from "react";
-import * as T from "../styles/SignupStyle";
+import React, { useEffect, useState } from "react";
+import * as S from "../styles/SignupStyle";
 import axios from "axios";
-import Input from "../components/input/Input";
+import {
+  isValidEmail,
+  isValidPassword,
+  isValidPhone,
+  containSlang,
+} from "../utils/Validation";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [emailStatus, setEmailStatus] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,7 +22,56 @@ const Signup = () => {
     gender: "",
     name: "",
     nickname: "",
+    gender: "",
   });
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    const newErrors = { ...errors };
+
+    if (name === "email") {
+      if (!isValidEmail(value)) {
+        newErrors.email = "유효하지 않은 이메일 형식입니다.";
+      } else {
+        delete newErrors.email;
+      }
+    }
+
+    if (name === "password") {
+      if (!isValidPassword(value)) {
+        newErrors.password =
+          "비밀번호는 8자에서 20자 사이여야 하며, 최소 하나의 문자와 하나의 숫자를 포함해야 합니다.";
+      } else {
+        delete newErrors.password;
+      }
+    }
+
+    if (name === "confirmPassword") {
+      if (value !== formData.password) {
+        newErrors.confirmPassword = "비밀번호가 일치하지 않습니다.";
+      } else {
+        delete newErrors.confirmPassword;
+      }
+    }
+
+    if (name === "phoneNumber") {
+      if (!isValidPhone(value)) {
+        newErrors.phoneNumber = "전화번호 형식은 000-0000-0000여야 합니다.";
+      } else {
+        delete newErrors.phoneNumber;
+      }
+    }
+
+    if (name === "nickname") {
+      if (containSlang(value)) {
+        newErrors.nickname = "닉네임에 부적절한 언어가 포함되어 있습니다.";
+      } else {
+        delete newErrors.nickname;
+      }
+    }
+
+    setErrors(newErrors); // 에러 상태 업데이트
+  };
 
   // 이메일 중복 체크
   const handleEmailCheck = async () => {
@@ -64,9 +120,26 @@ const Signup = () => {
     document.body.appendChild(script);
   };
 
+  useEffect(() => {
+    const formFieldsFilled =
+      formData.email &&
+      formData.password &&
+      formData.confirmPassword &&
+      formData.phoneNumber &&
+      formData.address &&
+      formData.gender &&
+      formData.name &&
+      formData.nickname;
+
+    const noErrors = Object.keys(errors).length === 0;
+
+    setIsFormValid(formFieldsFilled && noErrors);
+  }, [formData, errors]);
+
   // 폼 제출 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const response = await axios.post("users/signup", formData);
       if (response.status === 200) {
@@ -79,143 +152,137 @@ const Signup = () => {
   };
 
   return (
-    <T.Container>
-      <T.FormContainer>
-        <T.Header>회원가입</T.Header>
+    <S.Container>
+      <S.FormContainer>
+        <S.Header>회원가입</S.Header>
         <form onSubmit={handleSubmit}>
-          <Input
-            label="이름"
-            type="text"
-            name="name"
-            placeholder="이름을 입력하세요"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <Input
-            label="닉네임"
+          <S.InputContainer>
+            <S.SignupInput
+              type="text"
+              name="name"
+              placeholder="이름을 입력하세요"
+              value={formData.name}
+              onChange={handleChange}
+            />
+          </S.InputContainer>
+          <S.SignupInput
             type="text"
             name="nickname"
             placeholder="닉네임을 입력하세요"
             value={formData.nickname}
             onChange={handleChange}
+            onBlur={handleBlur}
           />
+          <S.InputContainer>
+            <S.InputWrapper>
+              <S.SignupInput
+                type="email"
+                name="email"
+                placeholder="이메일을 입력하세요"
+                style={{ marginRight: "15px" }}
+                value={formData.email}
+                onChange={(e) => {
+                  handleChange(e);
+                  setEmail(e.target.value); // 이메일 상태 업데이트
+                }}
+                onBlur={handleBlur}
+              />
+              <S.SmallButton type="button" onClick={handleEmailCheck}>
+                이메일 확인
+              </S.SmallButton>
+            </S.InputWrapper>
+          </S.InputContainer>
+          {errors.email && <S.ErrorMsg>{errors.email}</S.ErrorMsg>}
+          {emailMessage && <S.ErrorMsg>{emailMessage}</S.ErrorMsg>}
 
-          <T.InputContainer>
-            <Input
-              label="이메일"
-              type="email"
-              name="email"
-              placeholder="이메일을 입력하세요"
-              value={formData.email}
-              onChange={(e) => {
-                handleChange(e);
-                setEmail(e.target.value); // 이메일 상태 업데이트
-              }}
-            />
-            <T.Button
-              type="button"
-              style={{ width: "150px" }}
-              onClick={handleEmailCheck}
-            >
-              이메일 확인
-            </T.Button>
-          </T.InputContainer>
-
-          {emailMessage && (
-            <div style={{ color: emailStatus ? "green" : "red" }}>
-              {emailMessage}
-            </div>
-          )}
-
-          <Input
-            label="비밀번호"
+          <S.SignupInput
             type="password"
             name="password"
             placeholder="비밀번호를 입력하세요"
             value={formData.password}
             onChange={handleChange}
+            onBlur={handleBlur}
           />
-          <Input
-            label="비밀번호 확인"
+          {errors.password && <S.ErrorMsg>{errors.password}</S.ErrorMsg>}
+
+          <S.SignupInput
             type="password"
             name="confirmPassword"
             placeholder="비밀번호 확인"
             onChange={handleChange}
+            onBlur={handleBlur}
           />
-          <Input
-            label="전화번호"
+          {errors.confirmPassword && (
+            <S.ErrorMsg>{errors.confirmPassword}</S.ErrorMsg>
+          )}
+          <S.SignupInput
             type="number"
             name="phoneNumber"
             placeholder="전화번호를 입력하세요"
             value={formData.phoneNumber}
             onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.phoneNumber && <S.ErrorMsg>{errors.phoneNumber}</S.ErrorMsg>}
 
-          <T.InputContainer>
-            <Input
-              label="우편번호"
+          <S.InputWrapper>
+            <S.SignupInput
               type="text"
               name="postalCode"
               placeholder="우편번호"
+              style={{ marginRight: "15px" }}
               value={formData.postalCode}
               readOnly
             />
-            <T.Button
-              type="button"
-              style={{ width: "150px" }}
-              onClick={handleAddressSearch}
-            >
+            <S.SmallButton type="button" onClick={handleAddressSearch}>
               주소찾기
-            </T.Button>
-          </T.InputContainer>
-          <Input
-            label="주소"
+            </S.SmallButton>
+          </S.InputWrapper>
+          <S.SignupInput
             type="text"
             name="address"
             placeholder="주소를 입력하세요"
             value={formData.address}
             readOnly
           />
-          <T.InputContainer>
-            <div>
-              <label>성별</label>
-              <div>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="male"
-                    checked={formData.gender === "male"}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        gender: e.target.checked ? "male" : "",
-                      })
-                    }
-                  />
-                  남성
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="female"
-                    checked={formData.gender === "female"}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        gender: e.target.checked ? "female" : "",
-                      })
-                    }
-                  />
-                  여성
-                </label>
-              </div>
-            </div>
-          </T.InputContainer>
-
-          <T.Button type="submit">가입</T.Button>
+          <S.GenderWrapper>
+            <S.GenderLabel>
+              <S.Checkbox
+                type="checkbox"
+                name="male"
+                checked={formData.gender === "male"}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    gender: e.target.checked ? "male" : "",
+                  })
+                }
+              />
+              남성
+            </S.GenderLabel>
+            <S.GenderLabel>
+              <S.Checkbox
+                type="checkbox"
+                name="female"
+                checked={formData.gender === "female"}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    gender: e.target.checked ? "female" : "",
+                  })
+                }
+              />
+              여성
+            </S.GenderLabel>
+          </S.GenderWrapper>
+          <S.SubmitButtonWrapper>
+            <S.SubmitButton type="submit" disabled={!isFormValid}>
+              가입
+            </S.SubmitButton>
+          </S.SubmitButtonWrapper>
         </form>
-      </T.FormContainer>
-    </T.Container>
+      </S.FormContainer>
+    </S.Container>
   );
 };
 
