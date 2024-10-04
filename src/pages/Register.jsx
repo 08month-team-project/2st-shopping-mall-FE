@@ -19,7 +19,6 @@ import {
   ItemInfoBox,
   ItemInfoScript,
   Option,
-  RegisterBtn,
   RegisterInfo,
   Select,
   SuccessMsg,
@@ -28,11 +27,13 @@ import {
   InfoTextScript,
   Container,
 } from "../styles/userProfileStyle/userRegisterStyle";
+import { UniBtn } from "../components/button/UniBtn";
 import { ErrorMsg } from "../styles/userProfileStyle/profileStyle";
 import { Title } from "../styles/userProfileStyle/userBuyingStyle";
 
 const Register = () => {
   const [formData, setFormData] = useState({
+    ///////////////// 백앤드랑 용어통일//////////////////
     name: "",
     price: "",
     category: "",
@@ -44,10 +45,10 @@ const Register = () => {
   const [validImages, setValidImages] = useState([]);
   const [imgError, setImgError] = useState("");
   const [thumbNailImg, setThumbNailImg] = useState(null);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  // const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [slangError, setSlangError] = useState({});
   const [successMsg, setSuccessMsg] = useState("");
-  // itemId 저장을 위한 상태
+  ///////////// itemId 저장을 위한 상태 ///////////////////
   const [itemId, setItemId] = useState(null);
 
   // 여러장이미지
@@ -80,10 +81,10 @@ const Register = () => {
     setSelectedImageIndex(0);
   };
 
-  const handleImageClick = (index) => {
-    setSelectedImageIndex(index);
-    setThumbNailImg(URL.createObjectURL(validImages[index]));
-  };
+  // const handleImageClick = (index) => {
+  //   setSelectedImageIndex(index);
+  //   setThumbNailImg(URL.createObjectURL(validImages[index]));
+  // };
 
   // 비속어 유효성검사
   const containSlang = (input) => {
@@ -123,7 +124,7 @@ const Register = () => {
     if (isSlangValid) {
       console.log("상품 정보:", formData);
       console.log("이미지 목록:", validImages);
-      console.log("대표이미지:", thumbNailImg);
+      console.log("대표이미지:", validImages[0]);
 
       setSuccessMsg("물품등록에 성공하였습니다!");
     } else {
@@ -194,7 +195,7 @@ const Register = () => {
     //   }
   };
 
-  // 엔터키
+  // 엔터키 동작
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -219,7 +220,7 @@ const Register = () => {
       <Container onSubmit={handleSubmit}>
         <BtnBox>
           {successMsg && <SuccessMsg>{successMsg}</SuccessMsg>}
-          <RegisterBtn type="submit">물품등록하기</RegisterBtn>
+          <UniBtn type="submit">물품등록하기</UniBtn>
         </BtnBox>
         <RegisterInfo>
           <ThumbNailImgBox>
@@ -247,8 +248,9 @@ const Register = () => {
                       key={idx}
                       src={URL.createObjectURL(file)}
                       alt={`이미지-${idx + 1}`}
-                      onClick={() => handleImageClick(idx)}
-                      $isselected={idx === selectedImageIndex}
+                      // onClick={() => handleImageClick(idx)}
+                      // $isselected={idx === selectedImageIndex}
+                      isthumbnail={idx === 0}
                     />
                   ))}
                 </ItemImagesBox>

@@ -109,5 +109,7 @@ export const ItemImage = styled.img`
   width: 100px;
   margin-right: 0.5rem;
   // 대표이미지스타일
-  border: 2px solid ${({ $isselected }) => ($isselected ? "#007bff" : "#ccc")};
+  /* border: 2px solid ${({ $isselected }) =>
+    $isselected ? "#007bff" : "#ccc"}; */
+  border: 2px solid ${({ isthumbnail }) => (isthumbnail ? "#007bff" : "#ccc")};
 `;

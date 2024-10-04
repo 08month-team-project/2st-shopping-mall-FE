@@ -53,6 +53,7 @@ import {
   ModifyBox,
 } from "../../styles/userProfileStyle/profileStyle";
 import InputField from "../auth/InputField";
+import { UniBtn } from "../button/UniBtn";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
@@ -186,7 +187,7 @@ const Profile = () => {
     }
   };
 
-  // 엔터키
+  // 엔터키이동
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -258,7 +259,6 @@ const Profile = () => {
                   <Label htmlFor="name">이름</Label>
                   <Dot />
                 </LabelBox>
-                <InputField />
                 <Input
                   id="name"
                   type="text"
@@ -380,7 +380,7 @@ const Profile = () => {
           </ExplainBox>
           <BottomBox>
             <ErrorMsg>{isValidModify}</ErrorMsg>
-            <ModifyBtn type="submit">프로필수정</ModifyBtn>
+            <UniBtn type="submit">프로필수정</UniBtn>
           </BottomBox>
         </ModifyBox>
       </ModifyWarpper>
