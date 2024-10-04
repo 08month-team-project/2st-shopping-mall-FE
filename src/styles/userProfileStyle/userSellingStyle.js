@@ -68,15 +68,3 @@ export const ItemCountBox = styled.div`
 `;
 export const ItemPrice = styled.p``;
 export const ItemAmount = styled.p``;
-
-export const DelBtn = styled.img`
-  width: 24px;
-  cursor: pointer;
-  position: absolute;
-  top: 0.25rem;
-  right: 0.25rem;
-  opacity: 0.7;
-  &:hover {
-    opacity: 1;
-  }
-`;

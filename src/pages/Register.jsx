@@ -21,15 +21,14 @@ import {
   Option,
   RegisterInfo,
   Select,
-  SuccessMsg,
   Warpper,
   InfoText,
   InfoTextScript,
   Container,
 } from "../styles/userProfileStyle/userRegisterStyle";
 import { UniBtn } from "../components/button/UniBtn";
-import { ErrorMsg } from "../styles/userProfileStyle/profileStyle";
-import { Title } from "../styles/userProfileStyle/userBuyingStyle";
+import { ErrorMessage } from "../components/error/ErrorMessage";
+import { UserTitle } from "../components/userProfile/UserTitle";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -47,7 +46,7 @@ const Register = () => {
   const [thumbNailImg, setThumbNailImg] = useState(null);
   // const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [slangError, setSlangError] = useState({});
-  const [successMsg, setSuccessMsg] = useState("");
+  const [notifyMsg, setNotifyMsg] = useState("");
   ///////////// itemId 저장을 위한 상태 ///////////////////
   const [itemId, setItemId] = useState(null);
 
@@ -126,7 +125,7 @@ const Register = () => {
       console.log("이미지 목록:", validImages);
       console.log("대표이미지:", validImages[0]);
 
-      setSuccessMsg("물품등록에 성공하였습니다!");
+      setNotifyMsg("물품등록에 성공하였습니다!");
     } else {
       const errorInputs = [
         { id: "name", error: slangError.name },
@@ -136,7 +135,7 @@ const Register = () => {
       if (firstErrorInput) {
         document.getElementById(firstErrorInput.id).focus();
       }
-      setSuccessMsg("잘못 입력된 정보가 존재합니다.");
+      setNotifyMsg("잘못 입력된 정보가 존재합니다.");
     }
 
     // 1. 상품정보 데이터
@@ -152,10 +151,10 @@ const Register = () => {
     //   setItemId(response.data.itemId);
 
     //   console.log("등록결과:", response.data);
-    //   setSuccessMsg("물품등록에 성공하였습니다!");
+    //   setNotifyMsg("물품등록에 성공하였습니다!");
     // } catch (error) {
     //   console.error("등록오류:", error.message);
-    //   setSuccessMsg("물품등록에 실패하였습니다.");
+    //   setNotifyMsg("물품등록에 실패하였습니다.");
     //   return;
     // }
 
@@ -170,7 +169,7 @@ const Register = () => {
     //       "Content-Type": "multipart/form-data",
     //     },
     //   });
-    //   setSuccessMsg("이미지 업로드에 성공하였습니다!");
+    //   setNotifyMsg("이미지 업로드에 성공하였습니다!");
     // } catch (error) {
     //   console.error("이미지 업로드 오류:", error);
     //   return;
@@ -187,10 +186,10 @@ const Register = () => {
     //           "Content-Type": "multipart/form-data",
     //         },
     //       });
-    //       setSuccessMsg("대표 이미지 업로드에 성공하였습니다!");
+    //       setNotifyMsg("대표 이미지 업로드에 성공하였습니다!");
     //     } catch (error) {
     //       console.error("대표 이미지 업로드 오류:", error);
-    //       setSuccessMsg("대표 이미지 업로드에 실패하였습니다.");
+    //       setNotifyMsg("대표 이미지 업로드에 실패하였습니다.");
     //     }
     //   }
   };
@@ -216,10 +215,10 @@ const Register = () => {
 
   return (
     <Warpper>
-      <Title>판매할 물품 등록하기</Title>
+      <UserTitle>판매할 물품 등록하기</UserTitle>
       <Container onSubmit={handleSubmit}>
         <BtnBox>
-          {successMsg && <SuccessMsg>{successMsg}</SuccessMsg>}
+          {notifyMsg && <ErrorMessage>{notifyMsg}</ErrorMessage>}
           <UniBtn type="submit">물품등록하기</UniBtn>
         </BtnBox>
         <RegisterInfo>
@@ -243,6 +242,7 @@ const Register = () => {
               />
               {validImages.length > 0 && (
                 <ItemImagesBox>
+                  {/* 이미지 여러개 중 가장 첫번째 이미지파일이 대표이미지 */}
                   {validImages.map((file, idx) => (
                     <ItemImage
                       key={idx}
@@ -256,7 +256,7 @@ const Register = () => {
                 </ItemImagesBox>
               )}
             </ItemInfo>
-            {imgError && <ErrorMsg>{imgError}</ErrorMsg>}
+            {imgError && <ErrorMessage>{imgError}</ErrorMessage>}
             <ItemInfo>
               <InfoText>
                 <InfoLabel>상품명</InfoLabel>
@@ -269,7 +269,9 @@ const Register = () => {
                   required
                 />
               </InfoText>
-              {slangError.name && <ErrorMsg>{slangError.name}</ErrorMsg>}
+              {slangError.name && (
+                <ErrorMessage>{slangError.name}</ErrorMessage>
+              )}
             </ItemInfo>
             <ItemInfo>
               <InfoLabel>가격</InfoLabel>
@@ -293,6 +295,7 @@ const Register = () => {
                 onKeyDown={handleKeyDown}
                 required
               >
+                {/* 카테고리는 받아온 데이터로 분류할 예정 */}
                 <Option value="">--카테고리--</Option>
                 <Option value="male">남성의류</Option>
                 <Option value="female">여성의류</Option>
@@ -308,6 +311,7 @@ const Register = () => {
                 onKeyDown={handleKeyDown}
                 required
               >
+                {/* 사이즈는 받아온 데이터로 분류할 예정 */}
                 <Option value="">--사이즈--</Option>
                 <Option value="small">S</Option>
                 <Option value="medium">M</Option>
@@ -349,7 +353,9 @@ const Register = () => {
                   required
                 />
               </InfoTextScript>
-              {slangError.script && <ErrorMsg>{slangError.script}</ErrorMsg>}
+              {slangError.script && (
+                <ErrorMessage>{slangError.script}</ErrorMessage>
+              )}
             </ItemInfoScript>
           </ItemInfoBox>
         </RegisterInfo>

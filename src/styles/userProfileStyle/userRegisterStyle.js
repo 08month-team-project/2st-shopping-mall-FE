@@ -3,8 +3,9 @@ import styled from "styled-components";
 export const Warpper = styled.div`
   width: 80vw;
 `;
+
 export const Container = styled.form`
-  padding: 2rem 4rem 3rem 4rem;
+  padding: 2rem 4rem 5rem 4rem;
   background-color: #f4f6f8;
 `;
 
@@ -12,21 +13,7 @@ export const BtnBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-`;
-export const SuccessMsg = styled.span`
-  margin-right: 1rem;
-  font-size: 14px;
-  font-weight: 500;
-  color: #ed1e25;
-`;
-export const RegisterBtn = styled.button`
-  padding: 0.5rem 0.75rem;
-  font-size: 0.8rem;
-  font-weight: 500;
-  opacity: 0.9;
-  &:hover {
-    opacity: 1;
-  }
+  gap: 0.5rem;
 `;
 
 export const ThumbNailImgBox = styled.div`
@@ -58,7 +45,7 @@ export const ThumbNailImgText = styled.p`
 `;
 
 export const RegisterInfo = styled.div`
-  margin-top: 3rem;
+  margin-top: 1rem;
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
