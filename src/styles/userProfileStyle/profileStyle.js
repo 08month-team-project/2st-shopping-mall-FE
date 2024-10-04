@@ -46,7 +46,6 @@ export const GenderIcon = styled(Icon)`
 `;
 export const Text = styled.p``;
 
-// 프로필 수정 css
 export const ModifyWarpper = styled.div`
   width: 100%;
   padding: 2rem;
@@ -124,12 +123,6 @@ export const ModifyBtn = styled.button`
   }
 `;
 
-export const ErrorMsg = styled.span`
-  display: block;
-  color: #ed1e25;
-  font-size: 0.9rem;
-  font-weight: 500;
-`;
 export const LabelBox = styled.div`
   display: flex;
   align-items: flex-start;
@@ -155,4 +148,12 @@ export const BottomBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 0.5rem;
 `;
+
+// export const ErrorMsg = styled.span`
+//   display: block;
+//   color: #ed1e25;
+//   font-size: 0.9rem;
+//   font-weight: 500;
+// `;

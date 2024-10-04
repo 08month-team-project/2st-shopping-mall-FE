@@ -1,21 +1,16 @@
 import React from "react";
 
-// icon
-import DelIcon from "../icons/x-mark.svg";
-
 // style
 import {
   Amount,
   Container,
   CsText,
-  Del,
   Image,
   ItemInfo,
   ItemInfoText,
   ItemInfoTextInner,
   ItemLi,
   ItemsUl,
-  LiDelBtn,
   LiTitle,
   LiTitleBox,
   Name,
@@ -23,9 +18,10 @@ import {
   Price,
   ReceiptBox,
   ReceiptInfo,
-  Title,
   Warpper,
 } from "../styles/userProfileStyle/userBuyingStyle";
+import { XIconCloseBtn } from "../components/button/XIconCloseBtn";
+import { UserTitle } from "../components/userProfile/UserTitle";
 
 const items = [
   {
@@ -63,14 +59,14 @@ const items = [
 const Buying = () => {
   return (
     <Warpper>
-      <Title>구매한 물품</Title>
+      <UserTitle>구매한 물품</UserTitle>
       <Container>
         <ItemsUl>
           {items.map((item, idx) => (
             <ItemLi key={idx}>
               <LiTitleBox>
                 <LiTitle>결제완료</LiTitle>
-                <Del src={DelIcon} alt="del-icon" />
+                <XIconCloseBtn top="0" right="0" />
               </LiTitleBox>
               <ItemInfo>
                 <Image>{item.image}</Image>

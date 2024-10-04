@@ -32,7 +32,6 @@ import {
   RadioInput,
   InputAddress,
   InputIntro,
-  ModifyBtn,
   TextBox,
   Icon,
   UserImg,
@@ -42,7 +41,7 @@ import {
   Image,
   PreviewImg,
   InfoBoxImg,
-  ErrorMsg,
+  // ErrorMessage,
   InfoBoxImgText,
   Dot,
   LabelBox,
@@ -52,8 +51,8 @@ import {
   ModifyWarpper,
   ModifyBox,
 } from "../../styles/userProfileStyle/profileStyle";
-import InputField from "../auth/InputField";
 import { UniBtn } from "../button/UniBtn";
+import { ErrorMessage } from "../error/ErrorMessage";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
@@ -251,7 +250,7 @@ const Profile = () => {
                 <Label>프로필사진</Label>
                 <Input id="img" type="file" onChange={handleImgChange} />
               </InfoBoxImgText>
-              {imgError && <ErrorMsg>{imgError}</ErrorMsg>}
+              {imgError && <ErrorMessage>{imgError}</ErrorMessage>}
             </InfoBoxImg>
             <InfoBox>
               <InfoText>
@@ -268,7 +267,9 @@ const Profile = () => {
                   required
                 />
               </InfoText>
-              {slangError.name && <ErrorMsg>{slangError.name}</ErrorMsg>}
+              {slangError.name && (
+                <ErrorMessage>{slangError.name}</ErrorMessage>
+              )}
             </InfoBox>
             <InfoBox>
               <InfoText>
@@ -286,7 +287,7 @@ const Profile = () => {
                 />
               </InfoText>
               {slangError.nickname && (
-                <ErrorMsg>{slangError.nickname}</ErrorMsg>
+                <ErrorMessage>{slangError.nickname}</ErrorMessage>
               )}
             </InfoBox>
             <InfoBox>
@@ -303,7 +304,7 @@ const Profile = () => {
                   onKeyDown={handleKeyDown}
                 />
               </InfoText>
-              {phoneError && <ErrorMsg>{phoneError}</ErrorMsg>}
+              {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
             </InfoBox>
             <InfoBox>
               <InfoText>
@@ -319,7 +320,7 @@ const Profile = () => {
                   onKeyDown={handleKeyDown}
                 />
               </InfoText>
-              {emailError && <ErrorMsg>{emailError}</ErrorMsg>}
+              {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
             </InfoBox>
             <InfoBox>
               <InfoText>
@@ -358,7 +359,9 @@ const Profile = () => {
                   onKeyDown={handleKeyDown}
                 />
               </InfoText>
-              {slangError.address && <ErrorMsg>{slangError.address}</ErrorMsg>}
+              {slangError.address && (
+                <ErrorMessage>{slangError.address}</ErrorMessage>
+              )}
             </InfoBox>
             <InfoBoxIntro>
               <InfoTextIntro>
@@ -371,7 +374,9 @@ const Profile = () => {
                   onKeyDown={handleKeyDown}
                 />
               </InfoTextIntro>
-              {slangError.intro && <ErrorMsg>{slangError.intro}</ErrorMsg>}
+              {slangError.intro && (
+                <ErrorMessage>{slangError.intro}</ErrorMessage>
+              )}
             </InfoBoxIntro>
           </ModiInfoBox>
           <ExplainBox>
@@ -379,7 +384,7 @@ const Profile = () => {
             <ExplainText>표시된 항목은 필수입력 항목입니다.</ExplainText>
           </ExplainBox>
           <BottomBox>
-            <ErrorMsg>{isValidModify}</ErrorMsg>
+            <ErrorMessage>{isValidModify}</ErrorMessage>
             <UniBtn type="submit">프로필수정</UniBtn>
           </BottomBox>
         </ModifyBox>

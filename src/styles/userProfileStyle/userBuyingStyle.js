@@ -3,13 +3,7 @@ import styled from "styled-components";
 export const Warpper = styled.div`
   width: 80vw;
 `;
-export const Title = styled.h3`
-  height: 8vh;
-  border-bottom: 1px solid #ccd3d750;
-  text-align: center;
-  line-height: 8vh;
-  font-size: 1rem;
-`;
+
 export const Container = styled.div`
   background-color: #f4f6f8;
 `;
@@ -36,13 +30,9 @@ export const LiTitleBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 `;
 export const LiTitle = styled.h4``;
-export const LiDelBtn = styled.button``;
-export const Del = styled.img`
-  width: 24px;
-  cursor: pointer;
-`;
 export const Image = styled.div`
   width: 80px;
   aspect-ratio: 1/1;
