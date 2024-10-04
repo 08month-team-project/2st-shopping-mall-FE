@@ -5,17 +5,17 @@ export const Wrapper = styled.div`
 `;
 export const UserInfoBox = styled.div`
   width: 100%;
-  padding: 2rem;
+  padding: 3rem 0;
   margin: auto;
   text-align: center;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ccd3d750;
   display: flex;
   align-items: center;
   justify-content: space-around;
 `;
 export const UserImg = styled.div``;
 export const UserInfo = styled.div`
-  width: 50%;
+  width: 40%;
 `;
 export const ProfileImg = styled.figure`
   margin: auto;
@@ -47,12 +47,20 @@ export const GenderIcon = styled(Icon)`
 export const Text = styled.p``;
 
 // 프로필 수정 css
-export const InfoWarpper = styled.div`
+export const ModifyWarpper = styled.div`
+  width: 100%;
+  padding: 2rem;
+  background-color: #f4f6f8;
+`;
+export const ModifyBox = styled.form`
   margin: auto;
   width: 60%;
   padding: 2rem;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px 1px #d6d8db;
+  background-color: #fff;
 `;
 export const ModiInfoBox = styled.div``;
 export const PreviewImg = styled.img`
@@ -61,9 +69,13 @@ export const PreviewImg = styled.img`
 `;
 export const InfoBox = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
+`;
+export const InfoBoxImgText = styled(InfoBox)`
+  flex-direction: row;
+  align-items: center;
 `;
 export const InfoBoxImg = styled(InfoBox)`
   flex-direction: column;
@@ -82,7 +94,7 @@ export const InfoTextIntro = styled(InfoText)`
 `;
 export const Label = styled.label``;
 export const RadioLabel = styled.label`
-  margin-right: 0.5rem;
+  margin: 0 0.5rem;
 `;
 export const Input = styled.input`
   padding: 0.25rem 0.5rem;
@@ -97,10 +109,50 @@ export const InputAddress = styled(Input)`
 export const InputIntro = styled(Input)`
   width: 400px;
   height: 150px;
+  resize: vertical;
+  overflow-y: auto;
 `;
 
 export const ModifyBtn = styled.button`
+  margin-left: 1rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.9;
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+export const ErrorMsg = styled.span`
   display: block;
-  width: fit-content;
-  height: fit-content;
+  color: #ed1e25;
+  font-size: 0.9rem;
+  font-weight: 500;
+`;
+export const LabelBox = styled.div`
+  display: flex;
+  align-items: flex-start;
+`;
+export const ExplainBox = styled.div`
+  display: flex;
+  margin-top: 1rem;
+`;
+export const ExplainText = styled.p`
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+`;
+export const Dot = styled.span`
+  display: block;
+  width: 4px;
+  height: 4px;
+  background-color: #ed1e25;
+  border-radius: 100%;
+`;
+export const BottomBox = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 `;
