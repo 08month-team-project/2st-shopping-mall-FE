@@ -19,14 +19,32 @@ const Signup = () => {
     email: "",
     password: "",
     phoneNumber: "",
-    address: "",
+    address: {
+      city: "",
+      zipcode: "",
+    },
     gender: "",
     name: "",
     nickname: "",
-    gender: "",
   });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const formFieldsFilled =
+      formData.email !== "" &&
+      formData.password !== "" &&
+      formData.confirmPassword !== "" &&
+      formData.phoneNumber !== "" &&
+      formData.address !== "" &&
+      formData.gender !== "" &&
+      formData.name !== "" &&
+      formData.nickname !== "";
+
+    const noErrors = Object.keys(errors).length === 0;
+
+    setIsFormValid(formFieldsFilled && noErrors);
+  }, [formData, errors]);
 
   const handleBlur = (e) => {
     const { name, value } = e.target;
@@ -131,36 +149,21 @@ const Signup = () => {
     script.async = true;
     script.onload = () => {
       new window.daum.Postcode({
-        oncomplete: function (data) {
-          const postalCode = data.zonecode;
-          const fullAddr = data.address;
-
+        oncomplete: (data) => {
+          const { zonecode, address } = data;
           setFormData((prevData) => ({
             ...prevData,
-            postalCode: postalCode,
-            address: fullAddr,
+            address: {
+              ...prevData.address,
+              zipcode: zonecode,
+              city: address,
+            },
           }));
         },
       }).open();
     };
     document.body.appendChild(script);
   };
-
-  useEffect(() => {
-    const formFieldsFilled =
-      formData.email &&
-      formData.password &&
-      formData.confirmPassword &&
-      formData.phoneNumber &&
-      formData.address &&
-      formData.gender &&
-      formData.name &&
-      formData.nickname;
-
-    const noErrors = Object.keys(errors).length === 0;
-
-    setIsFormValid(formFieldsFilled && noErrors);
-  }, [formData, errors]);
 
   const handleGenderChange = (gender) => {
     setFormData((prevData) => ({
@@ -261,10 +264,10 @@ const Signup = () => {
           <S.InputWrapper>
             <S.SignupInput
               type="text"
-              name="postalCode"
+              name="zipcode"
               placeholder="우편번호"
               style={{ marginRight: "15px" }}
-              value={formData.postalCode}
+              value={formData.address.zipcode}
               readOnly
             />
             <S.SmallButton type="button" onClick={handleAddressSearch}>
@@ -275,7 +278,7 @@ const Signup = () => {
             type="text"
             name="address"
             placeholder="주소를 입력하세요"
-            value={formData.address}
+            value={formData.address.city}
             readOnly
           />
           <S.GenderWrapper>

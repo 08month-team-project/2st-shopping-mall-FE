@@ -77,7 +77,7 @@ const Register = () => {
 
     // 대표이미지 = 첫번째이미지
     setThumbNailImg(URL.createObjectURL(newValidImages[0]));
-    setSelectedImageIndex(0);
+    // setSelectedImageIndex(0);
   };
 
   // const handleImageClick = (index) => {

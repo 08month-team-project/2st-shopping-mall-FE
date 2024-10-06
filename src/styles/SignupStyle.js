@@ -65,6 +65,10 @@ export const SubmitButton = styled.button`
   border: none;
   border-radius: 8px;
   cursor: pointer;
+
+  &:disabled {
+    background-color: gray;
+  }
 `;
 
 export const GenderWrapper = styled.div`
