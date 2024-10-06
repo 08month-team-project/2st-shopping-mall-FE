@@ -7,6 +7,7 @@ import {
   isValidPhone,
   containSlang,
 } from "../utils/Validation";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -24,6 +25,8 @@ const Signup = () => {
     nickname: "",
     gender: "",
   });
+
+  const navigate = useNavigate();
 
   const handleBlur = (e) => {
     const { name, value } = e.target;
@@ -77,14 +80,37 @@ const Signup = () => {
   const handleEmailCheck = async () => {
     try {
       const response = await axios.post("/users/check-email", { email });
-      setEmailMessage(
-        response.data.available
-          ? "사용 가능한 이메일 입니다."
-          : "이미 사용중인 이메일 입니다."
-      );
-      setEmailStatus(response.data.available);
+
+      if (response.status === 200) {
+        setEmailMessage(response.data.message);
+        setEmailStatus(true);
+      }
     } catch (error) {
-      console.error("이메일 체크 중 오류 발생:", error);
+      if (error.response) {
+        const { status, data } = error.response;
+
+        // 상태 코드 409 (중복된 이메일)
+        if (status === 409) {
+          setEmailMessage(data.message);
+          setEmailStatus(false);
+        }
+
+        // 상태 코드 400 (유효성 검증 오류)
+        if (status === 400 && data.field_errors) {
+          const emailError = data.field_errors.find(
+            (error) => error.field === "email"
+          );
+
+          if (emailError) {
+            setEmailMessage(emailError.message);
+          }
+          setEmailStatus(false); // 이메일 사용 불가능 상태 설정
+        }
+      } else {
+        console.error("이메일 체크 중 알 수 없는 오류 발생:", error);
+        setEmailMessage("이메일 확인 중 오류가 발생했습니다."); // 기타 오류 처리
+        setEmailStatus(false); // 오류 시 사용 불가능 상태로 설정
+      }
     }
   };
 
@@ -136,6 +162,13 @@ const Signup = () => {
     setIsFormValid(formFieldsFilled && noErrors);
   }, [formData, errors]);
 
+  const handleGenderChange = (gender) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      gender: prevData.gender === gender ? "" : gender,
+    }));
+  };
+
   // 폼 제출 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -143,7 +176,7 @@ const Signup = () => {
     try {
       const response = await axios.post("users/signup", formData);
       if (response.status === 200) {
-        // 리다이렉션 처리
+        navigate("/login");
         console.log("회원가입 성공");
       }
     } catch (error) {
@@ -216,7 +249,7 @@ const Signup = () => {
             <S.ErrorMsg>{errors.confirmPassword}</S.ErrorMsg>
           )}
           <S.SignupInput
-            type="number"
+            type="text"
             name="phoneNumber"
             placeholder="전화번호를 입력하세요"
             value={formData.phoneNumber}
@@ -251,12 +284,7 @@ const Signup = () => {
                 type="checkbox"
                 name="male"
                 checked={formData.gender === "male"}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    gender: e.target.checked ? "male" : "",
-                  })
-                }
+                onChange={() => handleGenderChange("male")}
               />
               남성
             </S.GenderLabel>
@@ -265,12 +293,7 @@ const Signup = () => {
                 type="checkbox"
                 name="female"
                 checked={formData.gender === "female"}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    gender: e.target.checked ? "female" : "",
-                  })
-                }
+                onChange={() => handleGenderChange("female")}
               />
               여성
             </S.GenderLabel>
