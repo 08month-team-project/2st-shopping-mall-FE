@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 
-// icon
-import DelIcon from "../icons/x-mark.svg";
-
 // style
 import {
   Container,
@@ -10,7 +7,6 @@ import {
   ItemBox,
   Item,
   Warpper,
-  DelBtn,
   TitleBox,
   ItemInfoBox,
   ItemImg,
@@ -21,6 +17,7 @@ import {
   ItemCountBox,
   SelledItem,
 } from "../styles/userProfileStyle/userSellingStyle";
+import { XIconCloseBtn } from "../components/button/XIconCloseBtn";
 
 const items = [
   {
@@ -77,7 +74,7 @@ const Selling = () => {
           <ItemBox>
             {items.map((item, idx) => (
               <Item key={idx}>
-                <DelBtn src={DelIcon} alt="del-icon" />
+                <XIconCloseBtn top="5px" right="5px" />
                 <ItemInfoBox>
                   <ItemImg>{item.image}</ItemImg>
                   <ItemInfoText>
