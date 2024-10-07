@@ -10,6 +10,7 @@ const DelBtn = styled.button`
   top: ${(props) => props.top};
   right: ${(props) => props.top};
   opacity: 0.7;
+  z-index: 10;
   &:hover {
     opacity: 1;
   }
