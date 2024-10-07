@@ -49,7 +49,7 @@ export const ProductPrice = styled.div`
     margin-bottom: 30px;
 `;
 export const ProductInfo = styled.div`
-    margin-bottom: 130px;
+    margin-bottom: 100px;
 `;
 export const ProductSize = styled.div`
     display: flex;
@@ -106,7 +106,7 @@ export const DeleteButton = styled.button`
 
 export const OptionBox = styled.div`
     @media (max-width: 800px){margin-left: 100px;}
-    margin-top: 90px;
+    margin-top: 70px;
 `;
 export const DeliveryText = styled.div`
     font-size: 12px;

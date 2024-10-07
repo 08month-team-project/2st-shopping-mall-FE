@@ -8,9 +8,3 @@ const Home = () => {
 };
 
 export default Home;
-
-
-
-const DivContainer = styled.div`
-  fdjflkfjla;dfaf
-`

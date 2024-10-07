@@ -167,7 +167,7 @@ const ProductDetail = () => {
                     <ModalContent>
                         <p>장바구니에 추가되었습니다.</p>
                         <ButtonContainer>
-                            <ModalButton onClick={handleGoShopping}>Go Shopping</ModalButton>
+                            <ModalButton onClick={handleGoShopping}>쇼핑 계속하기</ModalButton>
                             <ModalButton onClick={handleGoToCart}>장바구니로 가기</ModalButton>
                         </ButtonContainer>
                     </ModalContent>
