@@ -67,11 +67,18 @@ function Login() {
     try {
       // api.js의 login 함수 호출
       const response = await login(email, password);
-      console.log(response.message); // 로그인 성공 시 메시지 확인
-      localStorage.setItem("accessToken", response.token); // 로컬 스토리지에 토큰 저장
+
+      const accessToken = response.headers["authorization"]?.split(" ")[1]; // "Bearer 액세스 토큰" 형식이므로 split 사용
+      if (!accessToken) {
+        throw new Error("액세스 토큰이 제공되지 않았습니다.");
+      }
+      localStorage.setItem("accessToken", accessToken); // 액세스 토큰을 로컬 스토리지에 저장
+      console.log(response.data.message);
       navigate("/home"); // 로그인 성공 시, 홈 페이지로 이동
     } catch (error) {
-      setError(error.message || "로그인 요청 중 오류가 발생했습니다.");
+      setError(
+        error.response?.data?.message || "로그인 요청 중 오류가 발생했습니다."
+      );
     } finally {
       setIsLoading(false);
     }
