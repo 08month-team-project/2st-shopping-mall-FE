@@ -28,6 +28,10 @@ import
         OptionBox,
         DeliveryText,
         Button,
+        ModalOverlay,
+        ModalContent,
+        ButtonContainer,
+        ModalButton
   
     } from '../styles/ProductDetailStyle';
 
@@ -44,6 +48,7 @@ const ProductDetail = () => {
     const [images, setImages] = useState([image1, image2, image3]); 
     const [selectedSize, setSelectedSize] = useState('');
     const [quantity, setQuantity] = useState(1);
+    const [ModalOpen, setModalOpen] = useState(false); 
 
     // 사이즈 선택 
     const handleSizeChange = (event) => {
@@ -70,6 +75,20 @@ const ProductDetail = () => {
     const handleGoToCart = () => {
         navigate('/Buying'); 
     };   
+
+
+    // 장바구니 추가 클릭 시 모달 열기
+    const handleAddToCart = (event) => {
+        event.preventDefault();
+        console.log('장바구니 추가 버튼 클릭됨');
+        setModalOpen(true); 
+    };
+
+    // 모달 닫기 (Go Shopping 버튼 클릭 시)
+    const handleGoShopping = () => {
+        setModalOpen(false); 
+    };
+
     
     
     const settings = {
@@ -137,11 +156,23 @@ const ProductDetail = () => {
                         <DeliveryText>✔︎ 제주도 및 도시산간 지역은 추가 배송비 3000원</DeliveryText>
                     </Product>
                     <OptionBox>
-                        <Button onClick={handleGoToCart}>장바구니 추가</Button>
+                        <Button onClick={handleAddToCart}>장바구니 추가</Button>
                         <Button>결제 바로가기</Button>
                     </OptionBox>
                 </InfoContainer> 
             </Wrapper>
+
+            {ModalOpen && (
+                <ModalOverlay>
+                    <ModalContent>
+                        <p>장바구니에 추가되었습니다.</p>
+                        <ButtonContainer>
+                            <ModalButton onClick={handleGoShopping}>Go Shopping</ModalButton>
+                            <ModalButton onClick={handleGoToCart}>장바구니로 가기</ModalButton>
+                        </ButtonContainer>
+                    </ModalContent>
+                </ModalOverlay>
+            )}
         </>
 
     );

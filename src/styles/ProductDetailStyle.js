@@ -42,14 +42,14 @@ export const IconImage = styled.img`
     margin-left: 20px;
 `;
 export const ProductName = styled.div`
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     font-size: 20px;
 `;
 export const ProductPrice = styled.div`
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 `;
 export const ProductInfo = styled.div`
-    margin-bottom: 100px;
+    margin-bottom: 130px;
 `;
 export const ProductSize = styled.div`
     display: flex;
@@ -105,7 +105,8 @@ export const DeleteButton = styled.button`
 
 
 export const OptionBox = styled.div`
-    @media (max-width: 800px){margin-left: 60px;}
+    @media (max-width: 800px){margin-left: 100px;}
+    margin-top: 90px;
 `;
 export const DeliveryText = styled.div`
     font-size: 12px;
@@ -118,7 +119,7 @@ export const Date = styled.div`
     margin-top: 90px;
     @media (max-width: 800px){text-align: left;}
     @media (max-width: 800px){margin-top: 90px;}
-    @media (max-width: 800px){margin-left: 170px;}
+    @media (max-width: 800px){margin-left: 220px;}
 `;
 export const Text = styled.div`
     padding-bottom: 90px;
@@ -144,4 +145,45 @@ export const Button = styled.button`
     border-radius: 20px/ 20px;
     padding: 10px;
     border: 1px solid #ccc;
+`;
+
+export const ModalOverlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+`;
+
+export const ModalContent = styled.div`
+    background-color: gray;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    background-color: white;
+`;
+
+export const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+`;
+
+export const ModalButton = styled.button`
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #0056b3;
+    }
 `;
