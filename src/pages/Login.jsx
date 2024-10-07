@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../api/api";
 import { isValidEmail, isValidPassword } from "../utils/Validation";
 import * as L from "../styles/LoginStyle";
-import { XIconCloseBtn } from "../components/button/XIconCloseBtn";
+// import { XIconCloseBtn } from "../components/button/XIconCloseBtn";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -68,7 +68,7 @@ function Login() {
       // api.js의 login 함수 호출
       const response = await login(email, password);
       console.log(response.message); // 로그인 성공 시 메시지 확인
-
+      localStorage.setItem("accessToken", response.token); // 로컬 스토리지에 토큰 저장
       navigate("/home"); // 로그인 성공 시, 홈 페이지로 이동
     } catch (error) {
       setError(error.message || "로그인 요청 중 오류가 발생했습니다.");
@@ -82,11 +82,11 @@ function Login() {
       <L.LoginPageStyle />
       <L.Container>
         <L.FormContainer>
-          <XIconCloseBtn
+          {/* <XIconCloseBtn
             top="10px"
             right="10px"
             onClick={() => navigate("/")} // 클릭 시 /home으로 이동, 현재 test를 위해 path 경로 지정
-          />
+          /> */}
           <L.Title>로그인</L.Title>
 
           <form onSubmit={handleLogin}>

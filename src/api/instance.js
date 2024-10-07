@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getCookie } from "./cookies";
 
 // Axios 인스턴스를 생성하고, 기본 설정 적용
 const instance = axios.create({
@@ -12,9 +11,9 @@ const instance = axios.create({
 // 요청을 보내기 전에 JWT 토큰을 자동으로 헤더에 추가하는 인터셉터 설정
 instance.interceptors.request.use(
   (config) => {
-    const token = getCookie("token"); // 쿠키에서 JWT 토큰을 가져옴
+    const token = localStorage.getItem("accessToken"); // 쿠키에서 JWT 토큰을 가져옴
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
