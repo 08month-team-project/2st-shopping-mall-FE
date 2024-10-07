@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import InputField from "../components/auth/InputField";
+import { login } from "../api/api";
 import { isValidEmail, isValidPassword } from "../utils/Validation";
-import * as S from "../components/auth/styleAuth";
+import * as L from "../styles/LoginStyle";
+import { XIconCloseBtn } from "../components/button/XIconCloseBtn";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -14,13 +14,11 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate(); // 로그인 성공 시, home으로 보내기 위해 useNavigate 사용
 
+  // 이메일 입력 핸들링
   const handleEmailChange = (event) => {
     const value = event.target.value;
     setEmail(value);
-
-    if (value && isValidEmail(value)) {
-      setEmailError(false);
-    }
+    setEmailError(!value || !isValidEmail(value)); //유효성 검사
   };
 
   const handleEmailBlur = () => {
@@ -29,19 +27,17 @@ function Login() {
     }
   };
 
+  // 비밀번호 입력 핸들링
   const handlePasswordChange = (event) => {
     const value = event.target.value;
     setPassword(value);
-
-    if (value === "") {
-      setPasswordError("비밀번호를 입력해주세요");
-    } else if (!isValidPassword(value)) {
-      setPasswordError(
-        "비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다."
-      );
-    } else {
-      setPasswordError("");
-    }
+    setPasswordError(
+      !value
+        ? "비밀번호를 입력해 주세요."
+        : !isValidPassword(value)
+        ? "비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다."
+        : ""
+    );
   };
 
   const handlePasswordBlur = () => {
@@ -56,76 +52,86 @@ function Login() {
     }
   };
 
+  // 로그인 요청 함수
   const handleLogin = async (event) => {
     event.preventDefault();
     setIsLoading(true);
+    setError("");
 
-    if (!isValidEmail(email)) {
-      setError("유효한 이메일 주소를 입력해 주세요.");
-      setIsLoading(false);
-      return;
-    }
-
-    if (!isValidPassword(password)) {
-      setError("비밀번호를 입력해주세요.");
+    if (emailError || passwordError) {
+      setError("이메일이나 비밀번호를 확인해 주세요.");
       setIsLoading(false);
       return;
     }
 
     try {
-      const response = await axios.post("http://localhost:8080/signin", {
-        email,
-        password,
-      });
+      // api.js의 login 함수 호출
+      const response = await login(email, password);
+      console.log(response.message); // 로그인 성공 시 메시지 확인
 
-      const token = response.data.token;
-
-      if (token) {
-        localStorage.setItem("token", token); // localstorage에 토큰 저장
-        setError(""); // 성공하면 에러 메세지 초기화
-        navigate("/home"); // 어디로 옮길지는 좀 더 생각해보기. main 아니면 home?
-      } else {
-        setError("로그인에 성공했지만, 토큰이 제공되지 않았습니다.");
-      }
+      navigate("/home"); // 로그인 성공 시, 홈 페이지로 이동
     } catch (error) {
-      setError(error.response?.data?.message || "에러 메시지 기본값");
+      setError(error.message || "로그인 요청 중 오류가 발생했습니다.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <S.Container>
-      <h1>로그인</h1>
-      <form onSubmit={handleLogin}>
-        <S.Input
-          type="email"
-          value={email}
-          onChange={handleEmailChange}
-          onBlur={handleEmailBlur}
-          placeholder="이메일(example.supercoding.com)"
-          style={{ borderColor: emailError ? "red" : "#ddd" }} // 유효하지 않으면 빨간 테두리
-        />
-        {emailError && (
-          <S.ErrorMessage>유효한 이메일 주소를 입력해 주세요.</S.ErrorMessage>
-        )}
+    <>
+      <L.LoginPageStyle />
+      <L.Container>
+        <L.FormContainer>
+          <XIconCloseBtn
+            top="10px"
+            right="10px"
+            onClick={() => navigate("/")} // 클릭 시 /home으로 이동, 현재 test를 위해 path 경로 지정
+          />
+          <L.Title>로그인</L.Title>
 
-        <S.Input
-          type="password"
-          value={password}
-          onChange={handlePasswordChange}
-          onBlur={handlePasswordBlur}
-          placeholder="비밀번호를 입력해 주세요."
-          style={{ borderColor: passwordError ? "red" : "#ddd" }}
-        />
-        {passwordError && <S.ErrorMessage>{passwordError}</S.ErrorMessage>}
+          <form onSubmit={handleLogin}>
+            <L.InputWrapper>
+              <L.Input
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                onBlur={handleEmailBlur}
+                placeholder="이메일을 입력하세요"
+                error={emailError}
+              />
+              {emailError && (
+                <L.ErrorMessage>
+                  유효한 이메일 주소를 입력해 주세요.
+                </L.ErrorMessage>
+              )}
+            </L.InputWrapper>
 
-        {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
-        <S.Button type="submit" disabled={isLoading}>
-          {isLoading ? "로그인 중입니다." : "Sign In"}
-        </S.Button>
-      </form>
-    </S.Container>
+            <L.InputWrapper>
+              <L.Input
+                type="password"
+                value={password}
+                onChange={handlePasswordChange}
+                onBlur={handlePasswordBlur}
+                placeholder="비밀번호를 입력해 주세요."
+                error={passwordError}
+              />
+              {passwordError && (
+                <L.ErrorMessage>
+                  비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로
+                  입력해야 합니다.
+                </L.ErrorMessage>
+              )}
+            </L.InputWrapper>
+
+            {error && <L.ErrorMessage>{error}</L.ErrorMessage>}
+
+            <L.Button type="submit" disabled={isLoading}>
+              {isLoading ? "로그인 중입니다." : "Login"}
+            </L.Button>
+          </form>
+        </L.FormContainer>
+      </L.Container>
+    </>
   );
 }
 

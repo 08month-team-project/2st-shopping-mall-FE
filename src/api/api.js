@@ -1,5 +1,5 @@
 import instance from "./instance"; // Axios 인스턴스 가져오기
-import { setCookie, getCookie, removeCookie } from "./cookies"; // 쿠키 함수들 가져오기
+import { setCookie, getCookie, deleteCookie } from "./cookies"; // 쿠키 함수들 가져오기
 
 // 로그인 함수
 export const login = async (email, password) => {
@@ -25,7 +25,7 @@ export const login = async (email, password) => {
 // 로그아웃 함수
 export const logout = () => {
   try {
-    removeCookie("token"); // 쿠키에서 JWT 토큰 제거
+    deleteCookie("token"); // 쿠키에서 JWT 토큰 제거
   } catch (error) {
     console.error("로그아웃 중 오류 발생:", error);
   }

@@ -1,27 +1,16 @@
-// 쿠키 저장 함수
-export const setCookie = (name, value, days) => {
-  let expires = "";
-  if (days) {
-    const date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000); // 만료일 설정
-    expires = "; expires=" + date.toUTCString();
-  }
-  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+import Cookies from "js-cookie";
+
+// 쿠키에 JWT 토큰 저장 (유효 기간 설정 가능)
+export const setCookie = (name, value, options = {}) => {
+  Cookies.set(name, value, { ...options, secure: true, sameSite: "strict" });
 };
 
-// 쿠키 가져오기 함수
+// 쿠키에서 JWT 토큰 가져오기
 export const getCookie = (name) => {
-  const nameEQ = name + "=";
-  const ca = document.cookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) === " ") c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-  }
-  return null;
+  return Cookies.get(name);
 };
 
-// 쿠키 삭제 함수
+// 쿠키 삭제하기
 export const deleteCookie = (name) => {
-  document.cookie = name + "=; Max-Age=-99999999; path=/";
+  Cookies.remove(name);
 };
