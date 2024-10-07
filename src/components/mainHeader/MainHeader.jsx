@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import LogoIcon from "../../Ulogo.svg";
 import UserIcon from "../../icons/user.svg";
+import LoginIcon from "../../icons/login.svg";
 
 // 임시헤더입니다.
 const MainHeader = () => {
@@ -15,6 +16,9 @@ const MainHeader = () => {
         </Link>
       </Logo>
       <IconBox>
+        <Link to="/login">
+          <Icon src={LoginIcon} alt="login-icon" />
+        </Link>
         <Link to="user">
           <Icon src={UserIcon} alt="user-icon" />
         </Link>
@@ -38,7 +42,12 @@ const Header = styled.header`
 `;
 const Logo = styled.h1``;
 const Img = styled.img``;
-const IconBox = styled.div``;
+const IconBox = styled.div`
+  display: flex;
+  gap: 1rem; /* 아이콘 간격 추가 */
+`;
+
 const Icon = styled.img`
   width: 32px;
+  cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
 `;
