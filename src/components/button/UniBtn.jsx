@@ -21,9 +21,16 @@ export const UniBtn = ({
   children,
   bgColor,
   btnSize,
+  ...rest
 }) => {
   return (
-    <Button onClick={onClick} type={type} bgColor={bgColor} btnSize={btnSize}>
+    <Button
+      onClick={onClick}
+      type={type}
+      bgColor={bgColor}
+      btnSize={btnSize}
+      {...rest}
+    >
       {children}
     </Button>
   );

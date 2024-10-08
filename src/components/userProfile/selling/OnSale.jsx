@@ -17,21 +17,23 @@ import {
   ItemInfoBox,
   ItemName,
   ItemPrice,
+  ItemWrapper,
   ModifyAmountBox,
   ModifyAmountBtn,
   ModifyAmountNumber,
 } from "../../../styles/userProfileStyle/userSellingStyle";
+import { UserMsg } from "../UserMsg";
 
 const baseURL = "http://localhost:8080";
 
 const items = [
   {
-    name: "상품1",
+    name: "상품명1",
     price: 10000,
     amount: 10,
   },
   {
-    name: "상품2",
+    name: "상품명2",
     price: 10000,
     amount: 5,
   },
@@ -40,7 +42,14 @@ const items = [
 const OnSale = () => {
   const initialAmounts = items.map((item) => item.amount);
   const [itemAmount, setItemAmount] = useState(initialAmounts);
-  const [onSaleItems, setOnSaleItems] = useState([]);
+  // 변경된 재고수량 상태관리
+  const [onSaleItemsAmount, setOnSaleItemsAmount] = useState(items);
+  const [showItemsMsg, setShowItemsMsg] = useState(
+    Array(items.length).fill(false)
+  );
+
+  // 데이터 상태관리
+  // const [itemsData, setItemsData] = useState([]);
 
   const handleAmountPlus = (idx) => {
     setItemAmount((prev) => {
@@ -61,79 +70,103 @@ const OnSale = () => {
 
   // 재고수정버튼클릭
   const handleModifyAmount = (idx) => {
-    setOnSaleItems((prev) => {
-      const updatedAmounts = [...prev];
-      updatedAmounts[idx].amount = itemAmount[idx];
-      return updatedAmounts;
+    setOnSaleItemsAmount((prev) => {
+      const newItems = [...prev];
+      newItems[idx].amount = itemAmount[idx];
+      return newItems;
+    });
+    setShowItemsMsg((prev) => {
+      const newItemsMsg = [...prev];
+      newItemsMsg[idx] = true;
+      return newItemsMsg;
     });
   };
 
-  // 등록상품 데이터 GET
-  const getRegisterItems = async () => {
-    try {
-      const res = await axios.get(`${baseURL}/items/seller/{seller-id}/active`);
-      setOnSaleItems(res.data);
-      // 초기 수량 설정
-      setItemAmount(res.data.map((item) => item.amount));
-    } catch (error) {
-      console.log("등록상품을 가져오는데 실패했습니다.", error.message);
-    }
-  };
-  useEffect(() => {
-    getRegisterItems();
-  }, []);
+  // 등록한상품 데이터 GET
+  // const getRegisteredItems = async () => {
+  //   try {
+  //     const res = await axios.get(`${baseURL}/items/seller/{seller-id}/active`);
+  //     setItemsData(res.data);
+  //     console.log(res.data);
+  //     // 초기 수량 설정
+  //     setItemAmount(res.data.map((item) => item.amount));
+  //   } catch (error) {
+  //     console.log("등록된 상품을 가져오는데 실패했습니다.", error.message);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getRegisteredItems();
+  // }, []);
 
   return (
     <Container>
       <ItemBox>
         {items.map((item, idx) => (
-          <Item key={idx}>
-            <ItemInfoBox>
-              <XIconCloseBtn top="5px" right="5px" />
-              <ItemName>{item.name}</ItemName>
-              <ItemPrice>{item.price.toLocaleString()}원</ItemPrice>
-              {/* 원래 재고수량 */}
-              <ItemAmount>재고 : {item.amount}개</ItemAmount>
-            </ItemInfoBox>
-
-            <ModifyAmountBox>
-              <ModifyAmountBtn onClick={() => handleAmountMinus(idx)}>
-                <AmountIcon src={MinusIcon} alt="minus-circle" />
-              </ModifyAmountBtn>
-              {/* 수정될 재고수량 */}
-              <ModifyAmountNumber>{itemAmount[idx]}</ModifyAmountNumber>
-              <ModifyAmountBtn onClick={() => handleAmountPlus(idx)}>
-                <AmountIcon src={PlusIcon} alt="plus-circle" />
-              </ModifyAmountBtn>
-              <UniBtn bgColor="#404040" onClick={() => handleModifyAmount(idx)}>
-                재고수정
-              </UniBtn>
-            </ModifyAmountBox>
-          </Item>
-        ))}
-
-        {/* 데이터 get */}
-        {onSaleItems.length > 0 &&
-          onSaleItems.map((item, idx) => (
+          <ItemWrapper>
             <Item key={idx}>
               <ItemInfoBox>
-                <XIconCloseBtn top="5px" right="5px" />
+                <XIconCloseBtn />
                 <ItemName>{item.name}</ItemName>
                 <ItemPrice>{item.price.toLocaleString()}원</ItemPrice>
+                {/* 원래 재고수량 */}
                 <ItemAmount>재고 : {item.amount}개</ItemAmount>
               </ItemInfoBox>
+
               <ModifyAmountBox>
                 <ModifyAmountBtn onClick={() => handleAmountMinus(idx)}>
                   <AmountIcon src={MinusIcon} alt="minus-circle" />
                 </ModifyAmountBtn>
+                {/* 수정될 재고수량 */}
                 <ModifyAmountNumber>{itemAmount[idx]}</ModifyAmountNumber>
                 <ModifyAmountBtn onClick={() => handleAmountPlus(idx)}>
                   <AmountIcon src={PlusIcon} alt="plus-circle" />
                 </ModifyAmountBtn>
-                <UniBtn bgColor="#404040">재고수정</UniBtn>
+                <UniBtn
+                  bgColor="#404040"
+                  onClick={() => handleModifyAmount(idx)}
+                >
+                  재고수정
+                </UniBtn>
               </ModifyAmountBox>
             </Item>
-          ))}
+            {showItemsMsg[idx] && (
+              <UserMsg>물품의 재고 수량이 변경되었습니다.</UserMsg>
+            )}
+          </ItemWrapper>
+        ))}
+
+        {/* 데이터 get */}
+        {/* {itemsData.length > 0 &&
+          itemsData.map((item, idx) => (
+            <ItemWrapper>
+              <Item key={idx}>
+                <ItemInfoBox>
+                  <XIconCloseBtn />
+                  <ItemName>{item.name}</ItemName>
+                  <ItemPrice>{item.price.toLocaleString()}원</ItemPrice>
+                  <ItemAmount>재고 : {item.amount}개</ItemAmount>
+                </ItemInfoBox>
+                <ModifyAmountBox>
+                  <ModifyAmountBtn onClick={() => handleAmountMinus(idx)}>
+                    <AmountIcon src={MinusIcon} alt="minus-circle" />
+                  </ModifyAmountBtn>
+                  <ModifyAmountNumber>{itemAmount[idx]}</ModifyAmountNumber>
+                  <ModifyAmountBtn onClick={() => handleAmountPlus(idx)}>
+                    <AmountIcon src={PlusIcon} alt="plus-circle" />
+                  </ModifyAmountBtn>
+                  <UniBtn
+                    bgColor="#404040"
+                    onClick={() => handleModifyAmount(idx)}
+                  >
+                    재고수정
+                  </UniBtn>
+                </ModifyAmountBox>
+              </Item>
+              {showItemsMsg[idx] && (
+                <UserMsg>물품의 재고 수량이 변경되었습니다.</UserMsg>
+              )}
+            </ItemWrapper>
+          ))} */}
       </ItemBox>
     </Container>
   );

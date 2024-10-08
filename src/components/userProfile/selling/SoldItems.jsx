@@ -15,12 +15,12 @@ const items = [
   {
     name: "상품1",
     price: 10000,
-    amount: 10,
+    amount: 0,
   },
   {
     name: "상품2",
     price: 10000,
-    amount: 10,
+    amount: 0,
   },
 ];
 

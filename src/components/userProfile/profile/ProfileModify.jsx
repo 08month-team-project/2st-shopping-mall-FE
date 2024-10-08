@@ -90,13 +90,13 @@ const ProfileModify = ({
           <InfoBox>
             <InfoText>
               <LabelBox>
-                <Label htmlFor="phone">전화번호</Label>
+                <Label htmlFor="phone_number">전화번호</Label>
                 <Dot />
               </LabelBox>
               <Input
-                id="phone"
+                id="phone_number"
                 type="tel"
-                value={inputValues.phone}
+                value={inputValues.phone_number}
                 onChange={changeInputValue}
                 onKeyDown={handleKeyDown}
               />
@@ -162,17 +162,17 @@ const ProfileModify = ({
           </InfoBox>
           <InfoBoxIntro>
             <InfoTextIntro>
-              <Label htmlFor="intro">소개</Label>
+              <Label htmlFor="comment">소개</Label>
               <InputIntro
-                id="intro"
+                id="comment"
                 as="textarea"
-                value={inputValues.intro}
+                value={inputValues.comment}
                 onChange={changeInputValue}
                 onKeyDown={handleKeyDown}
               />
             </InfoTextIntro>
-            {slangError.intro && (
-              <ErrorMessage>{slangError.intro}</ErrorMessage>
+            {slangError.comment && (
+              <ErrorMessage>{slangError.comment}</ErrorMessage>
             )}
           </InfoBoxIntro>
         </ModiInfoBox>

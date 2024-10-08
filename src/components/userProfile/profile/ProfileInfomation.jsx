@@ -28,7 +28,7 @@ const ProfileInfomation = ({ userInfo }) => {
     <UserInfoBox>
       <UserImg>
         <ProfileImg>
-          <Image src={userInfo.profileImg} alt="프로필사진" />
+          <Image src={userInfo.profile_image_url} alt="프로필사진" />
         </ProfileImg>
         <Title>{userInfo.name}님, 환영합니다</Title>
       </UserImg>
@@ -39,7 +39,7 @@ const ProfileInfomation = ({ userInfo }) => {
         </TextBox>
         <TextBox>
           <Icon src={PhoneIcon} alt="phone-icon" />
-          <Text>{userInfo.phone}</Text>
+          <Text>{userInfo.phone_number}</Text>
         </TextBox>
         <TextBox>
           <Icon src={EmailIcon} alt="email-icon" />
@@ -57,7 +57,7 @@ const ProfileInfomation = ({ userInfo }) => {
         </TextBox>
         <TextBox>
           <Icon src={PencilIcon} alt="pencil-icon" />
-          <Text>{userInfo.intro}</Text>
+          <Text>{userInfo.comment}</Text>
         </TextBox>
       </UserInfo>
     </UserInfoBox>

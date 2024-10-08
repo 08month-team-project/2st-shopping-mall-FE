@@ -18,9 +18,9 @@ const Icon = styled.img`
   height: 24px;
 `;
 
-export const XIconCloseBtn = ({ top, right }) => {
+export const XIconCloseBtn = () => {
   return (
-    <DelBtn top={top} right={right}>
+    <DelBtn>
       <Icon src={XIcon} alt="x-icon" />
     </DelBtn>
   );
