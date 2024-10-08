@@ -57,4 +57,20 @@ const instance = axios.create({
 //     return Promise.reject(error);
 //   },
 // );
+
+
+// 요청을 보내기 전에 JWT 토큰을 자동으로 헤더에 추가하는 인터셉터 설정
+instance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("accessToken"); // 쿠키에서 JWT 토큰을 가져옴
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 export default instance;
