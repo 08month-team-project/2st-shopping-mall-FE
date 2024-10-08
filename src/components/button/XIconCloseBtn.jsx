@@ -6,9 +6,7 @@ const DelBtn = styled.button`
   cursor: pointer;
   background-color: transparent;
   border: none;
-  position: absolute;
-  top: ${(props) => props.top};
-  right: ${(props) => props.top};
+  position: relative;
   opacity: 0.7;
   z-index: 10;
   &:hover {
