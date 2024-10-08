@@ -1,14 +1,14 @@
-// import axios from "axios";
-// import { getCookie, removeCookie, setCookie } from "./cookies";
-// import React from "react";
-// import { queryAllByAltText } from "@testing-library/react";
+import axios from "axios";
+import { getCookie, removeCookie, setCookie } from "./cookies";
+import { queryAllByAltText } from "@testing-library/react";
 
-// const instance = axios.create({
-//   baseURL: `${process.env.REACT_APP_SERVER_URL}`,
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-// });
+const instance = axios.create({
+  baseURL: "http://ec2-3-36-69-202.ap-northeast-2.compute.amazonaws.com:8080",
+  // baseURL: `${process.env.REACT_APP_SERVER_URL}`,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 // instance.interceptors.request.use(
 //   (config) => {
@@ -19,7 +19,7 @@
 
 //   (error) => {
 //     return Promise.reject(error);
-//   }
+//   },
 // );
 
 // instance.interceptors.response.use(
@@ -55,6 +55,6 @@
 //     }
 
 //     return Promise.reject(error);
-//   }
+//   },
 // );
-// export default instance;
+export default instance;

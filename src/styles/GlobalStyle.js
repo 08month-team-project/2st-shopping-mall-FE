@@ -72,10 +72,6 @@ const GlobalStyle = createGlobalStyle`
     }
 
     button {
-      cursor: pointer;
-      border: none;
-      background: red;
-      color:white;
     }
     #root{
         position: relative;

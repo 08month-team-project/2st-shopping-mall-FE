@@ -8,26 +8,27 @@ import Register from "../pages/Register";
 import Selling from "../pages/Selling";
 import Buying from "../pages/Buying";
 import Login from "../pages/Login";
-// import MainHeader from '../components/mainHeader/MainHeader';
 import Basket from "../pages/Basket";
 import Payment from "../pages/Payment";
+import MainHeader from "../components/mainHeader/MainHeader";
 
 const Router = () => {
   return (
     <BrowserRouter>
-      {/* <MainHeader /> */}
+      <MainHeader />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="user" element={<User />}>
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/user" element={<User />}>
           <Route index element={<Profile />} />
           <Route path="register" element={<Register />} />
           <Route path="selling" element={<Selling />} />
           <Route path="buying" element={<Buying />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="basket" element={<Basket />} />
-          <Route path="payment" element={<Payment />} />
         </Route>
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/basket" element={<Basket />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
     </BrowserRouter>
   );

@@ -6,8 +6,12 @@ import { useQuery, QueryClient } from "@tanstack/react-query";
 import logout from "../../utils/icons/logout_icon.png";
 import { Link } from "react-router-dom";
 // import { getCookie } from "./../../api/cookies";
+import { getCategories } from "../../api/api";
+import LogoIcon from "../../Ulogo.svg";
+import UserIcon from "../../icons/user.svg";
 
 const Navbar = () => {
+  const [categories, setCategories] = useState([]);
   // const [cookies, setCookie, removeCookie] = useCookies(["ACCESS_TOKEN"]);
   const navigate = useNavigate();
 
@@ -15,6 +19,17 @@ const Navbar = () => {
 
   useEffect(() => {
     // const accessToken = getCookie("ACCESS_TOKEN");
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        console.log(data);
+        setCategories(data.categoryList);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   // const removeAllAccessTokenCookies = () => {
@@ -30,36 +45,40 @@ const Navbar = () => {
   };
 
   // navigate 이동 함수
-  const navigateGuestMain = () => {
-    navigate("/guest/main");
+  const navigateLoginPage = () => {
+    navigate("/login");
   };
-  const navigateMap = () => {
-    navigate("/guest/company");
-  };
-  const navigateMyPage = () => {
-    navigate("/guest/mypage");
-  };
-  const navigateDashBoard = () => {
-    navigate("/admin/dashboard");
-  };
-  const navigateApproveList = () => {
-    navigate("/admin/approvelist");
-  };
+
   return (
     <>
       <S.StNavBar>
         <S.StNavbarContainer>
-          <Link to={"/change_pw/guest"}>
-            <S.StLogOut>{localStorage.getItem("name")}</S.StLogOut>
-          </Link>
-          <S.StNameDes>님 반갑습니다</S.StNameDes>
-
-          <S.StLogOutContainer>
-            <Link to={"/"}>
-              <S.StLogOut onClick={logoutHandler}>LOGOUT</S.StLogOut>
-              <S.StLogOutImg src={logout} alt="logoutImg" onClick={logoutHandler}></S.StLogOutImg>
+          <S.StLogoDiv>
+            <Link to="/">
+              <img src={LogoIcon} alt="logo" />
             </Link>
-          </S.StLogOutContainer>
+          </S.StLogoDiv>
+          <S.StCategoriesContainer>
+            <S.StCategoriesUl>
+              {categories.map((category) => (
+                <S.StCategoriesLi key={category.id}>{category.categoryName}</S.StCategoriesLi>
+              ))}
+            </S.StCategoriesUl>
+          </S.StCategoriesContainer>
+          <S.StUserSection>
+            <Link to="user">
+              <S.StNameDes>
+                <S.StLogOut>{localStorage.getItem("name")}</S.StLogOut>
+                <S.Icon src={UserIcon} alt="user-icon" />
+              </S.StNameDes>
+            </Link>
+            <Link to={"/"}>
+              <S.StLogOutContainer>
+                <S.StLogOut onClick={logoutHandler}>로그아웃</S.StLogOut>
+                <S.StLogOutImg src={logout} alt="logoutImg" onClick={logoutHandler}></S.StLogOutImg>
+              </S.StLogOutContainer>
+            </Link>
+          </S.StUserSection>
         </S.StNavbarContainer>
       </S.StNavBar>
     </>
