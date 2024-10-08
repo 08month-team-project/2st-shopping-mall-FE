@@ -1,12 +1,14 @@
 import React from "react";
 
-const Input = ({ label, name, type, value, onChange, error }) => {
+const Input = ({ label, name, type, value, onChange, placeholder }) => {
   return (
-    <div>
-      <label>{label}</label>
-      <br />
-      <input type={type} name={name} value={value} onChange={onChange} />
-    </div>
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+    />
   );
 };
 

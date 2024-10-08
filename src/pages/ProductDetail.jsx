@@ -30,9 +30,11 @@ import
         Button,
         ModalOverlay,
         ModalContent,
+        ModalCloseContent,
+        ModalCloseWord,
         ButtonContainer,
-        ModalButton
-  
+        ModalButton,
+        ModalCloseButton
     } from '../styles/ProductDetailStyle';
 
 import HeartIcon from "../icons/heart.png";
@@ -49,6 +51,7 @@ const ProductDetail = () => {
     const [selectedSize, setSelectedSize] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [ModalOpen, setModalOpen] = useState(false); 
+    const [ModalType, setModalType] = useState('');  // 모달 타입 상태 (사이즈/수량 미선택 or 장바구니 추가 완료)
 
     // 사이즈 선택 
     const handleSizeChange = (event) => {
@@ -71,23 +74,33 @@ const ProductDetail = () => {
         setQuantity(1);       
     };
 
-     // 장바구니 페이지로 이동하는 함수
-    const handleGoToCart = () => {
-        navigate('/Buying'); 
-    };   
-
 
     // 장바구니 추가 클릭 시 모달 열기
     const handleAddToCart = (event) => {
         event.preventDefault();
-        console.log('장바구니 추가 버튼 클릭됨');
-        setModalOpen(true); 
+        
+        if (!selectedSize || quantity <= 0) {
+            // 사이즈 또는 수량이 선택되지 않았을 때 '사이즈와 수량을 선택해주세요' 모달 열기
+            setModalType('warning');
+            setModalOpen(true);
+        } else {
+            // 장바구니에 추가될 때 '장바구니에 추가되었습니다' 모달 열기
+            setModalType('added');
+            setModalOpen(true);
+        }
     };
 
-    // 모달 닫기 (Go Shopping 버튼 클릭 시)
-    const handleGoShopping = () => {
-        setModalOpen(false); 
+
+    // 모달 닫기 (X 버튼 클릭 시)
+    const closeModal = () => {
+        setModalOpen(false);  // 모달 닫기
     };
+
+    // 장바구니 페이지로 이동
+    const handleGoToCart = () => {
+        navigate('/Basket');
+    };
+
 
     
     
@@ -156,18 +169,27 @@ const ProductDetail = () => {
                         <DeliveryText>✔︎ 제주도 및 도시산간 지역은 추가 배송비 3000원</DeliveryText>
                     </Product>
                     <OptionBox>
-                        <Button onClick={handleAddToCart}>장바구니 추가</Button>
+                        <Button onClick={handleAddToCart}>장바구니에 담기</Button>
                         <Button>결제 바로가기</Button>
                     </OptionBox>
                 </InfoContainer> 
             </Wrapper>
 
-            {ModalOpen && (
+            {ModalOpen && ModalType === 'warning' && (
+                <ModalOverlay>
+                    <ModalCloseContent>
+                        <ModalCloseButton onClick={closeModal}>x</ModalCloseButton> 
+                        <ModalCloseWord>사이즈와 수량을 선택해주세요</ModalCloseWord> 
+                    </ModalCloseContent>
+                </ModalOverlay>
+            )}
+
+            {ModalOpen && ModalType === 'added' && (
                 <ModalOverlay>
                     <ModalContent>
-                        <p>장바구니에 추가되었습니다.</p>
+                        <p>장바구니에 추가되었습니다</p> 
                         <ButtonContainer>
-                            <ModalButton onClick={handleGoShopping}>쇼핑 계속하기</ModalButton>
+                            <ModalButton onClick={closeModal}>쇼핑 계속하기</ModalButton>
                             <ModalButton onClick={handleGoToCart}>장바구니로 가기</ModalButton>
                         </ButtonContainer>
                     </ModalContent>

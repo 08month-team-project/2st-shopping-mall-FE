@@ -73,8 +73,6 @@ export const ProductCheckButton = styled.button`
     justify-content: center;
     background-color: white;
     cursor: pointer;
-    width: 10px;
-    height: 15px;
     margin-left: 35px;
     color: black;
     font-size: 15px;
@@ -128,23 +126,24 @@ export const Text = styled.div`
 `;
 export const Button = styled.button`
     width: 250px;
-    height: 40px;
+    height: 60px;
     display: flex;
     margin: 20px;
-    font-size: 15px;
+    font-size: 18px;
     text-align: center;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background-color: lightgray;
+    background-color: black;
+    color: white;
     &:hover {
-    background: cornflowerblue;
+    background: #393a3c;
     color: white;
     transition: 0.5s;
     } 
-    border-radius: 20px/ 20px;
+    border-radius: 30px/ 30px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid white;
 `;
 
 export const ModalOverlay = styled.div`
@@ -177,13 +176,43 @@ export const ButtonContainer = styled.div`
 
 export const ModalButton = styled.button`
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: black;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-
     &:hover {
-        background-color: #0056b3;
+        background-color: #393a3c;
     }
+`;
+
+export const ModalCloseWord = styled.p`
+    margin-bottom: 20px;
+`
+export const ModalCloseContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    background-color: gray;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    background-color: white;
+    justify-content: space-between;
+`
+
+export const ModalCloseButton = styled.button`
+    padding: 2px 5px;
+    color: black;
+    font-size: 20px;
+    align-items: center;
+    justify-content: ;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: white;
+    &:hover {
+        color: #ff6b6b;
+    }
+    margin-left: 250px;
 `;
