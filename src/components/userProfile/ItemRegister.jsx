@@ -25,7 +25,7 @@ import { UniBtn } from "../button/UniBtn";
 import { ErrorMessage } from "../error/ErrorMessage";
 import { handleKeyDown } from "../../utils/keyDownHandler";
 
-const serverURL = "http://localhost:8080/";
+const baseURL = "http://localhost:8080/";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
@@ -140,7 +140,7 @@ const ItemRegister = () => {
 
     try {
       const response = await axios.post(
-        `${serverURL}/items/seller/register`,
+        `${baseURL}/items/seller/register`,
         formDataToSend
       );
       setItemId(response.data.itemId);
@@ -160,7 +160,7 @@ const ItemRegister = () => {
   // 카테고리 데이터 GET
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`${serverURL}/items/categories`);
+      const res = await axios.get(`${baseURL}/items/categories`);
       setCategories(res.data);
     } catch (error) {
       console.error("카테고리 가져오기 오류:", error.message);
@@ -169,7 +169,7 @@ const ItemRegister = () => {
   // 사이즈 데이터 GET
   const fetchSizes = async () => {
     try {
-      const res = await axios.get(`${serverURL}/items/size`);
+      const res = await axios.get(`${baseURL}/items/size`);
       setSizes(res.data);
     } catch (error) {
       console.error("사이즈 가져오기 오류:", error.message);
