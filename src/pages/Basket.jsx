@@ -22,7 +22,7 @@ const Basket = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'http://ec2-3-36-69-202.ap-northeast-2.compute.amazonaws.com:8080/carts?page=1'
+          'http://ec2-3-36-69-202.ap-northeast-2.compute.amazonaws.com:8080/carts?page={page}'
         );
         const cartData = response.data;
         console.log(cartData);

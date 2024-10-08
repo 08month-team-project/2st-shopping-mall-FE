@@ -25,7 +25,7 @@ import {
   InfoText,
   InfoTextScript,
   Container,
-} from '../styles/userProfileStyle/userRegisterStyle';
+} from '../styles/userProfileStyle/itemRegisterStyle';
 import { UniBtn } from '../components/button/UniBtn';
 import { ErrorMessage } from '../components/error/ErrorMessage';
 import { UserTitle } from '../components/userProfile/UserTitle';
