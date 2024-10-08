@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../api/api";
 import { isValidEmail, isValidPassword } from "../../utils/validation";
 import * as L from "../../styles/LoginStyle";
-import LoginButton from "./LoginButton";
+import LoginButton from "./LoginButton.jsx";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -105,7 +105,7 @@ const LoginForm = () => {
         {passwordError && <L.ErrorMessage>{passwordError}</L.ErrorMessage>}
       </L.InputWrapper>
       {error && <L.ErrorMessage>{error}</L.ErrorMessage>}
-      <LoginButton isLoading={isLoading} /> {/* LoginButton 컴포넌트 사용 */}
+      <LoginButton isLoading={isLoading} />
     </form>
   );
 };
