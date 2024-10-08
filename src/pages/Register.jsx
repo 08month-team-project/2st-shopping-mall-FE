@@ -32,7 +32,7 @@ import { UserTitle } from '../components/userProfile/UserTitle';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    ///////////////// 백앤드랑 용어통일//////////////////
+    //////////////// 백앤드랑 용어통일/////////////////
     name: '',
     price: '',
     category: '',
