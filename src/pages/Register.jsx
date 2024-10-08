@@ -1,9 +1,9 @@
-import React from "react";
-import ItemRegister from "../components/userProfile/ItemRegister";
+import React from 'react';
+import ItemRegister from '../components/userProfile/ItemRegister';
 
 // style
-import { Warpper } from "../styles/userProfileStyle/userRegisterStyle";
-import { UserTitle } from "../components/userProfile/UserTitle";
+import { Warpper } from '../styles/userProfileStyle/userRegisterStyle';
+import { UserTitle } from '../components/userProfile/UserTitle';
 
 const Register = () => {
   return (
