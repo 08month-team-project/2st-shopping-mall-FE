@@ -72,12 +72,6 @@ const GlobalStyle = createGlobalStyle`
     }
 
     button {
-      /* cursor: pointer;
-      border: none;
-      border-radius: 0.25rem;
-      background: #ED1E25;
-      color: #ffffff;
-      padding: 0.25rem 0.5rem; */
     }
     #root{
         position: relative;
