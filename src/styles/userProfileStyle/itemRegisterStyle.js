@@ -80,6 +80,8 @@ export const InfoInputScript = styled(InfoInput)`
   resize: vertical;
   overflow-y: auto;
 `;
+
+export const ImgUploadBtn = styled.button``;
 export const ItemImagesBox = styled.div`
   width: 100%;
   display: flex;
