@@ -29,8 +29,8 @@ const UserInput = ({
           onKeyDown={onKeyDown}
           required
         >
-          {options.map((option, i) => (
-            <option key={i} value={option.value}>
+          {options.map((option, idx) => (
+            <option key={idx} value={option.value}>
               {option.label}
             </option>
           ))}
