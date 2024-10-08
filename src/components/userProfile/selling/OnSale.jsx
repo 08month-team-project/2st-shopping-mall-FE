@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+
 import { XIconCloseBtn } from "../../button/XIconCloseBtn";
+import { UniBtn } from "../../button/UniBtn";
 
 // icon
 import PlusIcon from "../../../icons/plus-circle.svg";
@@ -19,9 +21,8 @@ import {
   ModifyAmountBtn,
   ModifyAmountNumber,
 } from "../../../styles/userProfileStyle/userSellingStyle";
-import { UniBtn } from "../../button/UniBtn";
 
-const baseURL = "http://localhost:8080/";
+const baseURL = "http://localhost:8080";
 
 const items = [
   {
@@ -58,13 +59,24 @@ const OnSale = () => {
     });
   };
 
+  // 재고수정버튼클릭
+  const handleModifyAmount = (idx) => {
+    setOnSaleItems((prev) => {
+      const updatedAmounts = [...prev];
+      updatedAmounts[idx].amount = itemAmount[idx];
+      return updatedAmounts;
+    });
+  };
+
   // 등록상품 데이터 GET
   const getRegisterItems = async () => {
     try {
       const res = await axios.get(`${baseURL}/items/seller/{seller-id}/active`);
       setOnSaleItems(res.data);
+      // 초기 수량 설정
+      setItemAmount(res.data.map((item) => item.amount));
     } catch (error) {
-      console.log("등록상품을 가져오는데 실패했습니다. : ", error.message);
+      console.log("등록상품을 가져오는데 실패했습니다.", error.message);
     }
   };
   useEffect(() => {
@@ -80,17 +92,22 @@ const OnSale = () => {
               <XIconCloseBtn top="5px" right="5px" />
               <ItemName>{item.name}</ItemName>
               <ItemPrice>{item.price.toLocaleString()}원</ItemPrice>
+              {/* 원래 재고수량 */}
               <ItemAmount>재고 : {item.amount}개</ItemAmount>
             </ItemInfoBox>
+
             <ModifyAmountBox>
               <ModifyAmountBtn onClick={() => handleAmountMinus(idx)}>
                 <AmountIcon src={MinusIcon} alt="minus-circle" />
               </ModifyAmountBtn>
+              {/* 수정될 재고수량 */}
               <ModifyAmountNumber>{itemAmount[idx]}</ModifyAmountNumber>
               <ModifyAmountBtn onClick={() => handleAmountPlus(idx)}>
                 <AmountIcon src={PlusIcon} alt="plus-circle" />
               </ModifyAmountBtn>
-              <UniBtn bgColor="#404040">재고수정</UniBtn>
+              <UniBtn bgColor="#404040" onClick={() => handleModifyAmount(idx)}>
+                재고수정
+              </UniBtn>
             </ModifyAmountBox>
           </Item>
         ))}

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.form`
+  /* height: calc(100vh - ); */
   padding: 2rem 4rem 8rem 4rem;
   background-color: #f4f6f8;
 `;
@@ -91,8 +92,8 @@ export const ItemImage = styled.img`
   display: block;
   width: 100px;
   margin-right: 0.5rem;
-  // 대표이미지스타일
-  /* border: 2px solid ${({ $isselected }) =>
-    $isselected ? "#007bff" : "#ccc"}; */
-  border: 2px solid ${({ isthumbnail }) => (isthumbnail ? "#007bff" : "#ccc")};
+  border: 2px solid #ccc;
+  &.thumbnail {
+    border-color: #007bff;
+  }
 `;
