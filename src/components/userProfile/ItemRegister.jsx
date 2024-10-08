@@ -20,12 +20,13 @@ import {
   Container,
   InfoInputScript,
   ItemInfoScript,
+  ImgUploadBtn,
 } from "../../styles/userProfileStyle/itemRegisterStyle";
 import { UniBtn } from "../button/UniBtn";
 import { ErrorMessage } from "../error/ErrorMessage";
 import { handleKeyDown } from "../../utils/keyDownHandler";
 
-const baseURL = "http://localhost:8080/";
+const baseURL = "http://localhost:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
@@ -72,7 +73,9 @@ const ItemRegister = () => {
       }
     });
 
-    setValidImages(newValidImages);
+    setValidImages((prev) => [...prev, ...newValidImages]);
+    // setValidImages(newValidImages);
+
     // 대표이미지 = 첫번째이미지
     if (newValidImages.length > 0) {
       setThumbNailImg(URL.createObjectURL(newValidImages[0]));
@@ -100,7 +103,39 @@ const ItemRegister = () => {
     }
   };
 
-  // 등록버튼클릭 >> 데이터 POST//////////////////////////
+  // 이미지업로드버튼 >> 이미지 POST
+  const handleImageUpload = async () => {
+    // 이미지정보 데이터
+    const ImageDataUpload = new FormData();
+
+    if (validImages.length > 0) {
+      validImages.forEach((image) => {
+        ImageDataUpload.append("images_url", image);
+      });
+    }
+
+    try {
+      const res = await axios.post(
+        `${baseURL}/items/images/upload`,
+        ImageDataUpload,
+        {
+          header: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setItemId(res.data.itemId);
+      console.log("등록결과: ", res.data);
+      setNotifyMsg("이미지업로드에 성공하였습니다!");
+      // setNotifyMsg(response.message);
+    } catch (error) {
+      console.error("등록오류: ", error.message);
+      setNotifyMsg("이미지업로드에 실패하였습니다.");
+      return;
+    }
+  };
+
+  // 등록버튼 >> 전체데이터 POST
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -108,7 +143,6 @@ const ItemRegister = () => {
       (error) => error === ""
     );
 
-    // 오류 포커스 동작
     if (!isSlangValid) {
       const errorInputs = [
         { id: "name", error: slangError.name },
@@ -137,14 +171,14 @@ const ItemRegister = () => {
     }
 
     try {
-      const response = await axios.post(
+      const res = await axios.post(
         `${baseURL}/items/seller/register`,
         formDataToSend
       );
-      setItemId(response.data.itemId);
-      console.log("등록결과: ", response.data);
+      setItemId(res.data.itemId);
+      console.log("등록결과: ", res.data);
       setNotifyMsg("물품등록에 성공하였습니다!");
-      // setNotifyMsg(response.message);
+      // setNotifyMsg(res.message);
     } catch (error) {
       console.error("등록오류: ", error.message);
       setNotifyMsg("물품등록에 실패하였습니다.");
@@ -152,20 +186,20 @@ const ItemRegister = () => {
     }
   };
 
-  // 카테고리 데이터 GET
+  // 카테고리 데이터 GET // 성공
   const fetchCategories = async () => {
     try {
       const res = await axios.get(`${baseURL}/items/categories`);
-      setCategories(res.data);
+      setCategories(res.data.categoryList);
     } catch (error) {
       console.error("카테고리를 불러오는데 실패하였습니다.", error.message);
     }
   };
-  // 사이즈 데이터 GET
+  // 사이즈 데이터 GET // 성공
   const fetchSizes = async () => {
     try {
       const res = await axios.get(`${baseURL}/items/size`);
-      setSizes(res.data);
+      setSizes(res.data.sizeItemList);
     } catch (error) {
       console.error("사이즈를 불러오는데 실패하였습니다.", error.message);
     }
@@ -200,6 +234,9 @@ const ItemRegister = () => {
               onChange={handleImagesChange}
               required
             />
+            <ImgUploadBtn type="button" onClick={handleImageUpload}>
+              이미지업로드
+            </ImgUploadBtn>
             {validImages.length > 0 && (
               <ItemImagesBox>
                 {/* 이미지 여러개 중 가장 첫번째 이미지파일이 대표이미지 */}
@@ -263,7 +300,7 @@ const ItemRegister = () => {
               { value: "", label: "--사이즈--" },
               ...sizes.map((size) => ({
                 value: size.id,
-                label: size.size,
+                label: size.sizeName,
               })),
             ]}
           />
