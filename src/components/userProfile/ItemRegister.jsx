@@ -108,6 +108,7 @@ const ItemRegister = () => {
       (error) => error === ""
     );
 
+    // 오류 포커스 동작
     if (!isSlangValid) {
       const errorInputs = [
         { id: "name", error: slangError.name },
@@ -128,11 +129,8 @@ const ItemRegister = () => {
       formDataToSend.append(key, value);
     });
 
-    // 이미지에러
-    if (validImages.length === 0) {
-      setNotifyMsg("상품이미지를 1개이상 등록해주세요.");
-      return;
-    } else {
+    // 이미지 데이터
+    if (validImages.length > 0) {
       validImages.forEach((image) => {
         formDataToSend.append("images_url", image);
       });
@@ -144,18 +142,15 @@ const ItemRegister = () => {
         formDataToSend
       );
       setItemId(response.data.itemId);
-      console.log("등록결과:", response.data);
+      console.log("등록결과: ", response.data);
       setNotifyMsg("물품등록에 성공하였습니다!");
       // setNotifyMsg(response.message);
     } catch (error) {
-      console.error("등록오류:", error.message);
+      console.error("등록오류: ", error.message);
       setNotifyMsg("물품등록에 실패하였습니다.");
       return;
     }
   };
-
-  // 현재날짜
-  const today = new Date().toISOString().split("T")[0];
 
   // 카테고리 데이터 GET
   const fetchCategories = async () => {
@@ -163,7 +158,7 @@ const ItemRegister = () => {
       const res = await axios.get(`${baseURL}/items/categories`);
       setCategories(res.data);
     } catch (error) {
-      console.error("카테고리 가져오기 오류:", error.message);
+      console.error("카테고리를 불러오는데 실패하였습니다.", error.message);
     }
   };
   // 사이즈 데이터 GET
@@ -172,7 +167,7 @@ const ItemRegister = () => {
       const res = await axios.get(`${baseURL}/items/size`);
       setSizes(res.data);
     } catch (error) {
-      console.error("사이즈 가져오기 오류:", error.message);
+      console.error("사이즈를 불러오는데 실패하였습니다.", error.message);
     }
   };
 
@@ -286,6 +281,7 @@ const ItemRegister = () => {
             label="판매기간"
             id="expired_at"
             type="date"
+            min={new Date().toISOString().split("T")[0]}
             value={formData.expired_at}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
