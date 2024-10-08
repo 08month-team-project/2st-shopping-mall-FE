@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import axios from 'axios';
 
-import { slangList } from "../utils/slangWords";
+import { slangList } from '../utils/slangWords';
 
 // style
 import {
@@ -25,49 +25,49 @@ import {
   InfoText,
   InfoTextScript,
   Container,
-} from "../styles/userProfileStyle/userRegisterStyle";
-import { UniBtn } from "../components/button/UniBtn";
-import { ErrorMessage } from "../components/error/ErrorMessage";
-import { UserTitle } from "../components/userProfile/UserTitle";
+} from '../styles/userProfileStyle/userRegisterStyle';
+import { UniBtn } from '../components/button/UniBtn';
+import { ErrorMessage } from '../components/error/ErrorMessage';
+import { UserTitle } from '../components/userProfile/UserTitle';
 
 const Register = () => {
   const [formData, setFormData] = useState({
     ///////////////// 백앤드랑 용어통일//////////////////
-    name: "",
-    price: "",
-    category: "",
-    size: "",
-    amount: "",
-    date: "",
-    script: "",
+    name: '',
+    price: '',
+    category: '',
+    size: '',
+    amount: '',
+    date: '',
+    script: '',
   });
   const [validImages, setValidImages] = useState([]);
-  const [imgError, setImgError] = useState("");
+  const [imgError, setImgError] = useState('');
   const [thumbNailImg, setThumbNailImg] = useState(null);
   // const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [slangError, setSlangError] = useState({});
-  const [notifyMsg, setNotifyMsg] = useState("");
+  const [notifyMsg, setNotifyMsg] = useState('');
   ///////////// itemId 저장을 위한 상태 ///////////////////
   const [itemId, setItemId] = useState(null);
 
   // 여러장이미지
   const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
     const newValidImages = [];
 
-    setImgError("");
+    setImgError('');
 
     files.forEach((file) => {
       // 파일형식 유효성검사
       if (!allowedTypes.includes(file.type)) {
         setImgError(
-          "jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다."
+          'jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다.'
         );
       }
       // 파일용량(1MB) 유효성검사
       else if (file.size > 1 * 1024 * 1024) {
-        setImgError("이미지 파일 크기는 1MB를 초과할 수 없습니다.");
+        setImgError('이미지 파일 크기는 1MB를 초과할 수 없습니다.');
       } else {
         newValidImages.push(file);
       }
@@ -77,7 +77,7 @@ const Register = () => {
 
     // 대표이미지 = 첫번째이미지
     setThumbNailImg(URL.createObjectURL(newValidImages[0]));
-    setSelectedImageIndex(0);
+    // setSelectedImageIndex(0);
   };
 
   // const handleImageClick = (index) => {
@@ -102,12 +102,12 @@ const Register = () => {
     if (containSlang(value)) {
       setSlangError((prev) => ({
         ...prev,
-        [id]: "비속어를 포함할 수 없습니다.",
+        [id]: '비속어를 포함할 수 없습니다.',
       }));
     } else {
       setSlangError((prev) => ({
         ...prev,
-        [id]: "",
+        [id]: '',
       }));
     }
   };
@@ -117,25 +117,25 @@ const Register = () => {
     e.preventDefault();
 
     const isSlangValid = Object.values(slangError).every(
-      (error) => error === ""
+      (error) => error === ''
     );
 
     if (isSlangValid) {
-      console.log("상품 정보:", formData);
-      console.log("이미지 목록:", validImages);
-      console.log("대표이미지:", validImages[0]);
+      console.log('상품 정보:', formData);
+      console.log('이미지 목록:', validImages);
+      console.log('대표이미지:', validImages[0]);
 
-      setNotifyMsg("물품등록에 성공하였습니다!");
+      setNotifyMsg('물품등록에 성공하였습니다!');
     } else {
       const errorInputs = [
-        { id: "name", error: slangError.name },
-        { id: "script", error: slangError.script },
+        { id: 'name', error: slangError.name },
+        { id: 'script', error: slangError.script },
       ];
       const firstErrorInput = errorInputs.find((input) => input.error);
       if (firstErrorInput) {
         document.getElementById(firstErrorInput.id).focus();
       }
-      setNotifyMsg("잘못 입력된 정보가 존재합니다.");
+      setNotifyMsg('잘못 입력된 정보가 존재합니다.');
     }
 
     // 1. 상품정보 데이터
@@ -196,7 +196,7 @@ const Register = () => {
 
   // 엔터키 동작
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault();
       const inputs = document.querySelectorAll(
         'input[type="text"], input[type="number"], input[type="date"], textarea, select'
@@ -211,7 +211,7 @@ const Register = () => {
   };
 
   // 현재날짜
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <Warpper>

@@ -137,3 +137,18 @@ export const QuantityInput = styled.input`
   }
 `;
 // export const SizeSelect = styled.p``;
+export const UniBtn = styled.button`
+  padding: 10px 15px;
+  font-size: 14px;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 5px 0; /* 버튼 간의 간격을 조정 */
+
+  &:hover {
+    background-color: #e63946;
+  }
+`;

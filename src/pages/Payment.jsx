@@ -18,6 +18,7 @@ import {
   PaymentButton,
   SizeDetail,
 } from '../styles/payMentStyle';
+import axios from 'axios';
 
 const Payment = () => {
   const location = useLocation();
@@ -36,20 +37,6 @@ const Payment = () => {
     calculateTotal(cartItems);
   }, [cartItems]);
 
-  //   const fetchCartItems = async () => {
-  //     try {
-  //       const response = await fetch('/api/cart');
-  //       const data = await response.json();
-  //       setCartItems(data.items);
-  //       calculateTotal(data.items);
-  //     } catch (error) {
-  //       console.error('장바구니 정보를 가져오는 중 오류 발생:', error);
-  //     }
-  //   };
-
-  //   fetchCartItems();
-  // }, []);
-
   const calculateTotal = (items) => {
     const total = items.reduce(
       (sum, item) => sum + item.price * item.quantity,
@@ -64,20 +51,26 @@ const Payment = () => {
   };
 
   const handlePayment = async () => {
-    try {
-      const response = await fetch('/api/payment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          paymentInfo,
-          cartItems,
-          totalAmount,
-        }),
-      });
+    const orderItems = cartItems.map((item) => ({
+      cart_item_id: item.id,
+      item_id: item.id,
+      size: item.size,
+      quantity: item.newQuantity || item.quantity,
+    }));
 
-      if (response.ok) {
+    try {
+      const response = await axios.post(
+        'http://ec2-43-201-251-11.ap-northeast-2.compute.amazonaws.com:8080/orders',
+        {
+          customer_email: paymentInfo.email,
+          city: paymentInfo.city,
+          street: paymentInfo.detailedAddress,
+          zipcode: paymentInfo.postalCode,
+          items: orderItems,
+        }
+      );
+
+      if (response.status === 200) {
         alert('결제가 성공적으로 완료되었습니다!');
       } else {
         alert('결제에 실패했습니다.');
