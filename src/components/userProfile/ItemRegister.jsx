@@ -30,7 +30,6 @@ const baseURL = "http://localhost:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
-    ///////////////// 백앤드랑 용어통일//////////////////
     name: "",
     price: "",
     expired_at: "",
@@ -42,16 +41,16 @@ const ItemRegister = () => {
   });
 
   const [validImages, setValidImages] = useState([]);
-  const [imgError, setImgError] = useState("");
   const [thumbNailImg, setThumbNailImg] = useState(null);
+  const [imgError, setImgError] = useState("");
   const [slangError, setSlangError] = useState({});
   const [notifyMsg, setNotifyMsg] = useState("");
-  ///////////// itemId 저장을 위한 상태 ///////////////////
+
   const [itemId, setItemId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [sizes, setSizes] = useState([]);
 
-  // 여러장이미지
+  // 이미지선택
   const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
@@ -101,16 +100,29 @@ const ItemRegister = () => {
         [id]: "",
       }));
     }
+
+    // 상품설명 길이체크
+    if (id === "description" && value.length < 10) {
+      setSlangError((prev) => ({
+        ...prev,
+        description: "상품설명은 최소 10자 이상 입력해야 합니다.",
+      }));
+    } else if (id === "description") {
+      setSlangError((prev) => ({
+        ...prev,
+        description: "",
+      }));
+    }
   };
 
-  // 이미지업로드버튼 >> 이미지 POST
+  // 이미지업로드버튼 >> 이미지 POST >> ✅성공
   const handleImageUpload = async () => {
     // 이미지정보 데이터
     const ImageDataUpload = new FormData();
 
     if (validImages.length > 0) {
       validImages.forEach((image) => {
-        ImageDataUpload.append("images_url", image);
+        ImageDataUpload.append("images", image);
       });
     }
 
@@ -119,7 +131,7 @@ const ItemRegister = () => {
         `${baseURL}/items/images/upload`,
         ImageDataUpload,
         {
-          header: {
+          headers: {
             "Content-Type": "multipart/form-data",
           },
         }
@@ -127,7 +139,7 @@ const ItemRegister = () => {
       setItemId(res.data.itemId);
       console.log("등록결과: ", res.data);
       setNotifyMsg("이미지업로드에 성공하였습니다!");
-      // setNotifyMsg(response.message);
+      return res.data; // 업로드확인된 이미지 반환
     } catch (error) {
       console.error("등록오류: ", error.message);
       setNotifyMsg("이미지업로드에 실패하였습니다.");
@@ -135,7 +147,7 @@ const ItemRegister = () => {
     }
   };
 
-  // 등록버튼 >> 전체데이터 POST
+  // 등록버튼 >> 전체데이터 POST >> ✅성공
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -157,23 +169,30 @@ const ItemRegister = () => {
       return;
     }
 
-    // 상품정보 데이터
-    const formDataToSend = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      formDataToSend.append(key, value);
-    });
+    // 업로드이미지 받아오기
+    const uploadedImageUrls = await handleImageUpload();
 
-    // 이미지 데이터
-    if (validImages.length > 0) {
-      validImages.forEach((image) => {
-        formDataToSend.append("images_url", image);
-      });
-    }
+    // 전체 상품정보 데이터
+    const jsonData = {
+      name: formData.name,
+      price: parseFloat(formData.price),
+      expired_at: formData.expired_at + "T00:00:00", // 로컬타임형태로 변환
+      description: formData.description,
+      category: formData.category,
+      size_name: formData.size_name,
+      stuck: parseInt(formData.stuck, 10),
+      images_url: uploadedImageUrls,
+    };
 
     try {
       const res = await axios.post(
         `${baseURL}/items/seller/register`,
-        formDataToSend
+        jsonData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       setItemId(res.data.itemId);
       console.log("등록결과: ", res.data);
@@ -186,7 +205,7 @@ const ItemRegister = () => {
     }
   };
 
-  // 카테고리 데이터 GET // 성공
+  // 카테고리 데이터 GET >> ✅성공
   const fetchCategories = async () => {
     try {
       const res = await axios.get(`${baseURL}/items/categories`);
@@ -195,7 +214,7 @@ const ItemRegister = () => {
       console.error("카테고리를 불러오는데 실패하였습니다.", error.message);
     }
   };
-  // 사이즈 데이터 GET // 성공
+  // 사이즈 데이터 GET >> ✅성공
   const fetchSizes = async () => {
     try {
       const res = await axios.get(`${baseURL}/items/size`);
@@ -209,6 +228,7 @@ const ItemRegister = () => {
     fetchCategories();
     fetchSizes();
   }, []);
+
   return (
     <Container onSubmit={handleSubmit}>
       <BtnBox>
@@ -245,7 +265,7 @@ const ItemRegister = () => {
                     key={idx}
                     src={URL.createObjectURL(file)}
                     alt={`이미지-${idx + 1}`}
-                    isthumbnail={idx === 0}
+                    className={idx === 0 ? "thumbnail" : ""}
                   />
                 ))}
               </ItemImagesBox>
@@ -314,10 +334,13 @@ const ItemRegister = () => {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
           />
+          {/* 판매기간에서 로컬타임으로 보내지않아 오류발생 */}
           <UserInput
             label="판매기간"
             id="expired_at"
+            // type="datetime-local"
             type="date"
+            // min={new Date().toISOString().split(".")[0]}
             min={new Date().toISOString().split("T")[0]}
             value={formData.expired_at}
             onChange={handleInputChange}
@@ -334,7 +357,7 @@ const ItemRegister = () => {
               onKeyDown={handleKeyDown}
               required
             />
-            {slangError && (
+            {slangError.description && (
               <ErrorMessage>{slangError.description}</ErrorMessage>
             )}
           </ItemInfoScript>
