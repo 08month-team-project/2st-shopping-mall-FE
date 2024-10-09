@@ -73,11 +73,26 @@ export const SubmitButton = styled.button`
 
 export const GenderWrapper = styled.div`
   margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 export const GenderLabel = styled.label`
   margin-right: 15px;
   font-size: 14px;
+`;
+
+export const TermsContainer = styled.div`
+  margin-top: 10px;
+`;
+
+export const TermsHeader = styled.div`
+  font-size: 15px;
+  margin-bottom: 10px;
+`;
+
+export const TermsWrapper = styled.div`
+  font-size: 14px;
+  margin-bottom: 5px;
 `;
 
 export const Checkbox = styled.input`
