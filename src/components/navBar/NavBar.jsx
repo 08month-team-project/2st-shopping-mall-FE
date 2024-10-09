@@ -7,7 +7,7 @@ import logout from "../../utils/icons/logout_icon.png";
 import { Link } from "react-router-dom";
 // import { getCookie } from "./../../api/cookies";
 import { getCategories } from "../../api/api";
-import LogoIcon from "../../Ulogo.svg";
+import LogoIcon from "../../icons/Ulogo.svg";
 import UserIcon from "../../icons/user.svg";
 
 const Navbar = () => {
@@ -32,6 +32,9 @@ const Navbar = () => {
     fetchCategories();
   }, []);
 
+  const handleCategoryClick = (categoryId) => {
+    navigate(`/home?category_id=${categoryId}`); // URL 파라미터로 category_id를 전달
+  };
   // const removeAllAccessTokenCookies = () => {
   //   const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
   //   cookies.filter((cookie) => cookie.startsWith("ACCESS_TOKEN")).map((cookie) => removeCookie(cookie.split("=")[0]));
@@ -61,7 +64,9 @@ const Navbar = () => {
           <S.StCategoriesContainer>
             <S.StCategoriesUl>
               {categories.map((category) => (
-                <S.StCategoriesLi key={category.id}>{category.categoryName}</S.StCategoriesLi>
+                <S.StCategoriesLi key={category.id}>
+                  {category.categoryName}
+                </S.StCategoriesLi>
               ))}
             </S.StCategoriesUl>
           </S.StCategoriesContainer>
@@ -75,7 +80,11 @@ const Navbar = () => {
             <Link to={"/"}>
               <S.StLogOutContainer>
                 <S.StLogOut onClick={logoutHandler}>로그아웃</S.StLogOut>
-                <S.StLogOutImg src={logout} alt="logoutImg" onClick={logoutHandler}></S.StLogOutImg>
+                <S.StLogOutImg
+                  src={logout}
+                  alt="logoutImg"
+                  onClick={logoutHandler}
+                ></S.StLogOutImg>
               </S.StLogOutContainer>
             </Link>
           </S.StUserSection>

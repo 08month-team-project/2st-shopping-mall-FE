@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import axios from "axios";
 import { XIconCloseBtn } from "../../button/XIconCloseBtn";
 import { UniBtn } from "../../button/UniBtn";
 
@@ -23,21 +23,18 @@ import {
   ModifyAmountNumber,
 } from "../../../styles/userProfileStyle/userSellingStyle";
 import { UserMsg } from "../UserMsg";
+import Pagination from "./Pagination";
 
 const baseURL = "http://localhost:8080";
 
-const items = [
-  {
-    name: "상품명1",
-    price: 10000,
-    amount: 10,
-  },
-  {
-    name: "상품명2",
-    price: 10000,
-    amount: 5,
-  },
-];
+// 임시 반복 데이터
+const items = Array.from({ length: 100 }, (_, i) => ({
+  name: `상품명 ${i + 1}`,
+  price: 10000,
+  amount: 10,
+}));
+// 한페이지당 물품개수
+const ITEMS_PERPAGE = 5;
 
 const OnSale = () => {
   const initialAmounts = items.map((item) => item.amount);
@@ -47,6 +44,10 @@ const OnSale = () => {
   const [showItemsMsg, setShowItemsMsg] = useState(
     Array(items.length).fill(false)
   );
+
+  // 페이지네이션
+  const [visibleItems, setVisibleItems] = useState(ITEMS_PERPAGE);
+  const currentItems = items.slice(0, visibleItems);
 
   // 데이터 상태관리
   // const [itemsData, setItemsData] = useState([]);
@@ -68,7 +69,7 @@ const OnSale = () => {
     });
   };
 
-  // 재고수정버튼클릭
+  // 재고수정버튼 클릭
   const handleModifyAmount = (idx) => {
     setOnSaleItemsAmount((prev) => {
       const newItems = [...prev];
@@ -82,6 +83,12 @@ const OnSale = () => {
     });
   };
 
+  // 더보기버튼 클릭
+  const handleClickMorePage = () => {
+    setVisibleItems((prev) => prev + ITEMS_PERPAGE);
+  };
+
+  /////////////////////////////
   // 등록한상품 데이터 GET
   // const getRegisteredItems = async () => {
   //   try {
@@ -101,7 +108,7 @@ const OnSale = () => {
   return (
     <Container>
       <ItemBox>
-        {items.map((item, idx) => (
+        {currentItems.map((item, idx) => (
           <ItemWrapper>
             <Item key={idx}>
               <ItemInfoBox>
@@ -136,7 +143,8 @@ const OnSale = () => {
         ))}
 
         {/* 데이터 get */}
-        {/* {itemsData.length > 0 &&
+        <>
+          {/* {itemsData.length > 0 &&
           itemsData.map((item, idx) => (
             <ItemWrapper>
               <Item key={idx}>
@@ -167,7 +175,15 @@ const OnSale = () => {
               )}
             </ItemWrapper>
           ))} */}
+        </>
       </ItemBox>
+
+      {/* 더보기버튼 */}
+      <Pagination
+        items={items}
+        handleClickMorePage={handleClickMorePage}
+        visibleItems={visibleItems}
+      />
     </Container>
   );
 };

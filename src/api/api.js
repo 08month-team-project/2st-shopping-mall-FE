@@ -1,4 +1,3 @@
-
 import instance from "./instance";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
@@ -52,22 +51,31 @@ const searchItems = async ({
   return response.data;
 };
 
-const getCategories = async () => {
-  const response = await instance.get("/items/categories");
+const getCategories = async (email) => {
+  const response = await instance.get("/items/categories", email);
   return response.data;
 };
 
-export { getAllItem, getItemById, searchItems, getCategories, searchAllItems };
+const checkEmail = async (email) => {
+  const response = await instance.post("/users/check-email", email);
+  return response.data;
+};
 
+const formSubmit = async (formData) => {
+  const response = await instance.post("/users/signup", formData);
+  return response.data;
+};
 
+export { getAllItem, getItemById, searchItems, getCategories, searchAllItems, checkEmail, formSubmit };
 
 // 로그인 함수
 export const login = async (email, password) => {
   try {
     // 로그인 API 호출
-    const response = await instance.post("/login", { email, password });
-
+    const response = await instance.post("/users/login", { email, password });
+    console.log(response);
     const authorizationHeader = response.headers["authorization"];
+
     if (!authorizationHeader) {
       throw new Error("액세스 토큰이 제공되지 않았습니다.");
     } // 응답 헤더에서 JWT 액세스 토큰 추출
@@ -79,14 +87,13 @@ export const login = async (email, password) => {
 
     // JWT 토큰을 로컬 스토리지에 저장
     localStorage.setItem("accessToken", token);
-
+    console.log("토큰이 로컬 스토리지에 저장되었습니다:", token);
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; // 모든 요청에 토큰 추가, 사용자가 로그인에 성공했다는 것을 증명하기 위해
 
     return response.data.message;
   } catch (error) {
-    throw new Error(
-      error.response?.data?.message || "로그인 요청 중 오류 발생"
-    );
+    console.error("로그인 중 오류 발생:", error);
+    throw new Error(error.response?.data?.message || "로그인 요청 중 오류 발생");
   }
 };
 

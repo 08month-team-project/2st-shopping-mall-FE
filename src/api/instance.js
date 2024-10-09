@@ -3,7 +3,8 @@ import { getCookie, removeCookie, setCookie } from "./cookies";
 import { queryAllByAltText } from "@testing-library/react";
 
 const instance = axios.create({
-  baseURL: "http://ec2-3-36-69-202.ap-northeast-2.compute.amazonaws.com:8080",
+  baseURL: "http://ec2-3-35-136-77.ap-northeast-2.compute.amazonaws.com:8080",
+
   // baseURL: `${process.env.REACT_APP_SERVER_URL}`,
   headers: {
     "Content-Type": "application/json",
@@ -41,7 +42,6 @@ const instance = axios.create({
 //     if (error.response.status === 401 && !originalRequest._retry) {
 //       try {
 //         originalRequest._retry = true;
-
 //         const refresh_token = localStorage.getItem("REFRESH_TOKEN");
 //         originalRequest.headers["RefreshToken"] = `Bearer ${refresh_token}`;
 //         return instance(originalRequest);
@@ -58,19 +58,18 @@ const instance = axios.create({
 //   },
 // );
 
-
 // 요청을 보내기 전에 JWT 토큰을 자동으로 헤더에 추가하는 인터셉터 설정
-instance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("accessToken"); // 쿠키에서 JWT 토큰을 가져옴
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+// instance.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem("accessToken"); // 쿠키에서 JWT 토큰을 가져옴
+//     if (token) {
+//       config.headers["Authorization"] = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   },
+// );
 
 export default instance;
