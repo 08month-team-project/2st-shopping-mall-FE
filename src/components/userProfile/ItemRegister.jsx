@@ -27,8 +27,10 @@ import { ErrorMessage } from "../error/ErrorMessage";
 import { handleKeyDown } from "../../utils/keyDownHandler";
 
 // const baseURL = "http://localhost:8080";
+// const baseURL =
+//   "http://ec2-3-38-210-174.ap-northeast-2.compute.amazonaws.com:8080";
 const baseURL =
-  "http://ec2-3-38-210-174.ap-northeast-2.compute.amazonaws.com:8080";
+  "http://ec2-43-201-251-208.ap-northeast-2.compute.amazonaws.com:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({

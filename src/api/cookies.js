@@ -1,3 +1,5 @@
+// 쿠키 사용안합니다~
+
 // import Cookies from "js-cookie";
 
 // // 쿠키에 JWT 토큰 저장 (유효 기간 설정 가능)
