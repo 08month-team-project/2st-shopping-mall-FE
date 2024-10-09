@@ -11,13 +11,15 @@ import Login from "../pages/Login";
 import Basket from "../pages/Basket";
 import Payment from "../pages/Payment";
 import MainHeader from "../components/mainHeader/MainHeader";
+import ProductDetail from "../pages/ProductDetail";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <MainHeader />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home/>} />
+        <Route path="/items/:itemId" element={<ProductDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/user" element={<User />}>

@@ -37,7 +37,7 @@ const LoginPage = () => {
         ? "비밀번호를 입력해 주세요."
         : !isValidPassword(value)
         ? "비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다."
-        : ""
+        : "",
     );
   };
 
@@ -45,9 +45,7 @@ const LoginPage = () => {
     if (password === "") {
       setPasswordError("비밀번호를 입력해 주세요.");
     } else if (!isValidPassword(password)) {
-      setPasswordError(
-        "비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다."
-      );
+      setPasswordError("비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다.");
     } else {
       setPasswordError("");
     }
@@ -77,9 +75,7 @@ const LoginPage = () => {
       console.log(response.data.message);
       navigate("/home"); // 로그인 성공 시, 홈 페이지로 이동
     } catch (error) {
-      setError(
-        error.response?.data?.message || "로그인 요청 중 오류가 발생했습니다."
-      );
+      setError(error.response?.data?.message || "로그인 요청 중 오류가 발생했습니다.");
     } finally {
       setIsLoading(false);
     }
