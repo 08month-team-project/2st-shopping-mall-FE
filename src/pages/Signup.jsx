@@ -14,12 +14,14 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    phoneNumber: "",
-    address: "",
+    phone_number: "",
+    address: {
+      city: "",
+      zipcode: "",
+    },
     gender: "",
     name: "",
     nickname: "",
-    gender: "",
   });
 
   const navigate = useNavigate();
@@ -52,11 +54,11 @@ const Signup = () => {
       }
     }
 
-    if (name === "phoneNumber") {
+    if (name === "phone_number") {
       if (!isValidPhone(value)) {
-        newErrors.phoneNumber = "전화번호 형식은 000-0000-0000여야 합니다.";
+        newErrors.phone_number = "전화번호 형식은 000-0000-0000여야 합니다.";
       } else {
-        delete newErrors.phoneNumber;
+        delete newErrors.phone_number;
       }
     }
 
@@ -77,7 +79,7 @@ const Signup = () => {
       const response = await checkEmail(email);
 
       if (response.status === 200) {
-        setEmailMessage(response.data.message);
+        setEmailMessage(response.message);
         setEmailStatus(true);
       }
     } catch (error) {
@@ -129,8 +131,10 @@ const Signup = () => {
 
           setFormData((prevData) => ({
             ...prevData,
-            postalCode: postalCode,
-            address: fullAddr,
+            address: {
+              city: fullAddr,
+              zipcode: postalCode,
+            },
           }));
         },
       }).open();
@@ -143,7 +147,7 @@ const Signup = () => {
       formData.email &&
       formData.password &&
       formData.confirmPassword &&
-      formData.phoneNumber &&
+      formData.phone_number &&
       formData.address &&
       formData.gender &&
       formData.name &&
@@ -164,10 +168,10 @@ const Signup = () => {
   // 폼 제출 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const { confirmPassword, ...dataToSend } = formData;
     try {
-      const response = await formSubmit(formData);
-      if (response.status === 200) {
+      const response = await formSubmit(dataToSend);
+      if (response.message === "success signup") {
         navigate("/login");
         console.log("회원가입 성공");
       }
@@ -240,13 +244,13 @@ const Signup = () => {
           {errors.confirmPassword && <S.ErrorMsg>{errors.confirmPassword}</S.ErrorMsg>}
           <S.SignupInput
             type="text"
-            name="phoneNumber"
+            name="phone_number"
             placeholder="전화번호를 입력하세요"
-            value={formData.phoneNumber}
+            value={formData.phone_number}
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          {errors.phoneNumber && <S.ErrorMsg>{errors.phoneNumber}</S.ErrorMsg>}
+          {errors.phone_number && <S.ErrorMsg>{errors.phone_number}</S.ErrorMsg>}
 
           <S.InputWrapper>
             <S.SignupInput
@@ -254,21 +258,27 @@ const Signup = () => {
               name="postalCode"
               placeholder="우편번호"
               style={{ marginRight: "15px" }}
-              value={formData.postalCode}
+              value={formData.address.zipcode}
               readOnly
             />
             <S.SmallButton type="button" onClick={handleAddressSearch}>
               주소찾기
             </S.SmallButton>
           </S.InputWrapper>
-          <S.SignupInput type="text" name="address" placeholder="주소를 입력하세요" value={formData.address} readOnly />
+          <S.SignupInput
+            type="text"
+            name="address"
+            placeholder="주소를 입력하세요"
+            value={formData.address.city}
+            readOnly
+          />
           <S.GenderWrapper>
             <S.GenderLabel>
               <S.Checkbox
                 type="checkbox"
                 name="male"
-                checked={formData.gender === "male"}
-                onChange={() => handleGenderChange("male")}
+                checked={formData.gender === "MALE"}
+                onChange={() => handleGenderChange("MALE")}
               />
               남성
             </S.GenderLabel>
@@ -276,8 +286,8 @@ const Signup = () => {
               <S.Checkbox
                 type="checkbox"
                 name="female"
-                checked={formData.gender === "female"}
-                onChange={() => handleGenderChange("female")}
+                checked={formData.gender === "FEMALE"}
+                onChange={() => handleGenderChange("FEMALE")}
               />
               여성
             </S.GenderLabel>
