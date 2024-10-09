@@ -27,7 +27,7 @@ import {
 import { UniBtn } from "../button/UniBtn";
 import { ErrorMessage } from "../error/ErrorMessage";
 
-// const baseURL = "http://localhost:8080";
+const baseURL = "http://localhost:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
@@ -61,7 +61,9 @@ const ItemRegister = () => {
     files.forEach((file) => {
       // 파일형식 유효성검사
       if (!allowedTypes.includes(file.type)) {
-        setImgError("jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다.");
+        setImgError(
+          "jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다."
+        );
       }
       // 파일용량(1MB) 유효성검사
       else if (file.size > 1 * 1024 * 1024) {
@@ -126,11 +128,15 @@ const ItemRegister = () => {
     }
 
     try {
-      const res = await axios.post(`${baseURL}/items/images/upload`, ImageDataUpload, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await axios.post(
+        `${baseURL}/items/images/upload`,
+        ImageDataUpload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       setItemId(res.data.itemId);
       console.log("등록결과: ", res.data);
       setNotifyMsg("이미지업로드에 성공하였습니다!");
@@ -146,7 +152,9 @@ const ItemRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const isSlangValid = Object.values(slangError).every((error) => error === "");
+    const isSlangValid = Object.values(slangError).every(
+      (error) => error === ""
+    );
 
     if (!isSlangValid) {
       const errorInputs = [
@@ -190,7 +198,7 @@ const ItemRegister = () => {
       const res = await postItemData(jsonData);
       setItemId(res.itemId);
       console.log("등록결과: ", res);
-
+>>>>>>>>> Temporary merge branch 2
       setNotifyMsg("물품등록에 성공하였습니다!");
       // setNotifyMsg(res.message);
     } catch (error) {
@@ -217,7 +225,7 @@ const ItemRegister = () => {
       // const res = await axios.get(`${baseURL}/items/size`);
       const res = await getItemSizes();
       console.log(res);
-      setSizes(res.sizeItemList);
+      setSizes(res.sizeItemList); // 상태값이름
     } catch (error) {
       console.error("사이즈를 불러오는데 실패하였습니다.", error.message);
     }
@@ -246,7 +254,13 @@ const ItemRegister = () => {
         <ItemInfoBox>
           <ItemInfo>
             <InfoLabel>상품이미지</InfoLabel>
-            <InfoInput type="file" id="img" multiple onChange={handleImagesChange} required />
+            <InfoInput
+              type="file"
+              id="img"
+              multiple
+              onChange={handleImagesChange}
+              required
+            />
             <ImgUploadBtn type="button" onClick={handleImageUpload}>
               이미지업로드
             </ImgUploadBtn>
@@ -350,7 +364,9 @@ const ItemRegister = () => {
               onKeyDown={handleKeyDown}
               required
             />
-            {slangError.description && <ErrorMessage>{slangError.description}</ErrorMessage>}
+            {slangError.description && (
+              <ErrorMessage>{slangError.description}</ErrorMessage>
+            )}
           </ItemInfoScript>
         </ItemInfoBox>
       </RegisterInfo>
