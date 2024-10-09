@@ -2,13 +2,16 @@ import styled from "styled-components";
 
 // 스타일 정의 및 export
 export const Header = styled.header`
-  padding: 1rem 3rem;
+  height: 10vh;
+  padding: 0 3rem;
   border-bottom: 1px solid #ccc;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #fff;
   position: relative;
+  top: 0;
+  left: 0;
   z-index: 9999;
 `;
 
