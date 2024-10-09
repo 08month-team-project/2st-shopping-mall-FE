@@ -19,10 +19,10 @@ const Basket = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (page) => {
       try {
         const response = await axios.get(
-          "http://ec2-3-35-136-77.ap-northeast-2.compute.amazonaws.com:8080 /carts?page={page}"
+          `http://ec2-3-36-69-202.ap-northeast-2.compute.amazonaws.com:8080/carts?page=${page}`
         );
         const cartData = response.data;
         console.log(cartData);

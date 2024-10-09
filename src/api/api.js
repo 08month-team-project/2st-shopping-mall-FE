@@ -1,5 +1,5 @@
 import instance from "./instance";
-import { Navigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 import axios from "axios";
 
 const getAllItem = async () => {
@@ -79,43 +79,28 @@ export {
 // 로그인 함수
 export const login = async (email, password) => {
   try {
-    console.log("Request URL:", instance.defaults.baseURL + "/users/login");
-    console.log("Request Data:", { email, password });
-    console.log("Request Headers:", instance.defaults.headers);
-
     // 로그인 API 호출
     const response = await instance.post("/users/login", { email, password });
 
-    console.log("Response Headers:", response.headers); // 전체 응답 헤더 출력
-    console.log("Response Data:", response.data); // 응답 데이터 출력
-
-    // 다양한 케이스에서 Authorization 헤더 확인
-    let authorizationHeader =
-      response.headers["Authorization"] || response.headers["authorization"];
-    let token;
-
+    // 응답 헤더에서 Authorization 헤더 추출
+    const authorizationHeader = response.headers["authorization"];
     if (!authorizationHeader) {
-      console.warn(
-        "Authorization 헤더가 없습니다. 응답 본문에서 토큰을 확인합니다."
-      );
-      token = response.data.token; // 응답 본문에서 `token`이 있는지 확인
-    } else {
-      token = authorizationHeader.split(" ")[1]; // Bearer 토큰 분리
+      throw new Error("응답 헤더에 토큰 없음");
     }
 
-    // 토큰이 없으면 오류 발생
-    if (!token) {
-      throw new Error("Authorization 헤더를 찾을 수 없습니다.");
+    // Authorization 헤더에서 Bearer 형식으로 토큰 추출
+    const accessToken = authorizationHeader.split(" ")[1];
+    if (!accessToken) {
+      throw new Error("Authorization 헤더에서 토큰을 추출할 수 없습니다.");
     }
 
     // JWT 토큰을 로컬 스토리지에 저장
-    localStorage.setItem("accessToken", token);
+    localStorage.setItem("accessToken", accessToken);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`; // 모든 요청에 토큰 추가
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; // 모든 요청에 토큰 추가, 사용자가 로그인에 성공했다는 것을 증명하기 위해
-    console.log("로그인 성공, 토큰 저장 완료:", token);
-
-    return response.data.message;
+    return response; // 성공적으로 로그인되었음을 반환
   } catch (error) {
+    console.error("로그인 중 오류 발생:", error);
     throw new Error(
       error.response?.data?.message || "로그인 요청 중 오류 발생"
     );
@@ -126,5 +111,7 @@ export const login = async (email, password) => {
 export const logout = (navigate) => {
   localStorage.removeItem("accessToken");
   delete axios.defaults.headers.common["Authorization"];
+  if (navigate) {
+  }
   navigate("/users/login");
 };

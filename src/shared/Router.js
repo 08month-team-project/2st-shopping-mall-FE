@@ -11,6 +11,7 @@ import Login from "../pages/Login";
 import Basket from "../pages/Basket";
 import Payment from "../pages/Payment";
 import MainHeader from "../components/mainHeader/MainHeader";
+import ProductDetail from "../pages/ProductDetail";
 
 const Router = () => {
   return (

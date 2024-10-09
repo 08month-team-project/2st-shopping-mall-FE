@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/api";
-import { isValidEmail, isValidPassword } from "../../utils/validation";
+
+import { isValidEmail, isValidPassword } from "../../utils/validation.js";
+
 import * as L from "../../styles/LoginStyle";
 import LoginButton from "./LoginButton.jsx";
 
@@ -63,16 +65,23 @@ const LoginForm = () => {
 
     try {
       const response = await login(email, password);
-      const accessToken = response.headers["authorization"]?.split(" ")[1];
-      if (!accessToken) {
-        throw new Error("액세스 토큰이 제공되지 않았습니다.");
-      }
-      localStorage.setItem("accessToken", accessToken);
+      console.log("로그인 응답:", response);
+
+      // if (!response || !response.headers) {
+      //   throw new Error("로그인 응답 객체가 올바르지 않습니다.");
+      // }
+
+      // const accessToken = response.headers["Authorization"]?.split(" ")[1];
+      // if (!accessToken) {
+      //   throw new Error("액세스 토큰이 제공되지 않았습니다.");
+      // }
+      // localStorage.setItem("accessToken", accessToken);
+
       navigate("/");
+      console.log("홈 페이지로 이동 완료.");
     } catch (error) {
-      setError(
-        error.response?.data?.message || "로그인 요청 중 오류가 발생했습니다."
-      );
+      console.error("로그인 에러 발생:", error);
+      setError(error.message || "로그인 요청 중 오류가 발생했습니다.");
     } finally {
       setIsLoading(false);
     }
