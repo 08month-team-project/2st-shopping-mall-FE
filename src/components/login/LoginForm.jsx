@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/api";
-import { isValidEmail, isValidPassword } from "../../utils/validation";
+import { isValidEmail, isValidPassword } from "../../utils/Validation";
 import * as L from "../../styles/LoginStyle";
 import LoginButton from "./LoginButton.jsx";
 

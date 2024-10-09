@@ -7,7 +7,7 @@ import {
   isValidPassword,
   isValidPhone,
   containSlang,
-} from "../utils/validation";
+} from "../utils/Validation";
 import { useNavigate } from "react-router-dom";
 import { checkEmail, formSubmit } from "../api/api";
 
@@ -316,15 +316,13 @@ const Signup = () => {
           )}
           <S.SignupInput
             type="text"
-            name="phone_number"
+            name="phoneNumber"
             placeholder="전화번호를 입력하세요"
-            value={formData.phone_number}
+            value={formData.phoneNumber}
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          {errors.phone_number && (
-            <S.ErrorMsg>{errors.phone_number}</S.ErrorMsg>
-          )}
+          {errors.phone_number && <S.ErrorMsg>{errors.phoneNumber}</S.ErrorMsg>}
 
           <S.InputWrapper>
             <S.SignupInput
