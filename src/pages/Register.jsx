@@ -1,9 +1,9 @@
-import React from 'react';
-import ItemRegister from '../components/userProfile/ItemRegister';
-
+import React, { useState } from "react";
+import ItemRegister from "../components/userProfile/ItemRegister";
 // style
-import { Warpper } from '../styles/userProfileStyle/userRegisterStyle';
-import { UserTitle } from '../components/userProfile/UserTitle';
+import { Warpper } from "../styles/userProfileStyle/userRegisterStyle";
+import { UserTitle } from "../components/userProfile/UserTitle";
+import { slangList } from "../utils/slangWords";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -36,9 +36,7 @@ const Register = () => {
     files.forEach((file) => {
       // 파일형식 유효성검사
       if (!allowedTypes.includes(file.type)) {
-        setImgError(
-          "jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다."
-        );
+        setImgError("jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다.");
       }
       // 파일용량(1MB) 유효성검사
       else if (file.size > 1 * 1024 * 1024) {
@@ -91,9 +89,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const isSlangValid = Object.values(slangError).every(
-      (error) => error === ""
-    );
+    const isSlangValid = Object.values(slangError).every((error) => error === "");
 
     if (isSlangValid) {
       console.log("상품 정보:", formData);
@@ -174,7 +170,7 @@ const Register = () => {
     if (e.key === "Enter") {
       e.preventDefault();
       const inputs = document.querySelectorAll(
-        'input[type="text"], input[type="number"], input[type="date"], textarea, select'
+        'input[type="text"], input[type="number"], input[type="date"], textarea, select',
       );
       const currentInput = e.target;
       const index = Array.prototype.indexOf.call(inputs, currentInput);
