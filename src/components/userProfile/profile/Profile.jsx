@@ -6,6 +6,7 @@ import {
 } from "../../../utils/validation";
 import ProfileInfomation from "./ProfileInfomation";
 import ProfileModify from "./ProfileModify";
+import axios from "axios";
 
 // icon
 import UserFillIcon from "../../../icons/userFill.svg";
@@ -13,17 +14,22 @@ import UserFillIcon from "../../../icons/userFill.svg";
 // style
 import { Wrapper } from "../../../styles/userProfileStyle/profileStyle";
 
-const baseURL = "http://localhost:8080";
+// const baseURL = "http://localhost:8080";
+const baseURL =
+  "http://ec2-3-38-210-174.ap-northeast-2.compute.amazonaws.com:8080";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
     name: "사용자",
     nickName: "닉네임",
     phone_number: "010-0000-0000",
-    email: "sldkfjsdf@naver.com",
-    address: "들안로00길 00",
+    email: "example@gmail.com",
+    address: {
+      city: "00시 00구 00동",
+      zipcode: "우편번호",
+    },
     comment: "소개글을 작성해주세요.",
-    gender: "male",
+    gender: "남성",
     profile_image_url: UserFillIcon,
   });
   const [inputValues, setInputValues] = useState({ ...userInfo });
@@ -94,7 +100,6 @@ const Profile = () => {
         { id: "nickName", error: slangError.nickName },
         { id: "phone_number", error: phoneError },
         { id: "email", error: emailError },
-        { id: "address", error: slangError.address },
         { id: "comment", error: slangError.comment },
       ];
       const firstErrorInput = errorInputs.find((input) => input.error);
@@ -148,18 +153,18 @@ const Profile = () => {
   };
 
   // 유저데이터 get
-  // const getUserData = async () => {
-  //   try {
-  //     const res = await axios.get(`${baseURL}/users/my-page`);
-  //     setUserInfo(res.data);
-  //     console.log(res.data);
-  //   } catch (error) {
-  //     console.error("유저데이터를 불러오는데 실패하였습니다.", error.message);
-  //   }
-  // };
-  // useEffect(() => {
-  //   getUserData();
-  // }, []);
+  const getUserData = async () => {
+    try {
+      const res = await axios.get(`${baseURL}/users/my-page`);
+      console.log(res.data);
+      setUserInfo(res.data);
+    } catch (error) {
+      console.error("유저데이터를 불러오는데 실패하였습니다.", error.message);
+    }
+  };
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   return (
     <Wrapper>

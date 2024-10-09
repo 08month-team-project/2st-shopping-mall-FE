@@ -6,6 +6,7 @@ const Title = styled.h3`
   text-align: center;
   line-height: 8vh;
   font-size: 1rem;
+  background-color: #fff;
 `;
 
 export const UserTitle = ({ children }) => {

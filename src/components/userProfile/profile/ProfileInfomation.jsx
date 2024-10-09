@@ -47,13 +47,14 @@ const ProfileInfomation = ({ userInfo }) => {
         </TextBox>
         <TextBox>
           <GenderIcon
-            src={userInfo.gender === "male" ? MaleIcon : FemaleIcon}
+            src={userInfo.gender === "남성" ? MaleIcon : FemaleIcon}
           />
-          <Text>{userInfo.gender === "male" ? "남성" : "여성"}</Text>
+          <Text>{userInfo.gender === "남성" ? "남성" : "여성"}</Text>
         </TextBox>
         <TextBox>
           <Icon src={AddressIcon} alt="address-icon" />
-          <Text>{userInfo.address}</Text>
+          <Text>{`${userInfo.address.zipcode}, `}</Text>
+          <Text>{userInfo.address.city}</Text>
         </TextBox>
         <TextBox>
           <Icon src={PencilIcon} alt="pencil-icon" />
