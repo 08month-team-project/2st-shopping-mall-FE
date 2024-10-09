@@ -65,20 +65,10 @@ const LoginForm = () => {
 
     try {
       const response = await login(email, password);
-      console.log("로그인 응답:", response);
+      console.log("로그인 성공:", response.data.message);
 
-      // if (!response || !response.headers) {
-      //   throw new Error("로그인 응답 객체가 올바르지 않습니다.");
-      // }
-
-      // const accessToken = response.headers["Authorization"]?.split(" ")[1];
-      // if (!accessToken) {
-      //   throw new Error("액세스 토큰이 제공되지 않았습니다.");
-      // }
-      // localStorage.setItem("accessToken", accessToken);
-
+      // 로그인 성공 후 홈으로 이동
       navigate("/");
-      console.log("홈 페이지로 이동 완료.");
     } catch (error) {
       console.error("로그인 에러 발생:", error);
       setError(error.message || "로그인 요청 중 오류가 발생했습니다.");
