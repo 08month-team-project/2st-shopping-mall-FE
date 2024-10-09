@@ -1,7 +1,5 @@
-import styled from 'styled-components';
-
-
+import styled from "styled-components";
 
 export const DivContainer = styled.div`
- color: black;
-`
+  color: black;
+`;

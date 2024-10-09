@@ -19,7 +19,7 @@ export const ImageContainer = styled.div`
 
 export const Image = styled.div`
     width: 500px;
-    height: 700px;
+    height: 600px;
 `;
 export const InfoContainer = styled.div`
     display: flex;

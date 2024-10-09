@@ -4,7 +4,7 @@ import { logout } from "../../api/api";
 
 import { Header, Logo, Img, IconBox, Icon } from "../../styles/MainHeaderStyle";
 
-import LogoIcon from "../../Ulogo.svg";
+import LogoIcon from "../../icons/Ulogo.svg";
 import UserIcon from "../../icons/user.svg";
 import LoginIcon from "../../icons/login.svg";
 import LogoutIcon from "../../icons/logout.svg";

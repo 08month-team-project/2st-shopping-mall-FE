@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -44,8 +45,25 @@ import image2 from '../images/image2.jpg';
 import image3 from '../images/image3.jpg';
 
 const ProductDetail = () => {
-
+    const { itemId } = useParams(); // URL에서 itemId 가져오기
+    const [itemImages, setItemImages] = useState([]);
     const navigate = useNavigate(); 
+
+    useEffect(() => {
+        // 서버에서 해당 itemId의 이미지들을 가져옴
+        axios.get(`/items/{item_id}/images`)
+            .then((response) => {
+                // response.data의 itemImageResponses에서 이미지 URL을 추출하여 상태에 저장
+                const imageResponses = response.data.itemImageResponses;
+                setItemImages(imageResponses);
+            })
+            .catch((error) => {
+                console.error('이미지가 없습니다.', error);
+            });
+    }, [itemId]);
+
+
+
 
     const [images, setImages] = useState([image1, image2, image3]); 
     const [selectedSize, setSelectedSize] = useState('');
@@ -101,8 +119,6 @@ const ProductDetail = () => {
         navigate('/Basket');
     };
 
-
-    
     
     const settings = {
         dots: true,
@@ -121,14 +137,17 @@ const ProductDetail = () => {
                 <ImageContainer>
                     <Image>
                         <Slider {...settings}>
-                            {images.map((image, index) => (
-                                <div key={index}>
-                                    <img src={image} alt={`Slide ${index}`}/>
+                            {itemImages.map((image) => (
+                                <div key={image.imageUrlId}>
+                                    <img 
+                                        src={`/images/${image.imageUrl}`}  // 서버 이미지 URL을 사용
+                                        alt={`Image ${image.imageUrlId}`} 
+                                    />
                                 </div>
-                            ))}
+                            ))}       
                         </Slider>
                     </Image>
-                    <Date>한정판매</Date>
+                    <Date>한정판매</Date> 
                 </ImageContainer>
                 <InfoContainer>
                     <Icon>

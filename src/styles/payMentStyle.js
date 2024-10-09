@@ -2,34 +2,39 @@ import styled from 'styled-components';
 
 export const PaymentPage = styled.div`
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0px auto;
   padding: 20px;
   background-color: #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 `;
 
 export const Title = styled.h1`
   text-align: center;
-  color: #333;
+  color: #2c3e50;
   margin-bottom: 20px;
+  font-size: 28px;
 `;
 
 export const SubTitle = styled.h2`
   text-align: center;
-  color: #333;
+  color: #34495e;
   margin-bottom: 20px;
+  font-size: 24px;
 `;
 
 export const OrderSummary = styled.h3`
   text-align: right;
-  font-size: 20px;
-  color: #333;
+  font-size: 22px;
+  color: black;
+  margin-top: 20px;
 `;
 
 export const PaymentInfo = styled.div`
   background-color: #fff;
   padding: 20px;
   margin-bottom: 30px;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -42,10 +47,15 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #3498db;
+  }
 `;
 
 export const AddressDetails = styled.div`
@@ -69,7 +79,7 @@ export const AddressInput = styled(Input)`
 export const CartItems = styled.div`
   background-color: #fff;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -78,6 +88,10 @@ export const CartItem = styled.div`
   align-items: center;
   padding: 10px 0;
   border-bottom: 1px solid #ddd;
+
+  &:last-child {
+    border-bottom: none;
+  }
 `;
 
 export const CartItemImage = styled.img`
@@ -91,7 +105,7 @@ export const CartItemImage = styled.img`
 export const ItemDetails = styled.div`
   flex: 1;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 
   @media screen and (max-width: 768px) {
@@ -103,7 +117,8 @@ export const ItemDetails = styled.div`
 export const ItemDetailSpan = styled.span`
   font-size: 14px;
   color: #555;
-  margin-right: 10px;
+  margin-right: 15px;
+  flex: 1;
 
   @media screen and (max-width: 768px) {
     margin-right: 0;
@@ -121,7 +136,7 @@ export const PaymentButton = styled.button`
   border-radius: 8px;
   cursor: pointer;
   margin-top: 20px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:hover {
     background-color: #c9001f;
@@ -130,4 +145,8 @@ export const PaymentButton = styled.button`
   @media screen and (max-width: 768px) {
     font-size: 14px;
   }
+`;
+
+export const SizeDetail = styled(ItemDetailSpan)`
+  margin-left: 40%;
 `;
