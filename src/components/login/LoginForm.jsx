@@ -68,7 +68,7 @@ const LoginForm = () => {
         throw new Error("액세스 토큰이 제공되지 않았습니다.");
       }
       localStorage.setItem("accessToken", accessToken);
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       setError(
         error.response?.data?.message || "로그인 요청 중 오류가 발생했습니다."
@@ -87,7 +87,7 @@ const LoginForm = () => {
           onChange={handleEmailChange}
           onBlur={handleEmailBlur}
           placeholder="이메일을 입력하세요"
-          error={emailError}
+          error={emailError ? "true" : undefined}
         />
         {emailError && (
           <L.ErrorMessage>유효한 이메일 주소를 입력해 주세요.</L.ErrorMessage>
@@ -100,7 +100,7 @@ const LoginForm = () => {
           onChange={handlePasswordChange}
           onBlur={handlePasswordBlur}
           placeholder="비밀번호를 입력해 주세요."
-          error={passwordError}
+          error={passwordError ? "true" : undefined}
         />
         {passwordError && <L.ErrorMessage>{passwordError}</L.ErrorMessage>}
       </L.InputWrapper>
