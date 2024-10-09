@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/api";
-import { isValidEmail, isValidPassword } from "../utils/Validation";
+import { isValidEmail, isValidPassword } from "../utils/validation";
 import * as L from "../styles/LoginStyle";
 // import { XIconCloseBtn } from "../components/button/XIconCloseBtn";
 

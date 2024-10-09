@@ -6,7 +6,7 @@ import {
   isValidPassword,
   isValidPhone,
   containSlang,
-} from "../utils/Validation";
+} from "../utils/validation";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {

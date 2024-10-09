@@ -58,7 +58,6 @@ const instance = axios.create({
 //   },
 // );
 
-
 // 요청을 보내기 전에 JWT 토큰을 자동으로 헤더에 추가하는 인터셉터 설정
 instance.interceptors.request.use(
   (config) => {

@@ -1,4 +1,3 @@
-
 import instance from "./instance";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
@@ -58,8 +57,6 @@ const getCategories = async () => {
 };
 
 export { getAllItem, getItemById, searchItems, getCategories, searchAllItems };
-
-
 
 // 로그인 함수
 export const login = async (email, password) => {

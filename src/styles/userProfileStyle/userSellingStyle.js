@@ -2,12 +2,15 @@ import styled from "styled-components";
 
 export const Warpper = styled.div`
   width: 80vw;
+  height: 90vh;
+  background-color: #f4f6f8;
 `;
 
 export const TitleBox = styled.ul`
   width: 100%;
   padding-left: 3rem;
   border-bottom: 1px solid #ccd3d750;
+  background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,13 +30,13 @@ export const Title = styled.li`
 
 export const Container = styled.div`
   width: 100%;
-  height: 80vh;
-  padding: 2rem;
+  height: fit-content;
+  padding-bottom: 2rem;
   background-color: #f4f6f8;
 `;
 export const ItemBox = styled.div`
   width: 100%;
-  padding: 1.5rem 0 2rem 1.5rem;
+  padding: 2rem 3rem 3rem 2rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -90,3 +93,9 @@ export const ModifyAmountBtn = styled.button`
 `;
 export const AmountIcon = styled.img``;
 export const ModifyAmountNumber = styled.p``;
+
+// 페이지네이션 스타일
+export const MoreBtn = styled.div`
+  width: fit-content;
+  margin: auto;
+`;

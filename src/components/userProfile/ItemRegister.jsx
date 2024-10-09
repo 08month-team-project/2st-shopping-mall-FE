@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { containSlang } from "../../utils/Validation";
+import { containSlang } from "../../utils/validation";
 import UserInput from "./UserInput";
 
 // style
@@ -26,7 +26,9 @@ import { UniBtn } from "../button/UniBtn";
 import { ErrorMessage } from "../error/ErrorMessage";
 import { handleKeyDown } from "../../utils/keyDownHandler";
 
-const baseURL = "http://localhost:8080";
+// const baseURL = "http://localhost:8080";
+const baseURL =
+  "http://ec2-3-38-210-174.ap-northeast-2.compute.amazonaws.com:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
