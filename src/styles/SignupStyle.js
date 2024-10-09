@@ -98,3 +98,9 @@ export const TermsWrapper = styled.div`
 export const Checkbox = styled.input`
   margin-right: 5px;
 `;
+
+export const EmailStatusMessage = styled.p`
+  color: ${(props) => (props.success ? "green" : "red")};
+  font-size: 12px;
+  margin-top: 5px;
+`;

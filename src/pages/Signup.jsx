@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as S from "../styles/SignupStyle";
-import axios from "axios";
+import { isValidEmail, isValidPassword, isValidPhone, containSlang } from "../utils/validation";
 
-import {
-  isValidEmail,
-  isValidPassword,
-  isValidPhone,
-  containSlang,
-} from "../utils/Validation";
 import { useNavigate } from "react-router-dom";
 import { checkEmail, formSubmit } from "../api/api";
 
@@ -111,7 +105,7 @@ const Signup = () => {
       const response = await checkEmail(email);
 
       if (response.status === 200) {
-        setEmailMessage(response.message);
+        setEmailMessage("사용 가능한 이메일입니다.");
         setEmailStatus(true);
       }
     } catch (error) {
@@ -243,7 +237,7 @@ const Signup = () => {
       const response = await formSubmit(dataToSend);
       if (response.message === "success signup") {
         navigate("/login");
-        console.log("회원가입 성공");
+        alert("회원가입 성공");
       }
     } catch (error) {
       console.error("회원가입 중 오류 발생:", error);
@@ -292,7 +286,7 @@ const Signup = () => {
             </S.InputWrapper>
           </S.InputContainer>
           {errors.email && <S.ErrorMsg>{errors.email}</S.ErrorMsg>}
-          {emailMessage && <S.ErrorMsg>{emailMessage}</S.ErrorMsg>}
+          {emailMessage && <S.EmailStatusMessage success={emailStatus}>{emailMessage}</S.EmailStatusMessage>}
 
           <S.SignupInput
             type="password"
