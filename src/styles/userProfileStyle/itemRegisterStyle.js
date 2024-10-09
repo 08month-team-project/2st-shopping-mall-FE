@@ -1,12 +1,10 @@
 import styled from "styled-components";
 
-export const Container = styled.form`
-  height: 100%;
-  padding: 2rem 4rem 5rem 0;
-  background-color: #f4f6f8;
-`;
+export const Container = styled.form``;
 
 export const BtnBox = styled.div`
+  padding-top: 3rem;
+  padding-right: 5rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;

@@ -66,11 +66,17 @@ const formSubmit = async (formData) => {
   return response.data;
 };
 
-const loginCheck = async (email, password) => {
-  const response = await instance.post("/users/login", { email, password });
+
+export {
+  getAllItem,
+  getItemById,
+  searchItems,
+  getCategories,
+  searchAllItems,
+  checkEmail,
+  formSubmit,
 };
 
-export { getAllItem, getItemById, searchItems, getCategories, searchAllItems, checkEmail, formSubmit };
 
 // 로그인 함수
 export const login = async (email, password) => {
@@ -98,6 +104,7 @@ export const login = async (email, password) => {
   } catch (error) {
     console.error("로그인 중 오류 발생:", error);
     throw new Error(error.response?.data?.message || "로그인 요청 중 오류 발생");
+    );
   }
 };
 

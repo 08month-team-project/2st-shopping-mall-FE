@@ -128,8 +128,8 @@ const ProfileModify = ({
               <RadioLabel>
                 <RadioInput
                   type="radio"
-                  value="male"
-                  checked={inputValues.gender === "male"}
+                  value="남성"
+                  checked={inputValues.gender === "남성"}
                   onChange={handleGenderChange}
                 />
                 남성
@@ -137,8 +137,8 @@ const ProfileModify = ({
               <RadioLabel>
                 <RadioInput
                   type="radio"
-                  value="female"
-                  checked={inputValues.gender === "female"}
+                  value="여성"
+                  checked={inputValues.gender === "여성"}
                   onChange={handleGenderChange}
                 />
                 여성
@@ -156,9 +156,6 @@ const ProfileModify = ({
                 onKeyDown={handleKeyDown}
               />
             </InfoText>
-            {slangError.address && (
-              <ErrorMessage>{slangError.address}</ErrorMessage>
-            )}
           </InfoBox>
           <InfoBoxIntro>
             <InfoTextIntro>
