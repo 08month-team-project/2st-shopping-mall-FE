@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import * as S from "../styles/SignupStyle";
 import axios from "axios";
-import { isValidEmail, isValidPassword, isValidPhone, containSlang } from "../utils/Validation";
+
+import {
+  isValidEmail,
+  isValidPassword,
+  isValidPhone,
+  containSlang,
+} from "../utils/validation";
+
 import { useNavigate } from "react-router-dom";
 import { checkEmail, formSubmit } from "../api/api";
 
