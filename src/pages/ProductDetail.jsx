@@ -45,23 +45,8 @@ import image2 from '../images/image2.jpg';
 import image3 from '../images/image3.jpg';
 
 const ProductDetail = () => {
-    const { itemId } = useParams(); // URL에서 itemId 가져오기
     const [itemImages, setItemImages] = useState([]);
-    const navigate = useNavigate(); 
-
-    useEffect(() => {
-        // 서버에서 해당 itemId의 이미지들을 가져옴
-        axios.get(`/items/{item_id}/images`)
-            .then((response) => {
-                // response.data의 itemImageResponses에서 이미지 URL을 추출하여 상태에 저장
-                const imageResponses = response.data.itemImageResponses;
-                setItemImages(imageResponses);
-            })
-            .catch((error) => {
-                console.error('이미지가 없습니다.', error);
-            });
-    }, [itemId]);
-
+    const navigate = useNavigate();
 
 
 
