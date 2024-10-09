@@ -103,3 +103,27 @@ export const logout = (navigate) => {
   delete axios.defaults.headers.common["Authorization"];
   navigate("/login");
 };
+
+// 유저프로필_유저데이터get
+export const getUserData = async () => {
+  const response = await instance.get("/users/my-page");
+  return response.data;
+};
+
+// 유저프로필_물품등록_카테고리get
+export const getItemCategories = async () => {
+  const response = await instance.get("/items/categories");
+  return response.data;
+};
+
+// 유저프로필_물품등록_사이즈get
+export const getItemSizes = async () => {
+  const response = await instance.get("/items/size");
+  return response.data;
+};
+
+// 유저프로필_물품등록_post
+export const postItemData = async (jsonData) => {
+  const response = await instance.post("/items/seller/register", jsonData);
+  return response.data;
+};

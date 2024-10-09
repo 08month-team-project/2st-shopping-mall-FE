@@ -9,9 +9,9 @@ import UserFillIcon from "../../../icons/userFill.svg";
 
 // style
 import { Wrapper } from "../../../styles/userProfileStyle/profileStyle";
+import { getUserData } from "../../../api/api";
 
 // const baseURL = "http://localhost:8080";
-const baseURL = "http://ec2-3-38-210-174.ap-northeast-2.compute.amazonaws.com:8080";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
@@ -143,18 +143,19 @@ const Profile = () => {
     }
   };
 
-  // 유저데이터 get
-  const getUserData = async () => {
+  // 유저데이터 get >> 🚂구현중...
+  const getUserProfileData = async () => {
     try {
-      const res = await axios.get(`${baseURL}/users/my-page`);
-      console.log(res.data);
-      setUserInfo(res.data);
+      // const res = await axios.get(`${baseURL}/users/my-page`);
+      const res = await getUserData();
+      console.log(res);
+      setUserInfo(res);
     } catch (error) {
       console.error("유저데이터를 불러오는데 실패하였습니다.", error.message);
     }
   };
   useEffect(() => {
-    getUserData();
+    getUserProfileData();
   }, []);
 
   return (

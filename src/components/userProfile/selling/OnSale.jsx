@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { XIconCloseBtn } from "../../button/XIconCloseBtn";
-import { UniBtn } from "../../button/UniBtn";
+import Pagination from "./Pagination";
 
 // icon
 import PlusIcon from "../../../icons/plus-circle.svg";
@@ -23,9 +22,10 @@ import {
   ModifyAmountNumber,
 } from "../../../styles/userProfileStyle/userSellingStyle";
 import { UserMsg } from "../UserMsg";
-import Pagination from "./Pagination";
+import { XIconCloseBtn } from "../../button/XIconCloseBtn";
+import { UniBtn } from "../../button/UniBtn";
 
-const baseURL = "http://localhost:8080";
+// const baseURL = "http://localhost:8080";
 
 // 임시 반복 데이터
 const items = Array.from({ length: 100 }, (_, i) => ({
