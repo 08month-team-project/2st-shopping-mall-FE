@@ -27,7 +27,7 @@ import {
 import { UniBtn } from "../button/UniBtn";
 import { ErrorMessage } from "../error/ErrorMessage";
 
-// const baseURL = "http://localhost:8080";
+const baseURL = "http://localhost:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
@@ -224,7 +224,7 @@ const ItemRegister = () => {
       // const res = await axios.get(`${baseURL}/items/size`);
       const res = await getItemSizes();
       console.log(res);
-      setSizes(res.sizeItemList);
+      setSizes(res.sizeItemList); // 상태값이름
     } catch (error) {
       console.error("사이즈를 불러오는데 실패하였습니다.", error.message);
     }

@@ -9,4 +9,6 @@ export const slangList = [
   "ㅂㅅ",
   "존나",
   "미친",
+  "개새",
+  "개새끼",
 ];
