@@ -23,7 +23,7 @@ const UserNav = () => {
           <StyledNavLink to="/user/selling">판매등록된 물품</StyledNavLink>
         </Li>
         <Li>
-          <StyledNavLink to="/user/buying">구매한 물품</StyledNavLink>
+          {/* <StyledNavLink to="/user/buying">구매한 물품</StyledNavLink> */}
         </Li>
       </Ul>
     </Nav>

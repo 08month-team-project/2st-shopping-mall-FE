@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import * as S from "../styles/SignupStyle";
 import axios from "axios";
+
 import {
   isValidEmail,
   isValidPassword,
   isValidPhone,
   containSlang,
-} from "../utils/Validation";
+} from "../utils/validation";
 import { useNavigate } from "react-router-dom";
+import { checkEmail, formSubmit } from "../api/api";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -84,11 +86,11 @@ const Signup = () => {
       }
     }
 
-    if (name === "phoneNumber") {
+    if (name === "phone_number") {
       if (!isValidPhone(value)) {
-        newErrors.phoneNumber = "전화번호 형식은 000-0000-0000여야 합니다.";
+        newErrors.phone_number = "전화번호 형식은 000-0000-0000여야 합니다.";
       } else {
-        delete newErrors.phoneNumber;
+        delete newErrors.phone_number;
       }
     }
 
@@ -106,10 +108,10 @@ const Signup = () => {
   // 이메일 중복 체크
   const handleEmailCheck = async () => {
     try {
-      const response = await axios.post("/users/check-email", { email });
+      const response = await checkEmail(email);
 
       if (response.status === 200) {
-        setEmailMessage(response.data.message);
+        setEmailMessage(response.message);
         setEmailStatus(true);
       }
     } catch (error) {
@@ -174,6 +176,22 @@ const Signup = () => {
     document.body.appendChild(script);
   };
 
+  useEffect(() => {
+    const formFieldsFilled =
+      formData.email &&
+      formData.password &&
+      formData.confirmPassword &&
+      formData.phone_number &&
+      formData.address &&
+      formData.gender &&
+      formData.name &&
+      formData.nickname;
+
+    const noErrors = Object.keys(errors).length === 0;
+
+    setIsFormValid(formFieldsFilled && noErrors);
+  }, [formData, errors]);
+
   const handleGenderChange = (gender) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -220,10 +238,10 @@ const Signup = () => {
   // 폼 제출 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const { confirmPassword, ...dataToSend } = formData;
     try {
-      const response = await axios.post("users/signup", formData);
-      if (response.status === 200) {
+      const response = await formSubmit(dataToSend);
+      if (response.message === "success signup") {
         navigate("/login");
         console.log("회원가입 성공");
       }
@@ -298,13 +316,15 @@ const Signup = () => {
           )}
           <S.SignupInput
             type="text"
-            name="phoneNumber"
+            name="phone_number"
             placeholder="전화번호를 입력하세요"
-            value={formData.phoneNumber}
+            value={formData.phone_number}
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          {errors.phoneNumber && <S.ErrorMsg>{errors.phoneNumber}</S.ErrorMsg>}
+          {errors.phone_number && (
+            <S.ErrorMsg>{errors.phone_number}</S.ErrorMsg>
+          )}
 
           <S.InputWrapper>
             <S.SignupInput
@@ -331,8 +351,8 @@ const Signup = () => {
               <S.Checkbox
                 type="checkbox"
                 name="male"
-                checked={formData.gender === "male"}
-                onChange={() => handleGenderChange("male")}
+                checked={formData.gender === "MALE"}
+                onChange={() => handleGenderChange("MALE")}
               />
               남성
             </S.GenderLabel>
@@ -340,8 +360,8 @@ const Signup = () => {
               <S.Checkbox
                 type="checkbox"
                 name="female"
-                checked={formData.gender === "female"}
-                onChange={() => handleGenderChange("female")}
+                checked={formData.gender === "FEMALE"}
+                onChange={() => handleGenderChange("FEMALE")}
               />
               여성
             </S.GenderLabel>

@@ -6,10 +6,9 @@ const DelBtn = styled.button`
   cursor: pointer;
   background-color: transparent;
   border: none;
-  position: absolute;
-  top: ${(props) => props.top};
-  right: ${(props) => props.top};
+  position: relative;
   opacity: 0.7;
+  z-index: 10;
   &:hover {
     opacity: 1;
   }
@@ -19,9 +18,9 @@ const Icon = styled.img`
   height: 24px;
 `;
 
-export const XIconCloseBtn = ({ top, right }) => {
+export const XIconCloseBtn = () => {
   return (
-    <DelBtn top={top} right={right}>
+    <DelBtn>
       <Icon src={XIcon} alt="x-icon" />
     </DelBtn>
   );
