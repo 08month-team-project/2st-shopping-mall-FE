@@ -58,7 +58,7 @@ const Navbar = () => {
         <S.StNavbarContainer>
           <S.StLogoDiv>
             <Link to="/">
-              <img src={LogoIcon} alt="logo" />
+              <img alt="logo" />
             </Link>
           </S.StLogoDiv>
           <S.StCategoriesContainer>

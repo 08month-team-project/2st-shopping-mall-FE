@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  containSlang,
-  isValidEmail,
-  isValidPhone,
-} from "../../../utils/validation";
+import { containSlang, isValidEmail, isValidPhone } from "../../../utils/validation";
 import ProfileInfomation from "./ProfileInfomation";
 import ProfileModify from "./ProfileModify";
 import axios from "axios";
@@ -85,9 +81,7 @@ const Profile = () => {
     const isImgValid = !imgError;
     const isEmailValid = !emailError;
     const isPhoneValid = !phoneError;
-    const isSlangValid = Object.values(slangError).every(
-      (error) => error === ""
-    );
+    const isSlangValid = Object.values(slangError).every((error) => error === "");
 
     if (isImgValid && isEmailValid && isPhoneValid && isSlangValid) {
       setUserInfo(inputValues);
@@ -127,9 +121,7 @@ const Profile = () => {
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
     if (file) {
       if (!allowedTypes.includes(file.type)) {
-        setImgError(
-          "jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다."
-        );
+        setImgError("jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다.");
         return;
       }
 
