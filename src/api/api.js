@@ -1,4 +1,3 @@
-
 import instance from "./instance";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
@@ -52,14 +51,22 @@ const searchItems = async ({
   return response.data;
 };
 
-const getCategories = async () => {
-  const response = await instance.get("/items/categories");
+const getCategories = async (email) => {
+  const response = await instance.get("/items/categories", email);
   return response.data;
 };
 
-export { getAllItem, getItemById, searchItems, getCategories, searchAllItems };
+const checkEmail = async (email) => {
+  const response = await instance.post("/users/check-email", email);
+  return response.data;
+};
 
+const formSubmit = async (formData) => {
+  const response = await instance.post("/users/signup", formData);
+  return response.data;
+};
 
+export { getAllItem, getItemById, searchItems, getCategories, searchAllItems, checkEmail, formSubmit };
 
 // 로그인 함수
 export const login = async (email, password) => {
@@ -84,9 +91,7 @@ export const login = async (email, password) => {
 
     return response.data.message;
   } catch (error) {
-    throw new Error(
-      error.response?.data?.message || "로그인 요청 중 오류 발생"
-    );
+    throw new Error(error.response?.data?.message || "로그인 요청 중 오류 발생");
   }
 };
 
