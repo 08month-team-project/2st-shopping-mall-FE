@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { containSlang } from "../../utils/Validation";
+import { containSlang } from "../../utils/validation";
 import UserInput from "./UserInput";
 
 // style
