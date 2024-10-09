@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { containSlang } from "../../utils/validation";
 import UserInput from "./UserInput";
+import { handleKeyDown } from "../../utils/keyDownHandler";
+import { getItemCategories, getItemSizes, postItemData } from "../../api/api";
 
 // style
 import {
@@ -24,13 +26,8 @@ import {
 } from "../../styles/userProfileStyle/itemRegisterStyle";
 import { UniBtn } from "../button/UniBtn";
 import { ErrorMessage } from "../error/ErrorMessage";
-import { handleKeyDown } from "../../utils/keyDownHandler";
 
 // const baseURL = "http://localhost:8080";
-// const baseURL =
-//   "http://ec2-3-38-210-174.ap-northeast-2.compute.amazonaws.com:8080";
-const baseURL =
-  "http://ec2-43-201-251-208.ap-northeast-2.compute.amazonaws.com:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
@@ -143,7 +140,7 @@ const ItemRegister = () => {
       setItemId(res.data.itemId);
       console.log("등록결과: ", res.data);
       setNotifyMsg("이미지업로드에 성공하였습니다!");
-      return res.data; // 업로드확인된 이미지 반환
+      return res.data;
     } catch (error) {
       console.error("등록오류: ", error.message);
       setNotifyMsg("이미지업로드에 실패하였습니다.");
@@ -189,17 +186,18 @@ const ItemRegister = () => {
     };
 
     try {
-      const res = await axios.post(
-        `${baseURL}/items/seller/register`,
-        jsonData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      setItemId(res.data.itemId);
-      console.log("등록결과: ", res.data);
+      // const res = await axios.post(
+      //   `${baseURL}/items/seller/register`,
+      //   jsonData,
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
+      const res = await postItemData(jsonData);
+      setItemId(res.itemId);
+      console.log("등록결과: ", res);
       setNotifyMsg("물품등록에 성공하였습니다!");
       // setNotifyMsg(res.message);
     } catch (error) {
@@ -212,8 +210,10 @@ const ItemRegister = () => {
   // 카테고리 데이터 GET >> ✅성공
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`${baseURL}/items/categories`);
-      setCategories(res.data.categoryList);
+      // const res = await axios.get(`${baseURL}/items/categories`);
+      const res = await getItemCategories();
+      console.log(res);
+      setCategories(res.categoryList);
     } catch (error) {
       console.error("카테고리를 불러오는데 실패하였습니다.", error.message);
     }
@@ -221,8 +221,10 @@ const ItemRegister = () => {
   // 사이즈 데이터 GET >> ✅성공
   const fetchSizes = async () => {
     try {
-      const res = await axios.get(`${baseURL}/items/size`);
-      setSizes(res.data.sizeItemList);
+      // const res = await axios.get(`${baseURL}/items/size`);
+      const res = await getItemSizes();
+      console.log(res);
+      setSizes(res.sizeItemList);
     } catch (error) {
       console.error("사이즈를 불러오는데 실패하였습니다.", error.message);
     }
