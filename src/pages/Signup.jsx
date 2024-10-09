@@ -20,7 +20,7 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    phone_number: "",
+    phoneNumber: "",
     address: {
       city: "",
       zipcode: "",
@@ -30,7 +30,32 @@ const Signup = () => {
     nickname: "",
   });
 
+  const [terms, setTerms] = useState({
+    allAgree: false,
+    service: false,
+    personalInfo: false,
+    marketing: false,
+  });
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const formFieldsFilled =
+      formData.email !== "" &&
+      formData.password !== "" &&
+      formData.confirmPassword !== "" &&
+      formData.phoneNumber !== "" &&
+      formData.address !== "" &&
+      formData.gender !== "" &&
+      formData.name !== "" &&
+      formData.nickname !== "";
+
+    const noErrors = Object.keys(errors).length === 0;
+
+    const termsAccepted = terms.service && terms.personalInfo;
+
+    setIsFormValid(formFieldsFilled && noErrors && termsAccepted);
+  }, [formData, errors, terms]);
 
   const handleBlur = (e) => {
     const { name, value } = e.target;
@@ -135,15 +160,14 @@ const Signup = () => {
     script.async = true;
     script.onload = () => {
       new window.daum.Postcode({
-        oncomplete: function (data) {
-          const postalCode = data.zonecode;
-          const fullAddr = data.address;
-
+        oncomplete: (data) => {
+          const { zonecode, address } = data;
           setFormData((prevData) => ({
             ...prevData,
             address: {
-              city: fullAddr,
-              zipcode: postalCode,
+              ...prevData.address,
+              zipcode: zonecode,
+              city: address,
             },
           }));
         },
@@ -173,6 +197,42 @@ const Signup = () => {
       ...prevData,
       gender: prevData.gender === gender ? "" : gender,
     }));
+  };
+
+  const handleTermsChange = (e) => {
+    const { name, checked } = e.target;
+
+    setTerms((prevTerms) => {
+      const updatedTerms = {
+        ...prevTerms,
+        [name]: checked,
+      };
+
+      if (
+        name !== "allAgree" &&
+        (!updatedTerms.service ||
+          !updatedTerms.personalInfo ||
+          !updatedTerms.marketing)
+      ) {
+        updatedTerms.allAgree = false;
+      }
+
+      if (name === "allAgree") {
+        updatedTerms.service = checked;
+        updatedTerms.personalInfo = checked;
+        updatedTerms.marketing = checked;
+      }
+
+      if (
+        updatedTerms.service &&
+        updatedTerms.personalInfo &&
+        updatedTerms.marketing
+      ) {
+        updatedTerms.allAgree = true;
+      }
+
+      return updatedTerms;
+    });
   };
 
   // 폼 제출 처리
@@ -269,7 +329,7 @@ const Signup = () => {
           <S.InputWrapper>
             <S.SignupInput
               type="text"
-              name="postalCode"
+              name="zipcode"
               placeholder="우편번호"
               style={{ marginRight: "15px" }}
               value={formData.address.zipcode}
@@ -306,6 +366,49 @@ const Signup = () => {
               여성
             </S.GenderLabel>
           </S.GenderWrapper>
+          <hr />
+          <S.TermsContainer>
+            <S.TermsHeader>
+              서비스 이용 약관과 개인정보 수집 및 이용을 확인하시고, 만 14세
+              이상임에 동의하신 후 미리 보기 화면으로 이동하시기 바랍니다.
+            </S.TermsHeader>
+            <S.TermsWrapper>
+              <S.Checkbox
+                type="checkbox"
+                name="allAgree"
+                checked={terms.allAgree}
+                onChange={handleTermsChange}
+              />
+              모든 항목에 동의합니다.
+            </S.TermsWrapper>
+            <S.TermsWrapper>
+              <S.Checkbox
+                type="checkbox"
+                name="service"
+                checked={terms.service}
+                onChange={handleTermsChange}
+              />
+              [서비스 이용약관] (필수)
+            </S.TermsWrapper>
+            <S.TermsWrapper>
+              <S.Checkbox
+                type="checkbox"
+                name="personalInfo"
+                checked={terms.personalInfo}
+                onChange={handleTermsChange}
+              />
+              [개인정보 수집 및 이용 동의] (필수)
+            </S.TermsWrapper>
+            <S.TermsWrapper>
+              <S.Checkbox
+                type="checkbox"
+                name="marketing"
+                checked={terms.marketing}
+                onChange={handleTermsChange}
+              />
+              마케팅 수신 동의 (선택)
+            </S.TermsWrapper>
+          </S.TermsContainer>
           <S.SubmitButtonWrapper>
             <S.SubmitButton type="submit" disabled={!isFormValid}>
               가입
