@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import * as S from "../styles/SignupStyle";
 import axios from "axios";
-import {
-  isValidEmail,
-  isValidPassword,
-  isValidPhone,
-  containSlang,
-} from "../utils/Validation";
+import { isValidEmail, isValidPassword, isValidPhone, containSlang } from "../utils/Validation";
 import { useNavigate } from "react-router-dom";
+import { checkEmail, formSubmit } from "../api/api";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -42,8 +38,7 @@ const Signup = () => {
 
     if (name === "password") {
       if (!isValidPassword(value)) {
-        newErrors.password =
-          "비밀번호는 8자에서 20자 사이여야 하며, 최소 하나의 문자와 하나의 숫자를 포함해야 합니다.";
+        newErrors.password = "비밀번호는 8자에서 20자 사이여야 하며, 최소 하나의 문자와 하나의 숫자를 포함해야 합니다.";
       } else {
         delete newErrors.password;
       }
@@ -79,7 +74,7 @@ const Signup = () => {
   // 이메일 중복 체크
   const handleEmailCheck = async () => {
     try {
-      const response = await axios.post("/users/check-email", { email });
+      const response = await checkEmail(email);
 
       if (response.status === 200) {
         setEmailMessage(response.data.message);
@@ -97,9 +92,7 @@ const Signup = () => {
 
         // 상태 코드 400 (유효성 검증 오류)
         if (status === 400 && data.field_errors) {
-          const emailError = data.field_errors.find(
-            (error) => error.field === "email"
-          );
+          const emailError = data.field_errors.find((error) => error.field === "email");
 
           if (emailError) {
             setEmailMessage(emailError.message);
@@ -126,8 +119,7 @@ const Signup = () => {
   // 주소 검색 처리
   const handleAddressSearch = () => {
     const script = document.createElement("script");
-    script.src =
-      "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    script.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     script.async = true;
     script.onload = () => {
       new window.daum.Postcode({
@@ -174,7 +166,7 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("users/signup", formData);
+      const response = await formSubmit(formData);
       if (response.status === 200) {
         navigate("/login");
         console.log("회원가입 성공");
@@ -245,9 +237,7 @@ const Signup = () => {
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          {errors.confirmPassword && (
-            <S.ErrorMsg>{errors.confirmPassword}</S.ErrorMsg>
-          )}
+          {errors.confirmPassword && <S.ErrorMsg>{errors.confirmPassword}</S.ErrorMsg>}
           <S.SignupInput
             type="text"
             name="phoneNumber"
@@ -271,13 +261,7 @@ const Signup = () => {
               주소찾기
             </S.SmallButton>
           </S.InputWrapper>
-          <S.SignupInput
-            type="text"
-            name="address"
-            placeholder="주소를 입력하세요"
-            value={formData.address}
-            readOnly
-          />
+          <S.SignupInput type="text" name="address" placeholder="주소를 입력하세요" value={formData.address} readOnly />
           <S.GenderWrapper>
             <S.GenderLabel>
               <S.Checkbox
