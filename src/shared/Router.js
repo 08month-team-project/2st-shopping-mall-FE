@@ -19,16 +19,16 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="signup" element={<Signup />} />
-        <Route path="user" element={<User />}>
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/user" element={<User />}>
           <Route index element={<Profile />} />
           <Route path="register" element={<Register />} />
           <Route path="selling" element={<Selling />} />
           <Route path="buying" element={<Buying />} />
         </Route>
-        <Route path="signup" element={<Signup />} />
-        <Route path="basket" element={<Basket />} />
-        <Route path="payment" element={<Payment />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/basket" element={<Basket />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
     </BrowserRouter>
   );

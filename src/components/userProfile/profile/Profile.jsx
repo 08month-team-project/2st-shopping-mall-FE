@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   containSlang,
   isValidEmail,
@@ -13,16 +13,18 @@ import UserFillIcon from "../../../icons/userFill.svg";
 // style
 import { Wrapper } from "../../../styles/userProfileStyle/profileStyle";
 
+const baseURL = "http://localhost:8080";
+
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
     name: "사용자",
     nickName: "닉네임",
-    phone: "010-0000-0000",
+    phone_number: "010-0000-0000",
     email: "sldkfjsdf@naver.com",
     address: "들안로00길 00",
-    intro: "소개글을 작성해주세요.",
+    comment: "소개글을 작성해주세요.",
     gender: "male",
-    profileImg: UserFillIcon,
+    profile_image_url: UserFillIcon,
   });
   const [inputValues, setInputValues] = useState({ ...userInfo });
   const [previewImg, setPreviewImg] = useState(UserFillIcon);
@@ -40,7 +42,7 @@ const Profile = () => {
     }));
 
     // 전화번호 유효성검사
-    if (id === "phone") {
+    if (id === "phone_number") {
       if (!isValidPhone(value)) {
         setPhoneError("유효하지 않은 전화번호 형식입니다. (예: 000-0000-0000)");
       } else {
@@ -90,10 +92,10 @@ const Profile = () => {
         { id: "img", error: imgError },
         { id: "name", error: slangError.name },
         { id: "nickName", error: slangError.nickName },
-        { id: "phone", error: phoneError },
+        { id: "phone_number", error: phoneError },
         { id: "email", error: emailError },
         { id: "address", error: slangError.address },
-        { id: "intro", error: slangError.intro },
+        { id: "comment", error: slangError.comment },
       ];
       const firstErrorInput = errorInputs.find((input) => input.error);
       if (firstErrorInput) {
@@ -137,13 +139,27 @@ const Profile = () => {
       reader.onloadend = () => {
         setInputValues((prev) => ({
           ...prev,
-          profileImg: reader.result,
+          profile_image_url: reader.result,
         }));
         setPreviewImg(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
+
+  // 유저데이터 get
+  // const getUserData = async () => {
+  //   try {
+  //     const res = await axios.get(`${baseURL}/users/my-page`);
+  //     setUserInfo(res.data);
+  //     console.log(res.data);
+  //   } catch (error) {
+  //     console.error("유저데이터를 불러오는데 실패하였습니다.", error.message);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getUserData();
+  // }, []);
 
   return (
     <Wrapper>
