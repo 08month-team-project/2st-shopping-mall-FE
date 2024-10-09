@@ -7,7 +7,7 @@ import logout from "../../utils/icons/logout_icon.png";
 import { Link } from "react-router-dom";
 // import { getCookie } from "./../../api/cookies";
 import { getCategories } from "../../api/api";
-//import LogoIcon from "../../Ulogo.svg";
+import LogoIcon from "../../Ulogo.svg";
 import UserIcon from "../../icons/user.svg";
 
 const Navbar = () => {
