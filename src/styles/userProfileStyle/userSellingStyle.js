@@ -39,6 +39,12 @@ export const ItemBox = styled.div`
   align-items: center;
   gap: 1.6rem;
 `;
+export const ItemWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
 export const Item = styled.div`
   width: 100%;
   padding: 1rem;
@@ -61,7 +67,10 @@ export const ItemInfoBox = styled.div`
 `;
 export const ItemName = styled.p``;
 export const ItemPrice = styled.p``;
-export const ItemAmount = styled.p``;
+export const ItemAmount = styled.p`
+  font-size: 1.1rem;
+  font-weight: 600;
+`;
 
 export const ModifyAmountBox = styled.div`
   display: flex;

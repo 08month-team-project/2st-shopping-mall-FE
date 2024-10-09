@@ -64,7 +64,9 @@ const Navbar = () => {
           <S.StCategoriesContainer>
             <S.StCategoriesUl>
               {categories.map((category) => (
-                <S.StCategoriesLi key={category.id}>{category.categoryName}</S.StCategoriesLi>
+                <S.StCategoriesLi key={category.id}>
+                  {category.categoryName}
+                </S.StCategoriesLi>
               ))}
             </S.StCategoriesUl>
           </S.StCategoriesContainer>
@@ -78,7 +80,11 @@ const Navbar = () => {
             <Link to={"/"}>
               <S.StLogOutContainer>
                 <S.StLogOut onClick={logoutHandler}>로그아웃</S.StLogOut>
-                <S.StLogOutImg src={logout} alt="logoutImg" onClick={logoutHandler}></S.StLogOutImg>
+                <S.StLogOutImg
+                  src={logout}
+                  alt="logoutImg"
+                  onClick={logoutHandler}
+                ></S.StLogOutImg>
               </S.StLogOutContainer>
             </Link>
           </S.StUserSection>
