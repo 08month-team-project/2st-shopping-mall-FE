@@ -42,7 +42,7 @@ const MainHeader = () => {
           />
         ) : (
           // 로그인 아이콘 (로그인되지 않은 상태일 때만 표시)
-          <Link to="/login">
+          <Link to="/users/login">
             <Icon src={LoginIcon} alt="login-icon" />
           </Link>
         )}

@@ -1,5 +1,5 @@
 import instance from "./instance";
-import { Navigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 import axios from "axios";
 
 const getAllItem = async () => {
@@ -66,34 +66,44 @@ const formSubmit = async (formData) => {
   return response.data;
 };
 
-export { getAllItem, getItemById, searchItems, getCategories, searchAllItems, checkEmail, formSubmit };
+export {
+  getAllItem,
+  getItemById,
+  searchItems,
+  getCategories,
+  searchAllItems,
+  checkEmail,
+  formSubmit,
+};
 
 // 로그인 함수
 export const login = async (email, password) => {
   try {
     // 로그인 API 호출
     const response = await instance.post("/users/login", { email, password });
-    console.log(response);
+
+    // 응답 헤더에서 Authorization 헤더 추출
     const authorizationHeader = response.headers["authorization"];
-
     if (!authorizationHeader) {
-      throw new Error("액세스 토큰이 제공되지 않았습니다.");
-    } // 응답 헤더에서 JWT 액세스 토큰 추출
+      throw new Error("응답 헤더에 토큰 없음");
+    }
 
-    const token = authorizationHeader.split(" ")[1];
-    if (!token) {
-      throw new Error("액세스 토큰을 추출할 수 없습니다.");
-    } // Authorization 헤더에서 "Bearer 액세스 토큰" 형식으로 토큰 추출
+    // Authorization 헤더에서 Bearer 형식으로 토큰 추출
+    const accessToken = authorizationHeader.split(" ")[1];
+    if (!accessToken) {
+      throw new Error("Authorization 헤더에서 토큰을 추출할 수 없습니다.");
+    }
 
     // JWT 토큰을 로컬 스토리지에 저장
-    localStorage.setItem("accessToken", token);
-    console.log("토큰이 로컬 스토리지에 저장되었습니다:", token);
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; // 모든 요청에 토큰 추가, 사용자가 로그인에 성공했다는 것을 증명하기 위해
+    localStorage.setItem("accessToken", accessToken);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`; // 모든 요청에 토큰 추가
 
-    return response.data.message;
+    return response; // 성공적으로 로그인되었음을 반환
   } catch (error) {
     console.error("로그인 중 오류 발생:", error);
-    throw new Error(error.response?.data?.message || "로그인 요청 중 오류 발생");
+    throw new Error(
+      error.response?.data?.message || "로그인 요청 중 오류 발생"
+    );
   }
 };
 
@@ -101,7 +111,9 @@ export const login = async (email, password) => {
 export const logout = (navigate) => {
   localStorage.removeItem("accessToken");
   delete axios.defaults.headers.common["Authorization"];
-  navigate("/login");
+  if (navigate) {
+  }
+  navigate("/users/login");
 };
 
 // 유저프로필_유저데이터get

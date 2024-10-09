@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import {
   PaymentPage,
   Title,
@@ -17,19 +17,19 @@ import {
   ItemDetailSpan,
   PaymentButton,
   SizeDetail,
-} from '../styles/payMentStyle';
-import axios from 'axios';
+} from "../styles/payMentStyle";
+import axios from "axios";
 
 const Payment = () => {
   const location = useLocation();
   const { state } = location;
   const [cartItems, setCartItems] = useState(state?.items || []);
   const [paymentInfo, setPaymentInfo] = useState({
-    email: '',
-    address: '',
-    city: '',
-    detailedAddress: '',
-    postalCode: '',
+    email: "",
+    address: "",
+    city: "",
+    detailedAddress: "",
+    postalCode: "",
   });
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -60,7 +60,7 @@ const Payment = () => {
 
     try {
       const response = await axios.post(
-        'http://ec2-43-201-251-11.ap-northeast-2.compute.amazonaws.com:8080/orders',
+        "http://ec2-3-35-136-77.ap-northeast-2.compute.amazonaws.com:8080 /orders",
         {
           customer_email: paymentInfo.email,
           city: paymentInfo.city,
@@ -71,12 +71,12 @@ const Payment = () => {
       );
 
       if (response.status === 200) {
-        alert('결제가 성공적으로 완료되었습니다!');
+        alert("결제가 성공적으로 완료되었습니다!");
       } else {
-        alert('결제에 실패했습니다.');
+        alert("결제에 실패했습니다.");
       }
     } catch (error) {
-      console.error('결제 처리 중 오류 발생:', error);
+      console.error("결제 처리 중 오류 발생:", error);
     }
   };
 
