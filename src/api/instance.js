@@ -3,7 +3,7 @@ import { getCookie, removeCookie, setCookie } from "./cookies";
 import { queryAllByAltText } from "@testing-library/react";
 
 const instance = axios.create({
-  baseURL: "http://ec2-3-38-210-174.ap-northeast-2.compute.amazonaws.com:8080",
+  baseURL: "http://ec2-3-38-250-246.ap-northeast-2.compute.amazonaws.com:8080",
 
   // baseURL: `${process.env.REACT_APP_SERVER_URL}`,
   headers: {
@@ -42,7 +42,6 @@ const instance = axios.create({
 //     if (error.response.status === 401 && !originalRequest._retry) {
 //       try {
 //         originalRequest._retry = true;
-
 //         const refresh_token = localStorage.getItem("REFRESH_TOKEN");
 //         originalRequest.headers["RefreshToken"] = `Bearer ${refresh_token}`;
 //         return instance(originalRequest);
