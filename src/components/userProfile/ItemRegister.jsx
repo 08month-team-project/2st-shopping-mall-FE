@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { containSlang } from "../../utils/validation";
 import { handleKeyDown } from "../../utils/keyDownHandler";
+import axios from "axios";
 import {
   getItemCategories,
   getItemSizes,
