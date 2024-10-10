@@ -176,16 +176,18 @@ export const getItemSizes = async () => {
 // 유저프로필_물품등록_이미지업로드_post
 export const postImageUpload = async (ImageDataUpload) => {
   const token = localStorage.getItem("accessToken");
+
   const response = await instance.post("/items/images/upload", ImageDataUpload, {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
     },
   });
+
   return response.data;
 };
 
-// 유저프로필_물품등록_post >> 🚂구현중...
+// 유저프로필_물품등록_post
 export const postItemData = async (jsonData) => {
   const response = await instance.post("/items/seller/register", jsonData);
   return response.data;
@@ -209,5 +211,16 @@ export const putItemStockData = async (id, newStock, sizeName) => {
 // 유저프로필_판매완료물품_get📝
 export const getSoldItemData = async (page = 1) => {
   const response = await instance.get(`/items/status?status=ALL_OUT_OF_STOCK&page=${page}`);
+  return response.data;
+};
+
+// 유저프로필_판매자변경_post
+export const postToSeller = async () => {
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.post("/users/role/seller", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };

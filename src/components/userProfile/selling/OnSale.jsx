@@ -7,7 +7,6 @@ import {
   ItemAmount,
   ItemBox,
   ItemDate,
-  ItemImg,
   ItemImgUrl,
   ItemName,
   ItemPrice,
@@ -19,19 +18,8 @@ import {
 } from "../../../styles/userProfileStyle/userSellingStyle";
 import { UniBtn } from "../../button/UniBtn";
 
-// 테스트 반복 데이터
-const exItems = Array.from({ length: 3 }, (_, i) => ({
-  imageUrl: "사진",
-  name: `상품명 ${i + 1}`,
-  price: 10000,
-  stock: 10,
-  expiredAt: "24.10.31",
-}));
-
 const OnSale = () => {
-  // 받아올 데이터 상태관리
   const [itemsData, setItemsData] = useState([]);
-  //////////////////////
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [stockValues, setStockValues] = useState({});
@@ -125,6 +113,7 @@ const OnSale = () => {
                   handleStockChange(item.id, parseInt(e.target.value) || 0)
                 }
                 id={`stock-input-${item.id}`}
+                min="0"
               />
               <UniBtn
                 bgColor="#404040"
@@ -135,21 +124,6 @@ const OnSale = () => {
             </ModifyAmountBox>
           </ItemWrapper>
         ))}
-      {/* 페이지네이션을 위한 테스트아이템 */}
-      {exItems.length > 0 &&
-        exItems.map((item, idx) => (
-          <ItemWrapper>
-            <ItemBox key={idx}>
-              <ItemImg>{item.imageUrl}</ItemImg>
-              <ItemName>{item.name}</ItemName>
-              <Span>|</Span>
-              <ItemPrice>가격: {item.price.toLocaleString()}원</ItemPrice>
-              <Span>|</Span>
-              <ItemDate>판매기간: {item.expiredAt}</ItemDate>
-            </ItemBox>
-          </ItemWrapper>
-        ))}
-
       {/* 📝페이지네이션 */}
       <PageBox>
         <UniBtn
