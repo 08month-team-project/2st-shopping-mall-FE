@@ -1,9 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/api";
-
 import { isValidEmail, isValidPassword } from "../../utils/validation.js";
-import { UserContext } from "../../hook/context/UserContext.js";
 import * as L from "../../styles/LoginStyle";
 import LoginButton from "./LoginButton.jsx";
 
@@ -68,7 +66,10 @@ const LoginForm = () => {
       const accessToken = response.headers["authorization"].split(" ")[1];
       localStorage.setItem("accessToken", accessToken);
 
-      // 로그인 후 홈으로 이동
+      // 수동으로 storage 이벤트를 발생시켜 MainHeader가 감지하도록 함
+      window.dispatchEvent(new Event("storage"));
+
+      // 홈 페이지로 이동
       navigate("/");
       console.log("홈 페이지로 이동 완료.");
     } catch (error) {

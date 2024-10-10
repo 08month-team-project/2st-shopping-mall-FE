@@ -177,7 +177,24 @@ export const getItemSizes = async () => {
 export const postImageUpload = async (ImageDataUpload) => {
   const token = localStorage.getItem("accessToken");
 
-  const response = await instance.post("/items/images/upload", ImageDataUpload, {
+  const response = await instance.post(
+    "/items/images/upload",
+    ImageDataUpload,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+// 유저프로필_물품등록_post
+export const postItemData = async (jsonData) => {
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.post("/items/seller/register", jsonData, {
+
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
