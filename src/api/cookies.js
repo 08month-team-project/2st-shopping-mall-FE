@@ -13,6 +13,7 @@ export const setCookie = (name, value, options = {}) => {
   document.cookie = updatedCookie;
 };
 
-export const removeCookie = (name) => {
-  setCookie(name, "", { "max-age": -1 });
+export const removeCookie = (name, options = {}) => {
+  // 기본적으로 삭제 시에도 path를 "/"로 설정
+  setCookie(name, "", { ...options, "max-age": -1, path: "/" });
 };
