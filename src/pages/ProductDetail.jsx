@@ -34,6 +34,7 @@ import {
   ButtonContainer,
   ModalButton,
   ModalCloseButton,
+  ProductDescription,
 } from "../styles/ProductDetailStyle";
 
 import HeartIcon from "../icons/heart.png";
@@ -109,16 +110,16 @@ const ProductDetail = () => {
     navigate("/Basket", { state: { product: productInfo } });
   };
 
-      // 결제 페이지로 이동
-      const handleGoToPayment = () => {
-        navigate('/Payment');
-    };
+  // 결제 페이지로 이동
+  const handleGoToPayment = () => {
+    navigate('/Payment');
+  };
 
 
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 400,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
@@ -132,16 +133,18 @@ const ProductDetail = () => {
       try {
         const response = await getItemImageById(item_id);
         const response2 = await getItemById(item_id);
-        console.log(response);
-        console.log(response2);
-        setItemImages(response.itemImageResponses); // API로부터 이미지 데이터 설정
+        //console.log(response);
+        //console.log(response2);
+        setItemImages(response.itemImageResponses); 
         setItemData(response2);
+
+        console.log("Fetched itemImages:", response.itemImageResponses);
       } catch (error) {
         console.error("Error fetching images:", error);
       }
     };
 
-    fetchImages(); // item_id가 있을 때만 API 호출
+    fetchImages(); 
   }, [item_id]);
 
   return (
@@ -150,22 +153,25 @@ const ProductDetail = () => {
         <ImageContainer>
           <Image>
           <Slider {...settings}>
-              {itemImages.map((image) => (
-                <div key={image.imageUrlId}>
-                  <img src={`${image.imageUrl}`} alt={`${image.imageUrlId}`} />
+            {itemImages.length > 0 ? (
+              [...Array(3)].map((_, index) => ( 
+                <div key={index}>
+                  <img src={itemImages[0].imageUrl} alt={`Image ${itemImages[0].imageUrlId}`} />
                 </div>
-              ))}
-            </Slider>
+              ))
+            ) : (
+              <p>No images available</p>
+            )}
+          </Slider>
           </Image>
           <Date>한정판매</Date>
         </ImageContainer>
         <InfoContainer>
-            <Name>{itemData.seller_nickname}</Name>
             <Icon>
+              <Name>{itemData.seller_nickname} 님</Name>
                 <IconImage src={StoreIcon} alt="StoreIcon" />
                 <IconImage src={HeartIcon} alt="HeartIcon" />
             </Icon>
-
             <Product>
                 <ProductName>{itemData.item_name}</ProductName>
                 <ProductPrice>{itemData.item_price}원</ProductPrice>
@@ -195,6 +201,7 @@ const ProductDetail = () => {
                 </ProductCheck>
               )}
             </ProductInfo>
+            <ProductDescription>제품 설명 : {itemData.description}</ProductDescription>
             <DeliveryText>✔︎ 오전 10시까지 결제 완료 시 당일 발송</DeliveryText>
             <DeliveryText>✔︎ 제주도 및 도시산간 지역은 추가 배송비 3000원</DeliveryText>
           </Product>

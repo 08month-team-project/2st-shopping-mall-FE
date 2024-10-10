@@ -25,6 +25,8 @@ export const Image = styled.div`
 `;
 export const Name = styled.div`
     display: flex;
+    margin-right: 200px;
+    font-weight: bold;
 `;
 export const InfoContainer = styled.div`
     display: flex;
@@ -33,7 +35,7 @@ export const InfoContainer = styled.div`
 `;
 export const Product = styled.div`
     margin-top: 80px;
-    margin-bottom: 100px;
+    margin-bottom: 30px;
 `;
 
 export const Icon = styled.div`
@@ -48,17 +50,17 @@ export const IconImage = styled.img`
 `;
 export const ProductName = styled.div`
     margin-bottom: 30px;
-    font-size: 20px;
+    font-size: 25px;
 `;
 export const ProductPrice = styled.div`
     margin-bottom: 30px;
+    font-size: 18px;
 `;
 export const ProductInfo = styled.div`
     margin-bottom: 100px;
 `;
 export const ProductSize = styled.div`
     display: flex;
-    margin-bottom: 10px;
 `;
 export const QuantityButton = styled.div`
     display: flex;
@@ -112,11 +114,12 @@ export const OptionBox = styled.div`
     margin-top: 70px;
 `;
 export const DeliveryText = styled.div`
-    font-size: 12px;
+    font-size: 10px;
 
 `;
 export const ProductDescription = styled.div`
-    font-size: 12px;
+    font-size: 14px;
+    margin-bottom: 50px;
 
 `;
 

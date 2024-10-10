@@ -124,7 +124,7 @@ const Basket = () => {
       <BasketItems>
       {product ? (
         <div>
-          <img src={product.itemImage} alt={product.itemName} />
+          <img src={product.itemImage} alt={product.itemName} style={{ width: "100px", height: "100px;" }}/>
           <h2>{product.itemName}</h2>
           <p>가격: {product.itemPrice}</p>
           <p>사이즈: {product.itemSize}</p>
