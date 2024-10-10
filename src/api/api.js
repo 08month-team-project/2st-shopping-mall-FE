@@ -152,23 +152,13 @@ export const getUserData = async () => {
 
 // 유저프로필_물품등록_카테고리get >> ❓토큰이 필요한가???
 export const getItemCategories = async () => {
-  const token = localStorage.getItem("accessToken");
-  const response = await instance.get("/items/categories", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const response = await instance.get("/items/categories");
   return response.data;
 };
 
 // 유저프로필_물품등록_사이즈get >> ❓토큰이 필요한가???
 export const getItemSizes = async () => {
-  const token = localStorage.getItem("accessToken");
-  const response = await instance.get("/items/size", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const response = await instance.get("/items/size");
   return response.data;
 };
 
