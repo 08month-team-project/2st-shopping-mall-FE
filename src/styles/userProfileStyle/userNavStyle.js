@@ -24,6 +24,10 @@ export const Li = styled.li`
     color: #ed1e25;
   }
 `;
+export const SellerLi = styled(Li)`
+  pointer-events: ${({ isActive }) => (isActive ? "auto" : "none")};
+  color: ${({ isActive }) => (isActive ? "inherit" : "#ccc")};
+`;
 
 // 이동된 링크 스타일
 export const StyledNavLink = styled(NavLink)`
@@ -34,4 +38,13 @@ export const StyledNavLink = styled(NavLink)`
     background-color: #ffdfe0;
     font-weight: 500;
   }
+`;
+
+// 버튼
+export const SellerBtnBox = styled.div`
+  width: fit-content;
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
 `;

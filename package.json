@@ -31,7 +31,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://ec2-3-36-69-202.ap-northeast-2.compute.amazonaws.com:8080",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -52,5 +51,6 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
-  }
+  },
+  "proxy": "http://ec2-3-36-69-202.ap-northeast-2.compute.amazonaws.com:8080"
 }

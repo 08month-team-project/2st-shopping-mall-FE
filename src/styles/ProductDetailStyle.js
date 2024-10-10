@@ -10,7 +10,9 @@ export const Wrapper = styled.div`
     margin: 0 auto;
     margin-top: 50px;
     flex-direction: row;
-    @media (max-width: 768px){flex-direction: column;}
+    @media (max-width: 768px) {
+        flex-direction: column; /* 화면이 작아지면 column으로 변경 */
+    }
 `;
 export const ImageContainer = styled.div`
     margin-right: 30px;

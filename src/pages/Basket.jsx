@@ -13,8 +13,14 @@ import { useNavigate } from "react-router-dom";
 import { XIconCloseBtn } from "../components/button/XIconCloseBtn"; // 경로를 맞춰서 import
 import { UniBtn } from "../components/button/UniBtn";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+
 
 const Basket = () => {
+  const location = useLocation();
+  const { product } = location.state || {}; // 전달된 상품 정보 가져오기
+
+
   const [items, setItems] = useState([]);
   const navigate = useNavigate();
 
@@ -116,6 +122,17 @@ const Basket = () => {
     <BasketContainer>
       <h1>장바구니 페이지</h1>
       <BasketItems>
+      {product ? (
+        <div>
+          <img src={product.itemImage} alt={product.itemName} />
+          <h2>{product.itemName}</h2>
+          <p>가격: {product.itemPrice}</p>
+          <p>사이즈: {product.itemSize}</p>
+          <p>수량: {product.itemQuantity}</p>
+        </div>
+      ) : (
+        <p>장바구니에 상품이 없습니다.</p>
+      )}
         {items.map((item) => (
           <BasketItem key={item.id}>
             <ItemImage>

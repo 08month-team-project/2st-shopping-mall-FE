@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { containSlang } from "../../utils/validation";
 import { handleKeyDown } from "../../utils/keyDownHandler";
-import axios from "axios";
-import {
-  getItemCategories,
-  getItemSizes,
-  postImageUpload,
-  postItemData,
-} from "../../api/api";
+import { getItemCategories, getItemSizes, postImageUpload, postItemData } from "../../api/api";
 
 // style
 import {
@@ -32,8 +26,7 @@ import UserInput from "./UserInput";
 import { UniBtn } from "../button/UniBtn";
 import { ErrorMessage } from "../error/ErrorMessage";
 
-const baseURL =
-  "http://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com:8080";
+const baseURL = "http://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
@@ -67,9 +60,7 @@ const ItemRegister = () => {
     files.forEach((file) => {
       // 파일형식 유효성검사
       if (!allowedTypes.includes(file.type)) {
-        setImgError(
-          "jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다."
-        );
+        setImgError("jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다.");
       }
       // 파일용량(1MB) 유효성검사
       else if (file.size > 1 * 1024 * 1024) {
@@ -134,18 +125,9 @@ const ItemRegister = () => {
     }
 
     try {
-      const res = await axios.post(
-        `${baseURL}/items/images/upload`,
-        ImageDataUpload,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            withCredentials: true,
-          },
-        }
-      );
-      setItemId(res.data.itemId);
-      console.log("등록결과: ", res.data);
+      const res = await postImageUpload(ImageDataUpload);
+      setItemId(res.itemId);
+      console.log("등록결과: ", res.itemId);
       setNotifyMsg("이미지업로드에 성공하였습니다!");
       return res;
     } catch (error) {
@@ -159,9 +141,7 @@ const ItemRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const isSlangValid = Object.values(slangError).every(
-      (error) => error === ""
-    );
+    const isSlangValid = Object.values(slangError).every((error) => error === "");
 
     if (!isSlangValid) {
       const errorInputs = [
@@ -249,13 +229,7 @@ const ItemRegister = () => {
         <ItemInfoBox>
           <ItemInfo>
             <InfoLabel>상품이미지</InfoLabel>
-            <InfoInput
-              type="file"
-              id="img"
-              multiple
-              onChange={handleImagesChange}
-              required
-            />
+            <InfoInput type="file" id="img" multiple onChange={handleImagesChange} required />
             <ImgUploadBtn type="button" onClick={handleImageUpload}>
               이미지업로드
             </ImgUploadBtn>
@@ -356,9 +330,7 @@ const ItemRegister = () => {
               onKeyDown={handleKeyDown}
               required
             />
-            {slangError.description && (
-              <ErrorMessage>{slangError.description}</ErrorMessage>
-            )}
+            {slangError.description && <ErrorMessage>{slangError.description}</ErrorMessage>}
           </ItemInfoScript>
         </ItemInfoBox>
       </RegisterInfo>
