@@ -1,5 +1,6 @@
 import instance from "./instance";
-// import { Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../hook/context/UserContext";
 import axios from "axios";
 import { setCookie, removeCookie } from "../api/cookies";
 
@@ -16,6 +17,16 @@ const getAllItem = async () => {
 const getItemById = async (item_id) => {
   try {
     const response = await instance.get(`/items/${item_id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching item:", error);
+    throw error;
+  }
+};
+
+const getItemImageById = async (item_id) => {
+  try {
+    const response = await instance.get(`/items/${item_id}/images`);
     return response.data;
   } catch (error) {
     console.error("Error fetching item:", error);
@@ -75,10 +86,11 @@ export {
   searchAllItems,
   checkEmail,
   formSubmit,
+  getItemImageById,
 };
 
 // 로그인 함수
-export const login = async (email, password) => {
+export const login = async (email, password, setUser) => {
   try {
     // 로그인 API 호출
     const response = await instance.post("/users/login", { email, password });
@@ -100,7 +112,7 @@ export const login = async (email, password) => {
     }
 
     // 응답 본문에서 refresh 토큰 추출
-    const { refresh } = response.data;
+    const { refresh, user } = response.data;
     if (!refresh) {
       throw new Error("응답 데이터에 리프레시 토큰이 없습니다.");
     }
@@ -115,25 +127,24 @@ export const login = async (email, password) => {
 
     // 모든 요청에 액세스 토큰 추가, 사용자가 로그인에 성공했다는 것을 증명하기 위해
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-
+    setUser(user);
     return response;
   } catch (error) {
     console.error("로그인 중 오류 발생:", error);
-    throw new Error(
-      error.response?.data?.message || "로그인 요청 중 오류 발생"
-    );
+    throw new Error(error.response?.data?.message || "로그인 요청 중 오류 발생");
   }
 };
 
 // 로그아웃 함수
-export const logout = (navigate) => {
+export const logout = (navigate, setUser) => {
   localStorage.removeItem("accessToken"); // 로컬 스토리지에서 액세스 토큰 제거
   delete axios.defaults.headers.common["Authorization"];
 
   // 리프레시 토큰 쿠키 삭제
-  removeCookie("refreshToken");
+  removeCookie("refreshToken", { path: "/", maxAge: 0 });
   console.log("리프레시 토큰 쿠키가 삭제되었습니다.");
-
+  setUser(null);
+  window.location.reload();
   if (navigate) {
     navigate("/users/login");
   }
@@ -165,6 +176,7 @@ export const getItemSizes = async () => {
 // 유저프로필_물품등록_이미지업로드_post
 export const postImageUpload = async (ImageDataUpload) => {
   const token = localStorage.getItem("accessToken");
+
   const response = await instance.post(
     "/items/images/upload",
     ImageDataUpload,
@@ -182,55 +194,50 @@ export const postImageUpload = async (ImageDataUpload) => {
 export const postItemData = async (jsonData) => {
   const token = localStorage.getItem("accessToken");
   const response = await instance.post("/items/seller/register", jsonData, {
+
     headers: {
+      "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
     },
   });
+
+  return response.data;
+};
+
+// 유저프로필_물품등록_post
+export const postItemData = async (jsonData) => {
+  const response = await instance.post("/items/seller/register", jsonData);
   return response.data;
 };
 
 // 유저프로필_물품등록확인_get
 export const getRegisteredItemData = async (page = 1) => {
-  const token = localStorage.getItem("accessToken");
-  const response = await instance.get(
-    `/items/status?status=IN_STOCK&page=${page}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await instance.get(`/items/status?status=IN_STOCK&page=${page}`);
   return response.data;
 };
 
 // 유저프로필_물품등록확인_재고수량put📝
 export const putItemStockData = async (id, newStock, sizeName) => {
-  const token = localStorage.getItem("accessToken");
-  const response = await instance.put(
-    `/items/${id}/stock`,
-    {
-      stuck: newStock,
-      size_name: sizeName || "DEFAULT_SIZE",
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await instance.put(`/items/${id}/stock`, {
+    stuck: newStock,
+    size_name: sizeName || "DEFAULT_SIZE",
+  });
   return response.data;
 };
 
 // 유저프로필_판매완료물품_get📝
 export const getSoldItemData = async (page = 1) => {
+  const response = await instance.get(`/items/status?status=ALL_OUT_OF_STOCK&page=${page}`);
+  return response.data;
+};
+
+// 유저프로필_판매자변경_post
+export const postToSeller = async () => {
   const token = localStorage.getItem("accessToken");
-  const response = await instance.get(
-    `/items/status?status=ALL_OUT_OF_STOCK&page=${page}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await instance.post("/users/role/seller", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };

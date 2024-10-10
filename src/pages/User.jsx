@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import UserNav from "../components/userProfile/UserNav";
 import { Outlet } from "react-router-dom";
+import { postToSeller } from "../api/api";
 
 const User = () => {
+  const [isSeller, setIsSeller] = useState(false);
+
+  const handleSwitchUser = async () => {
+    // if (isSeller === false) {
+    //   try {
+    //     const res = await postToSeller();
+    //     if (res.success) {
+    //       setIsSeller(true);
+    //     }
+    //   } catch (error) {
+    //     console.error("판매자 전환에 실패했습니다:", error.message);
+    //   }
+    // } else {
+    //   setIsSeller(false);
+    // }
+    /////서버오류시
+    setIsSeller(!isSeller);
+  };
   return (
     <>
-      <UserNav />
+      <UserNav isSeller={isSeller} handleSwitchUser={handleSwitchUser} />
       <Outlet />
     </>
   );

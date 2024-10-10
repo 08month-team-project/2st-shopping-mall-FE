@@ -12,25 +12,29 @@ import Basket from "../pages/Basket";
 import Payment from "../pages/Payment";
 import MainHeader from "../components/mainHeader/MainHeader";
 import ProductDetail from "../pages/ProductDetail";
+import { UserProvider } from "../hook/context/UserContext";
 
 const Router = () => {
   return (
     <BrowserRouter>
-      <MainHeader />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/user" element={<User />}>
-          <Route index element={<Profile />} />
-          <Route path="register" element={<Register />} />
-          <Route path="selling" element={<Selling />} />
-          <Route path="buying" element={<Buying />} />
-        </Route>
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/basket" element={<Basket />} />
-        <Route path="/payment" element={<Payment />} />
-      </Routes>
+      <UserProvider>
+        <MainHeader />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/users/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/user" element={<User />}>
+            <Route index element={<Profile />} />
+            <Route path="register" element={<Register />} />
+            <Route path="selling" element={<Selling />} />
+            <Route path="buying" element={<Buying />} />
+          </Route>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/basket" element={<Basket />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/product/:item_id" element={<ProductDetail />} />
+        </Routes>
+      </UserProvider>
     </BrowserRouter>
   );
 };

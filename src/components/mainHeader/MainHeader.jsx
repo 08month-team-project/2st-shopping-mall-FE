@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../api/api";
 import { Header, Logo, Img, IconBox, Icon } from "../../styles/MainHeaderStyle";
-
+import { UserContext } from "../../hook/context/UserContext";
 import LogoIcon from "../../icons/Ulogo.svg";
 import UserIcon from "../../icons/user.svg";
 import LoginIcon from "../../icons/login.svg";
@@ -10,6 +10,7 @@ import LogoutIcon from "../../icons/logout.svg";
 
 // 임시헤더입니다.
 const MainHeader = () => {
+  const { setUser } = useContext(UserContext);
   const [isAuthenticated, setIsAuthenticated] = useState(false); // 로그인 상태 로컬 관리
   const navigate = useNavigate();
 
@@ -59,7 +60,7 @@ const MainHeader = () => {
             src={LogoutIcon}
             alt="logout-icon"
             onClick={() => {
-              logout(navigate); // 로그아웃 함수 호출
+              logout(navigate, setUser); // 로그아웃 함수 호출
               setIsAuthenticated(false); // 로그아웃 후 로그인 상태 false로 설정
             }}
           />
