@@ -8,7 +8,8 @@ import "slick-carousel/slick/slick-theme.css";
 
 import 
     {
-        Wrapper, 
+        Wrapper,
+        Name,
         Image,
         Date, 
         ImageContainer, 
@@ -55,7 +56,8 @@ const ProductDetail = () => {
         item_name: "",
         item_price: 0,
         description: "",
-        size_stock_list: [] 
+        size_stock_list: [],
+        seller_nickname: ""
     });
 
     const [imageData, setImageData] = useState([]);
@@ -65,7 +67,6 @@ const ProductDetail = () => {
 
 const fetchDetail = async () => {
     try {
-    // const res = await axios.get(`${baseURL}/items/size`);
     const res = await getDetailData();
     console.log(res);
     setDetailData({
@@ -73,7 +74,8 @@ const fetchDetail = async () => {
         item_name: res.item_name,
         item_price: res.item_price,
         description: res.description,
-        size_stock_list: res.size_stock_list
+        size_stock_list: res.size_stock_list,
+        seller_nickname: res.seller_nickname
     });
     } catch (error) {
     console.error("상품 정보를 가져오는 도중 문제가 발생했습니다.", error.message);
@@ -82,7 +84,6 @@ const fetchDetail = async () => {
 
 const fetchImage = async () => {
     try {
-    // const res = await axios.get(`${baseURL}/items/size`);
     const res = await getDetailImage();
     console.log(res);
     setImageData(res.itemImageResponses);
@@ -138,7 +139,7 @@ const [ModalType, setModalType] = useState('');  // 모달 타입 상태 (사이
 
 
     // 장바구니 추가 클릭 시 모달 열기
-    const handleAddToCart = (event) => {
+    const handleAddToBasket = (event) => {
         event.preventDefault();
         
         if (!selectedSize || quantity <= 0) {
@@ -159,8 +160,13 @@ const [ModalType, setModalType] = useState('');  // 모달 타입 상태 (사이
     };
 
     // 장바구니 페이지로 이동
-    const handleGoToCart = () => {
+    const handleGoToBasket = () => {
         navigate('/Basket');
+    };
+
+    // 결제 페이지로 이동
+    const handleGoToPayment = () => {
+        navigate('/Payment');
     };
 
     
@@ -199,6 +205,7 @@ const [ModalType, setModalType] = useState('');  // 모달 타입 상태 (사이
                     <Date>한정판매</Date> 
                 </ImageContainer>
                 <InfoContainer>
+                    <Name>{detailData.seller_nickname}</Name>
                     <Icon>
                         <IconImage src={StoreIcon} alt="StoreIcon"/>
                         <IconImage src={HeartIcon} alt="HeartIcon"/>
@@ -241,8 +248,8 @@ const [ModalType, setModalType] = useState('');  // 모달 타입 상태 (사이
                         <DeliveryText>✔︎ 제주도 및 도시산간 지역은 추가 배송비 3000원</DeliveryText>
                     </Product>
                     <OptionBox>
-                        <Button onClick={handleAddToCart}>장바구니에 담기</Button>
-                        <Button>결제 바로가기</Button>
+                        <Button onClick={handleAddToBasket}>장바구니에 담기</Button>
+                        <Button onClick={handleGoToPayment}>결제 바로가기</Button>
                     </OptionBox>
                 </InfoContainer> 
             </Wrapper>
@@ -262,7 +269,7 @@ const [ModalType, setModalType] = useState('');  // 모달 타입 상태 (사이
                         <p>장바구니에 추가되었습니다</p> 
                         <ButtonContainer>
                             <ModalButton onClick={closeModal}>쇼핑 계속하기</ModalButton>
-                            <ModalButton onClick={handleGoToCart}>장바구니로 가기</ModalButton>
+                            <ModalButton onClick={handleGoToBasket}>장바구니로 가기</ModalButton>
                         </ButtonContainer>
                     </ModalContent>
                 </ModalOverlay>

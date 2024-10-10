@@ -21,6 +21,9 @@ export const Image = styled.div`
     width: 500px;
     height: 600px;
 `;
+export const Name = styled.div`
+    display: flex;
+`;
 export const InfoContainer = styled.div`
     display: flex;
     flex-direction: column;
