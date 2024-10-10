@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  AddressBtn,
   BottomBox,
   Dot,
   ExplainBox,
@@ -12,6 +13,7 @@ import {
   Input,
   InputAddress,
   InputIntro,
+  InputZonecode,
   Label,
   LabelBox,
   ModifyBox,
@@ -38,7 +40,28 @@ const ProfileModify = ({
   emailError,
   handleGenderChange,
   isValidModify,
+  setFormData,
 }) => {
+  // 주소 검색 처리
+  const handleAddressSearch = () => {
+    const script = document.createElement("script");
+    script.src =
+      "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    script.async = true;
+    script.onload = () => {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          const { zonecode, address } = data;
+          // console.log("주소:", data);
+          setFormData({
+            zonecode,
+            address,
+          });
+        },
+      }).open();
+    };
+    document.body.appendChild(script);
+  };
   return (
     <ModifyWarpper>
       <ModifyBox onSubmit={handleModify}>
@@ -147,13 +170,28 @@ const ProfileModify = ({
           </InfoBox>
           <InfoBox>
             <InfoText>
-              <Label htmlFor="address">주소</Label>
-              <InputAddress
-                id="address"
+              <Label htmlFor="zipcode">우편번호</Label>
+              <InputZonecode
+                id="zipcode"
                 type="text"
-                value={inputValues.address}
+                placeholder="우편번호"
+                value={inputValues.address.zipcode}
+                readOnly
+              />
+              <AddressBtn type="button" onClick={handleAddressSearch}>
+                주소 검색
+              </AddressBtn>
+            </InfoText>
+          </InfoBox>
+          <InfoBox>
+            <InfoText>
+              <Label htmlFor="city">상세주소</Label>
+              <InputAddress
+                id="city"
+                type="text"
+                placeholder="상세주소를 입력하세요"
+                value={inputValues.address.city}
                 onChange={changeInputValue}
-                onKeyDown={handleKeyDown}
               />
             </InfoText>
           </InfoBox>

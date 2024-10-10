@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { containSlang } from '../../utils/Validation';
-import UserInput from './UserInput';
-import { handleKeyDown } from '../../utils/keyDownHandler';
-import { getItemCategories, getItemSizes, postItemData } from '../../api/api';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { containSlang } from "../../utils/Validation";
+import UserInput from "./UserInput";
+import { handleKeyDown } from "../../utils/keyDownHandler";
+import { getItemCategories, getItemSizes, postItemData } from "../../api/api";
 
 // style
 import {
@@ -23,29 +23,29 @@ import {
   InfoInputScript,
   ItemInfoScript,
   ImgUploadBtn,
-} from '../../styles/userProfileStyle/itemRegisterStyle';
-import { UniBtn } from '../button/UniBtn';
-import { ErrorMessage } from '../error/ErrorMessage';
+} from "../../styles/userProfileStyle/itemRegisterStyle";
+import { UniBtn } from "../button/UniBtn";
+import { ErrorMessage } from "../error/ErrorMessage";
 
-const baseURL = 'http://localhost:8080';
+const baseURL = "http://localhost:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    price: '',
-    expired_at: '',
-    description: '',
-    category: '',
-    size_name: '',
-    stuck: '',
+    name: "",
+    price: "",
+    expired_at: "",
+    description: "",
+    category: "",
+    size_name: "",
+    stuck: "",
     images_url: [],
   });
 
   const [validImages, setValidImages] = useState([]);
   const [thumbNailImg, setThumbNailImg] = useState(null);
-  const [imgError, setImgError] = useState('');
+  const [imgError, setImgError] = useState("");
   const [slangError, setSlangError] = useState({});
-  const [notifyMsg, setNotifyMsg] = useState('');
+  const [notifyMsg, setNotifyMsg] = useState("");
 
   const [itemId, setItemId] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -54,20 +54,20 @@ const ItemRegister = () => {
   // 이미지선택
   const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
     const newValidImages = [];
-    setImgError('');
+    setImgError("");
 
     files.forEach((file) => {
       // 파일형식 유효성검사
       if (!allowedTypes.includes(file.type)) {
         setImgError(
-          'jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다.'
+          "jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다."
         );
       }
       // 파일용량(1MB) 유효성검사
       else if (file.size > 1 * 1024 * 1024) {
-        setImgError('이미지 파일 크기는 1MB를 초과할 수 없습니다.');
+        setImgError("이미지 파일 크기는 1MB를 초과할 수 없습니다.");
       } else {
         newValidImages.push(file);
       }
@@ -93,25 +93,25 @@ const ItemRegister = () => {
     if (containSlang(value)) {
       setSlangError((prev) => ({
         ...prev,
-        [id]: '비속어를 포함할 수 없습니다.',
+        [id]: "비속어를 포함할 수 없습니다.",
       }));
     } else {
       setSlangError((prev) => ({
         ...prev,
-        [id]: '',
+        [id]: "",
       }));
     }
 
     // 상품설명 길이체크
-    if (id === 'description' && value.length < 10) {
+    if (id === "description" && value.length < 10) {
       setSlangError((prev) => ({
         ...prev,
-        description: '상품설명은 최소 10자 이상 입력해야 합니다.',
+        description: "상품설명은 최소 10자 이상 입력해야 합니다.",
       }));
-    } else if (id === 'description') {
+    } else if (id === "description") {
       setSlangError((prev) => ({
         ...prev,
-        description: '',
+        description: "",
       }));
     }
   };
@@ -123,7 +123,7 @@ const ItemRegister = () => {
 
     if (validImages.length > 0) {
       validImages.forEach((image) => {
-        ImageDataUpload.append('images', image);
+        ImageDataUpload.append("images", image);
       });
     }
 
@@ -133,17 +133,17 @@ const ItemRegister = () => {
         ImageDataUpload,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
         }
       );
       setItemId(res.data.itemId);
-      console.log('등록결과: ', res.data);
-      setNotifyMsg('이미지업로드에 성공하였습니다!');
+      console.log("등록결과: ", res.data);
+      setNotifyMsg("이미지업로드에 성공하였습니다!");
       return res.data;
     } catch (error) {
-      console.error('등록오류: ', error.message);
-      setNotifyMsg('이미지업로드에 실패하였습니다.');
+      console.error("등록오류: ", error.message);
+      setNotifyMsg("이미지업로드에 실패하였습니다.");
       return;
     }
   };
@@ -153,20 +153,20 @@ const ItemRegister = () => {
     e.preventDefault();
 
     const isSlangValid = Object.values(slangError).every(
-      (error) => error === ''
+      (error) => error === ""
     );
 
     if (!isSlangValid) {
       const errorInputs = [
-        { id: 'name', error: slangError.name },
-        { id: 'description', error: slangError.description },
+        { id: "name", error: slangError.name },
+        { id: "description", error: slangError.description },
       ];
       const firstErrorInput = errorInputs.find((input) => input.error);
       if (firstErrorInput) {
         document.getElementById(firstErrorInput.id).focus();
       }
 
-      setNotifyMsg('잘못 입력된 정보가 존재합니다.');
+      setNotifyMsg("잘못 입력된 정보가 존재합니다.");
       return;
     }
 
@@ -177,7 +177,7 @@ const ItemRegister = () => {
     const jsonData = {
       name: formData.name,
       price: parseFloat(formData.price),
-      expired_at: formData.expired_at + 'T00:00:00', // 로컬타임형태로 변환
+      expired_at: formData.expired_at + "T00:00:00", // 로컬타임형태로 변환
       description: formData.description,
       category: formData.category,
       size_name: formData.size_name,
@@ -197,12 +197,12 @@ const ItemRegister = () => {
       // );
       const res = await postItemData(jsonData);
       setItemId(res.itemId);
-      console.log('등록결과: ', res);
-      setNotifyMsg('물품등록에 성공하였습니다!');
+      console.log("등록결과: ", res);
+      setNotifyMsg("물품등록에 성공하였습니다!");
       // setNotifyMsg(res.message);
     } catch (error) {
-      console.error('등록오류: ', error.message);
-      setNotifyMsg('물품등록에 실패하였습니다.');
+      console.error("등록오류: ", error.message);
+      setNotifyMsg("물품등록에 실패하였습니다.");
       return;
     }
   };
@@ -215,7 +215,7 @@ const ItemRegister = () => {
       console.log(res);
       setCategories(res.categoryList);
     } catch (error) {
-      console.error('카테고리를 불러오는데 실패하였습니다.', error.message);
+      console.error("카테고리를 불러오는데 실패하였습니다.", error.message);
     }
   };
   // 사이즈 데이터 GET >> ✅성공
@@ -226,7 +226,7 @@ const ItemRegister = () => {
       console.log(res);
       setSizes(res.sizeItemList); // 상태값이름
     } catch (error) {
-      console.error('사이즈를 불러오는데 실패하였습니다.', error.message);
+      console.error("사이즈를 불러오는데 실패하였습니다.", error.message);
     }
   };
 
@@ -271,7 +271,7 @@ const ItemRegister = () => {
                     key={idx}
                     src={URL.createObjectURL(file)}
                     alt={`이미지-${idx + 1}`}
-                    className={idx === 0 ? 'thumbnail' : ''}
+                    className={idx === 0 ? "thumbnail" : ""}
                   />
                 ))}
               </ItemImagesBox>
@@ -307,7 +307,7 @@ const ItemRegister = () => {
             onKeyDown={handleKeyDown}
             error={null}
             options={[
-              { value: '', label: '--카테고리--' },
+              { value: "", label: "--카테고리--" },
               ...categories.map((category) => ({
                 value: category.id,
                 label: category.categoryName,
@@ -323,7 +323,7 @@ const ItemRegister = () => {
             onKeyDown={handleKeyDown}
             error={null}
             options={[
-              { value: '', label: '--사이즈--' },
+              { value: "", label: "--사이즈--" },
               ...sizes.map((size) => ({
                 value: size.id,
                 label: size.sizeName,
@@ -347,7 +347,7 @@ const ItemRegister = () => {
             // type="datetime-local"
             type="date"
             // min={new Date().toISOString().split(".")[0]}
-            min={new Date().toISOString().split('T')[0]}
+            min={new Date().toISOString().split("T")[0]}
             value={formData.expired_at}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}

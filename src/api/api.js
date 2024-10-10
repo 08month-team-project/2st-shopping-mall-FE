@@ -139,7 +139,7 @@ export const logout = (navigate) => {
   }
 };
 
-// 유저프로필_유저데이터get
+// 유저프로필_유저데이터get >> 🚂구현중...
 export const getUserData = async () => {
   const response = await instance.get("/users/my-page");
   return response.data;
@@ -160,5 +160,11 @@ export const getItemSizes = async () => {
 // 유저프로필_물품등록_post
 export const postItemData = async (jsonData) => {
   const response = await instance.post("/items/seller/register", jsonData);
+  return response.data;
+};
+
+// 유저프로필_물품등록확인_get >> 🚂구현중...
+export const getRegisteredItemData = async () => {
+  const response = await instance.get("/items/status?status=IN_STOCK");
   return response.data;
 };
