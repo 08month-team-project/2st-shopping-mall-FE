@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import * as S from "../styles/SignupStyle";
-import { isValidEmail, isValidPassword, isValidPhone, containSlang } from "../utils/validation";
+import {
+  isValidEmail,
+  isValidPassword,
+  isValidPhone,
+  containSlang,
+} from "../utils/validation";
 
 import { useNavigate } from "react-router-dom";
 import { checkEmail, formSubmit } from "../api/api";
@@ -286,7 +291,11 @@ const Signup = () => {
             </S.InputWrapper>
           </S.InputContainer>
           {errors.email && <S.ErrorMsg>{errors.email}</S.ErrorMsg>}
-          {emailMessage && <S.EmailStatusMessage success={emailStatus}>{emailMessage}</S.EmailStatusMessage>}
+          {emailMessage && (
+            <S.EmailStatusMessage success={emailStatus}>
+              {emailMessage}
+            </S.EmailStatusMessage>
+          )}
 
           <S.SignupInput
             type="password"

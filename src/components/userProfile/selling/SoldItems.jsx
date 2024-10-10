@@ -4,40 +4,38 @@ import React from "react";
 import {
   Container,
   ItemAmount,
-  ItemBox,
-  ItemInfoBox,
+  ItemDate,
+  ItemImg,
   ItemName,
   ItemPrice,
   SelledItem,
+  Span,
 } from "../../../styles/userProfileStyle/userSellingStyle";
 
-const items = [
-  {
-    name: "상품1",
-    price: 10000,
-    amount: 0,
-  },
-  {
-    name: "상품2",
-    price: 10000,
-    amount: 0,
-  },
-];
+// 임시 반복 데이터
+const exItems = Array.from({ length: 3 }, (_, i) => ({
+  imageUrl: "사진",
+  name: `상품명 ${i + 1}`,
+  price: 10000,
+  stock: 0,
+  expiredAt: "24.10.01",
+}));
 
 const SoldItems = () => {
   return (
     <Container>
-      <ItemBox>
-        {items.map((item, idx) => (
-          <SelledItem key={idx}>
-            <ItemInfoBox>
-              <ItemName>{item.name}</ItemName>
-              <ItemPrice>{item.price.toLocaleString()}원</ItemPrice>
-              <ItemAmount>재고 : {item.amount}개</ItemAmount>
-            </ItemInfoBox>
-          </SelledItem>
-        ))}
-      </ItemBox>
+      {exItems.map((item, idx) => (
+        <SelledItem key={idx}>
+          <ItemImg>{item.imageUrl}</ItemImg>
+          <ItemName>{item.name}</ItemName>
+          <Span>|</Span>
+          <ItemPrice>가격: {item.price.toLocaleString()}원</ItemPrice>
+          <Span>|</Span>
+          <ItemAmount>재고수량: {item.stock}</ItemAmount>
+          <Span>|</Span>
+          <ItemDate>판매기간: {item.expiredAt}</ItemDate>
+        </SelledItem>
+      ))}
     </Container>
   );
 };

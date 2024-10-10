@@ -198,7 +198,6 @@ const ItemRegister = () => {
       const res = await postItemData(jsonData);
       setItemId(res.itemId);
       console.log("등록결과: ", res);
->>>>>>>>> Temporary merge branch 2
       setNotifyMsg("물품등록에 성공하였습니다!");
       // setNotifyMsg(res.message);
     } catch (error) {

@@ -15,8 +15,6 @@ import UserFillIcon from "../../../icons/userFill.svg";
 import { Wrapper } from "../../../styles/userProfileStyle/profileStyle";
 import { getUserData } from "../../../api/api";
 
-// const baseURL = "http://localhost:8080";
-
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
     name: "사용자",
@@ -24,8 +22,8 @@ const Profile = () => {
     phone_number: "010-0000-0000",
     email: "example@gmail.com",
     address: {
-      city: "00시 00구 00동",
-      zipcode: "우편번호",
+      zipcode: "12345",
+      city: "00구 00동",
     },
     comment: "소개글을 작성해주세요.",
     gender: "남성",
@@ -41,10 +39,21 @@ const Profile = () => {
 
   const changeInputValue = (e) => {
     const { id, value } = e.target;
-    setInputValues((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
+
+    setInputValues((prev) => {
+      const newAddress = { ...prev.address };
+
+      if (id === "zipcode") {
+        newAddress.zipcode = value;
+      } else if (id === "city") {
+        newAddress.city = value;
+      }
+
+      return {
+        ...prev,
+        address: newAddress,
+      };
+    });
 
     // 전화번호 유효성검사
     if (id === "phone_number") {
@@ -151,6 +160,17 @@ const Profile = () => {
     }
   };
 
+  // 주소 검색 결과 업데이트 함수
+  const setFormData = (newData) => {
+    setInputValues((prev) => ({
+      ...prev,
+      address: {
+        zipcode: newData.zonecode,
+        city: newData.address,
+      },
+    }));
+  };
+
   // 유저데이터 get >> 🚂구현중...
   const getUserProfileData = async () => {
     try {
@@ -158,6 +178,7 @@ const Profile = () => {
       const res = await getUserData();
       console.log(res);
       setUserInfo(res);
+      setInputValues(res);
     } catch (error) {
       console.error("유저데이터를 불러오는데 실패하였습니다.", error.message);
     }
@@ -181,6 +202,7 @@ const Profile = () => {
         handleGenderChange={handleGenderChange}
         emailError={emailError}
         isValidModify={isValidModify}
+        setFormData={setFormData}
       />
     </Wrapper>
   );
