@@ -55,6 +55,7 @@ const Profile = () => {
 
       return {
         ...prev,
+        [id]: value,
         address: newAddress,
       };
     });
