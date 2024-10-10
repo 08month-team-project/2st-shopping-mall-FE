@@ -27,7 +27,8 @@ import {
 import { UniBtn } from "../button/UniBtn";
 import { ErrorMessage } from "../error/ErrorMessage";
 
-const baseURL = "http://localhost:8080";
+const baseURL =
+  "http://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
@@ -134,6 +135,7 @@ const ItemRegister = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            withCredentials: true,
           },
         }
       );
@@ -198,7 +200,7 @@ const ItemRegister = () => {
       const res = await postItemData(jsonData);
       setItemId(res.itemId);
       console.log("등록결과: ", res);
->>>>>>>>> Temporary merge branch 2
+
       setNotifyMsg("물품등록에 성공하였습니다!");
       // setNotifyMsg(res.message);
     } catch (error) {

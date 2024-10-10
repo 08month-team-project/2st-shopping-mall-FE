@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import * as S from "../styles/SignupStyle";
-import { isValidEmail, isValidPassword, isValidPhone, containSlang } from "../utils/validation";
+import {
+  isValidEmail,
+  isValidPassword,
+  isValidPhone,
+  containSlang,
+} from "../utils/validation";
 
 import { useNavigate } from "react-router-dom";
 import { checkEmail, formSubmit } from "../api/api";
@@ -14,7 +19,7 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    phoneNumber: "",
+    phone_number: "",
     address: {
       city: "",
       zipcode: "",
@@ -38,7 +43,7 @@ const Signup = () => {
       formData.email !== "" &&
       formData.password !== "" &&
       formData.confirmPassword !== "" &&
-      formData.phoneNumber !== "" &&
+      formData.phone_number !== "" &&
       formData.address !== "" &&
       formData.gender !== "" &&
       formData.name !== "" &&
@@ -236,7 +241,7 @@ const Signup = () => {
     try {
       const response = await formSubmit(dataToSend);
       if (response.message === "success signup") {
-        navigate("/login");
+        navigate("/users/login");
         alert("회원가입 성공");
       }
     } catch (error) {
@@ -286,7 +291,11 @@ const Signup = () => {
             </S.InputWrapper>
           </S.InputContainer>
           {errors.email && <S.ErrorMsg>{errors.email}</S.ErrorMsg>}
-          {emailMessage && <S.EmailStatusMessage success={emailStatus}>{emailMessage}</S.EmailStatusMessage>}
+          {emailMessage && (
+            <S.EmailStatusMessage success={emailStatus}>
+              {emailMessage}
+            </S.EmailStatusMessage>
+          )}
 
           <S.SignupInput
             type="password"
@@ -310,13 +319,15 @@ const Signup = () => {
           )}
           <S.SignupInput
             type="text"
-            name="phoneNumber"
+            name="phone_number"
             placeholder="전화번호를 입력하세요"
-            value={formData.phoneNumber}
+            value={formData.phone_number}
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          {errors.phone_number && <S.ErrorMsg>{errors.phoneNumber}</S.ErrorMsg>}
+          {errors.phone_number && (
+            <S.ErrorMsg>{errors.phone_number}</S.ErrorMsg>
+          )}
 
           <S.InputWrapper>
             <S.SignupInput

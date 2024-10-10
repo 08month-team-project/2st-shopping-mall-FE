@@ -1,9 +1,10 @@
 import axios from "axios";
-import { getCookie, removeCookie, setCookie } from "./cookies";
-import { queryAllByAltText } from "@testing-library/react";
+// import { getCookie, removeCookie, setCookie } from "./cookies";
+// import { queryAllByAltText } from "@testing-library/react";
 
 const instance = axios.create({
-  baseURL: "http://ec2-3-35-136-77.ap-northeast-2.compute.amazonaws.com:8080",
+  baseURL:
+    "http://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com:8080",
 
   // baseURL: `${process.env.REACT_APP_SERVER_URL}`,
   headers: {
@@ -59,17 +60,17 @@ const instance = axios.create({
 // );
 
 // 요청을 보내기 전에 JWT 토큰을 자동으로 헤더에 추가하는 인터셉터 설정
-// instance.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem("accessToken"); // 쿠키에서 JWT 토큰을 가져옴
-//     if (token) {
-//       config.headers["Authorization"] = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   },
-// );
+instance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("accessToken"); // 쿠키에서 JWT 토큰을 가져옴
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default instance;
