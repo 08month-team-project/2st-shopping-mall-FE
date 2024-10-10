@@ -86,7 +86,6 @@ const ProfileModify = ({
                 value={inputValues.name}
                 onChange={changeInputValue}
                 onKeyDown={handleKeyDown}
-                required
               />
             </InfoText>
             {slangError.name && <ErrorMessage>{slangError.name}</ErrorMessage>}
@@ -103,7 +102,6 @@ const ProfileModify = ({
                 value={inputValues.nickName}
                 onChange={changeInputValue}
                 onKeyDown={handleKeyDown}
-                required
               />
             </InfoText>
             {slangError.nickName && (
