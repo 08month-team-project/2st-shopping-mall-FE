@@ -3,17 +3,19 @@ import {
   containSlang,
   isValidEmail,
   isValidPhone,
-} from "../../../utils/Validation";
+} from "../../../utils/validation";
 import ProfileInfomation from "./ProfileInfomation";
 import ProfileModify from "./ProfileModify";
-import axios from "axios";
+import { getUserData } from "../../../api/api";
 
 // icon
 import UserFillIcon from "../../../icons/userFill.svg";
 
 // style
-import { Wrapper } from "../../../styles/userProfileStyle/profileStyle";
-import { getUserData } from "../../../api/api";
+import {
+  LoginText,
+  Wrapper,
+} from "../../../styles/userProfileStyle/profileStyle";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
@@ -36,6 +38,8 @@ const Profile = () => {
   const [slangError, setSlangError] = useState({});
   const [imgError, setImgError] = useState("");
   const [isValidModify, setIsValidModify] = useState("");
+  // 로그인 상태관리
+  const [isLogin, setIsLogin] = useState(false);
 
   const changeInputValue = (e) => {
     const { id, value } = e.target;
@@ -174,13 +178,23 @@ const Profile = () => {
   // 유저데이터 get >> 🚂구현중...
   const getUserProfileData = async () => {
     try {
-      // const res = await axios.get(`${baseURL}/users/my-page`);
       const res = await getUserData();
       console.log(res);
       setUserInfo(res);
       setInputValues(res);
+      setIsLogin(true); // 로그인 성공 시
     } catch (error) {
-      console.error("유저데이터를 불러오는데 실패하였습니다.", error.message);
+      if (error.response && error.response.data.code === 401) {
+        // 401 = 로그인한 회원만 접속이 가능합니다.
+        console.error(error.response.data.message);
+      } else if (error.response.status === 403) {
+        console.error("접근 권한이 없습니다.");
+      } else {
+        console.error(
+          "사용자 정보를 불러오는데 실패하였습니다.",
+          error.message
+        );
+      }
     }
   };
   useEffect(() => {
@@ -189,21 +203,27 @@ const Profile = () => {
 
   return (
     <Wrapper>
-      <ProfileInfomation userInfo={userInfo} />
-      <ProfileModify
-        previewImg={previewImg}
-        handleImgChange={handleImgChange}
-        imgError={imgError}
-        inputValues={inputValues}
-        changeInputValue={changeInputValue}
-        handleModify={handleModify}
-        slangError={slangError}
-        phoneError={phoneError}
-        handleGenderChange={handleGenderChange}
-        emailError={emailError}
-        isValidModify={isValidModify}
-        setFormData={setFormData}
-      />
+      {isLogin ? (
+        <>
+          <ProfileInfomation userInfo={userInfo} />
+          <ProfileModify
+            inputValues={inputValues}
+            previewImg={previewImg}
+            handleImgChange={handleImgChange}
+            imgError={imgError}
+            changeInputValue={changeInputValue}
+            handleModify={handleModify}
+            slangError={slangError}
+            phoneError={phoneError}
+            handleGenderChange={handleGenderChange}
+            emailError={emailError}
+            isValidModify={isValidModify}
+            setFormData={setFormData}
+          />
+        </>
+      ) : (
+        <LoginText>로그인을 해주세요.</LoginText>
+      )}
     </Wrapper>
   );
 };

@@ -141,30 +141,72 @@ export const logout = (navigate) => {
 
 // 유저프로필_유저데이터get >> 🚂구현중...
 export const getUserData = async () => {
-  const response = await instance.get("/users/my-page");
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.get("/users/my-page", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
-// 유저프로필_물품등록_카테고리get
+// 유저프로필_물품등록_카테고리get >> ❓토큰이 필요한가???
 export const getItemCategories = async () => {
-  const response = await instance.get("/items/categories");
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.get("/items/categories", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
-// 유저프로필_물품등록_사이즈get
+// 유저프로필_물품등록_사이즈get >> ❓토큰이 필요한가???
 export const getItemSizes = async () => {
-  const response = await instance.get("/items/size");
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.get("/items/size", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
-// 유저프로필_물품등록_post
+// 유저프로필_물품등록_이미지업로드_post >> 🚂구현중...
+export const postImageUpload = async (ImageDataUpload) => {
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.post(
+    "/items/images/upload",
+    ImageDataUpload,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+// 유저프로필_물품등록_post >> 🚂구현중...
 export const postItemData = async (jsonData) => {
-  const response = await instance.post("/items/seller/register", jsonData);
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.post("/items/seller/register", jsonData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
 // 유저프로필_물품등록확인_get >> 🚂구현중...
+// api 주소확인필요!!
 export const getRegisteredItemData = async () => {
-  const response = await instance.get("/items/status?status=IN_STOCK");
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.get("/items/status?status=IN_STOCK", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
