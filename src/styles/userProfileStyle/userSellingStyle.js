@@ -31,50 +31,51 @@ export const Title = styled.li`
 export const Container = styled.div`
   width: 100%;
   height: fit-content;
-  padding-bottom: 2rem;
+  padding: 2rem;
   background-color: #f4f6f8;
-`;
-export const ItemBox = styled.div`
-  width: 100%;
-  padding: 2rem 3rem 3rem 2rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1.6rem;
 `;
 export const ItemWrapper = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-`;
-export const Item = styled.div`
-  width: 100%;
   padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
   border: 1px solid #d6d8db;
   border-radius: 0.25rem;
   box-shadow: 0 0 10px 1px #d6d8db;
-  background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
-export const SelledItem = styled(Item)`
-  opacity: 0.5;
-`;
-
-export const ItemInfoBox = styled.div`
+export const ItemBox = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
 `;
+export const ItemImg = styled.div`
+  width: 50px;
+  height: 50px;
+  background-color: #ececec;
+  border-radius: 0.25rem;
+  text-align: center;
+  line-height: 50px;
+  font-size: 0.8rem;
+  color: #666;
+`;
 export const ItemName = styled.p``;
 export const ItemPrice = styled.p``;
-export const ItemAmount = styled.p`
-  font-size: 1.1rem;
-  font-weight: 600;
+export const ItemAmount = styled.p``;
+export const ItemDate = styled.p``;
+export const Span = styled.span`
+  color: #ccc;
 `;
 
+export const SelledItem = styled(ItemWrapper)`
+  justify-content: flex-start;
+  gap: 1rem;
+  opacity: 0.5;
+`;
+
+// 수정버튼 스타일
 export const ModifyAmountBox = styled.div`
   display: flex;
   align-items: center;

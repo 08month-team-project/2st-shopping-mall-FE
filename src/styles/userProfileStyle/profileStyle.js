@@ -3,6 +3,12 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   width: 80vw;
 `;
+export const LoginText = styled.p`
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 1.2rem;
+`;
+
 export const UserInfoBox = styled.div`
   width: 100%;
   padding: 3rem 0;
@@ -45,6 +51,9 @@ export const GenderIcon = styled(Icon)`
   width: 16px;
 `;
 export const Text = styled.p``;
+export const Zonecode = styled.p`
+  margin-right: 0.5rem;
+`;
 
 export const ModifyWarpper = styled.div`
   width: 100%;
@@ -102,9 +111,16 @@ export const Input = styled.input`
 export const RadioInput = styled.input`
   margin-right: 0.25rem;
 `;
-export const InputAddress = styled(Input)`
-  width: 400px;
+export const InputZonecode = styled(Input)`
+  width: 100px;
 `;
+export const InputAddress = styled(Input)`
+  width: 350px;
+`;
+export const AddressBtn = styled.button`
+  padding: 0.125rem 0.5rem;
+`;
+
 export const InputIntro = styled(Input)`
   width: 400px;
   height: 150px;
