@@ -40,6 +40,8 @@ const MainHeader = () => {
         </Link>
       </Logo>
       <IconBox>
+        <Link to="/Basket">장바구니</Link>
+        <Link to="/signup">회원가입</Link>
         {isAuthenticated ? (
           // 로그아웃 아이콘 (로그인 상태일 때 표시)
           <Icon
