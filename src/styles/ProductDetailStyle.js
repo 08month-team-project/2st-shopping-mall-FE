@@ -110,6 +110,10 @@ export const DeliveryText = styled.div`
     font-size: 12px;
 
 `;
+export const ProductDescription = styled.div`
+    font-size: 12px;
+
+`;
 
 export const Date = styled.div`
     color: rgb(55 65 81);

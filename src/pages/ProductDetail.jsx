@@ -28,6 +28,7 @@ import
         QuantityButton,
         OptionBox,
         DeliveryText,
+        ProductDescription,
         Button,
         ModalOverlay,
         ModalContent,
@@ -43,23 +44,81 @@ import StoreIcon from "../icons/store.png";
 import image1 from '../images/image1.jpg';
 import image2 from '../images/image2.jpg';
 import image3 from '../images/image3.jpg';
+import { getDetailData, getDetailImage } from '../api/api';
+
+
+
 
 const ProductDetail = () => {
-    const [itemImages, setItemImages] = useState([]);
-    const navigate = useNavigate();
+    const [detailData, setDetailData] = useState({
+        item_id: "",
+        item_name: "",
+        item_price: 0,
+        description: "",
+        size_stock_list: [] 
+    });
+
+    const [imageData, setImageData] = useState([]);
+    const [selectedStock, setSelectedStock] = useState(null); // 선택한 사이즈의 재고 정보 상태 추가
 
 
 
-    const [images, setImages] = useState([image1, image2, image3]); 
-    const [selectedSize, setSelectedSize] = useState('');
-    const [quantity, setQuantity] = useState(1);
-    const [ModalOpen, setModalOpen] = useState(false); 
-    const [ModalType, setModalType] = useState('');  // 모달 타입 상태 (사이즈/수량 미선택 or 장바구니 추가 완료)
+const fetchDetail = async () => {
+    try {
+    // const res = await axios.get(`${baseURL}/items/size`);
+    const res = await getDetailData();
+    console.log(res);
+    setDetailData({
+        item_id: res.itemId,
+        item_name: res.item_name,
+        item_price: res.item_price,
+        description: res.description,
+        size_stock_list: res.size_stock_list
+    });
+    } catch (error) {
+    console.error("상품 정보를 가져오는 도중 문제가 발생했습니다.", error.message);
+    }
+};
+
+const fetchImage = async () => {
+    try {
+    // const res = await axios.get(`${baseURL}/items/size`);
+    const res = await getDetailImage();
+    console.log(res);
+    setImageData(res.itemImageResponses);
+    } catch (error) {
+    console.error("상품 이미지를 가져오는 도중 문제가 발생했습니다.", error.message);
+    }
+};
+
+    // 컴포넌트가 처음 렌더링될 때 데이터 로딩
+    useEffect(() => {
+        fetchDetail();
+        fetchImage();
+    }, []);
+
+    const handleSizeChange = (event) => {
+        const size = event.target.value;
+        setSelectedSize(size);
+
+        // 선택된 사이즈에 해당하는 재고 정보를 찾기
+        const stock = detailData.size_stock_list.find(item => item.clothing_size_name === size);
+        setSelectedStock(stock); 
+    };
+
+const navigate = useNavigate();
+
+const [images, setImages] = useState([image1, image2, image3]); 
+const [selectedSize, setSelectedSize] = useState('');
+const [quantity, setQuantity] = useState(1);
+const [ModalOpen, setModalOpen] = useState(false); 
+const [ModalType, setModalType] = useState('');  // 모달 타입 상태 (사이즈/수량 미선택 or 장바구니 추가 완료)
+
 
     // 사이즈 선택 
-    const handleSizeChange = (event) => {
-        setSelectedSize(event.target.value);
-    };
+    //const handleSizeChange = (event) => {
+    //    setSelectedSize(event.target.value);
+    //};ㅞㅡ
 
     // 수량 감소 (1개 이하로 내려가지 않도록 제한)
     const decreaseQuantity = () => {
@@ -116,20 +175,25 @@ const ProductDetail = () => {
     };
 
 
+
+
     return (
         <>
             <Wrapper>
                 <ImageContainer>
                     <Image>
                         <Slider {...settings}>
-                            {itemImages.map((image) => (
-                                <div key={image.imageUrlId}>
-                                    <img 
-                                        src={`/images/${image.imageUrl}`}  // 서버 이미지 URL을 사용
-                                        alt={`Image ${image.imageUrlId}`} 
-                                    />
-                                </div>
-                            ))}       
+                        {imageData.length > 0 ? (
+                            imageData.map((image) => (
+                                <img 
+                                    key={image.imageUrlId} 
+                                    src={`/${image.imageUrl}.jpg`} 
+                                    alt={`상품 이미지 ${image.imageUrlId}`} 
+                                />
+                            ))
+                        ) : (
+                            <p>이미지가 없습니다.</p>
+                        )}
                         </Slider>
                     </Image>
                     <Date>한정판매</Date> 
@@ -141,16 +205,18 @@ const ProductDetail = () => {
                     </Icon>
 
                     <Product>
-                        <ProductName>세시토 싱글 블레이저</ProductName>
-                        <ProductPrice>89000원</ProductPrice>
+                        <ProductName>{detailData.item_name}</ProductName>
+                        <ProductPrice>{detailData.item_price}</ProductPrice>
                         <ProductInfo>
                             <ProductSize>
                                 <Option>
-                                    <select onChange={handleSizeChange}>
-                                        <option value="S">S</option>
-                                        <option value="M">M</option>
-                                        <option value="L">L</option>
-                                    </select>
+                                <select onChange={handleSizeChange}>
+                                    {detailData.size_stock_list.map((item) => (
+                                        <option key={item.clothing_size_id} value={item.clothing_size_name}>
+                                            {item.clothing_size_name}
+                                        </option>
+                                    ))}
+                                </select>
                                 </Option>
                                 <QuantityButton>
                                     <ProductCheckButton onClick={decreaseQuantity}>➖</ProductCheckButton>
@@ -161,14 +227,16 @@ const ProductDetail = () => {
 
                             {selectedSize && (
                             <ProductCheck>
-                                <p>루즈핏 체크 셔츠</p>
-                                <p>34000원</p>
-                                <p>사이즈: {selectedSize}</p>
+                                <p>{detailData.item_name}</p>
+                                <p>{detailData.item_price}원</p>
+                                <p>사이즈: {selectedStock.clothing_size_name}</p>
                                 <p>수량: {quantity}</p>
+                                <p>재고: {selectedStock.stock}</p> 
                                 <DeleteButton onClick={handleDeleteSelection}>✖️</DeleteButton>
                             </ProductCheck>
                             )}
                         </ProductInfo>
+                        <ProductDescription>{detailData.description}</ProductDescription>
                         <DeliveryText>✔︎ 오전 10시까지 결제 완료 시 당일 발송</DeliveryText>
                         <DeliveryText>✔︎ 제주도 및 도시산간 지역은 추가 배송비 3000원</DeliveryText>
                     </Product>

@@ -127,3 +127,15 @@ export const postItemData = async (jsonData) => {
   const response = await instance.post("/items/seller/register", jsonData);
   return response.data;
 };
+
+// 상품상세페이지 상세정보 get
+export const getDetailData = async () => {
+  const response = await instance.get("/items/{item_id}");
+  return response.data;
+};
+
+// 상품상세페이지 이미지 get
+export const getDetailImage = async () => {
+  const response = await instance.get("/items/{item_id}/images");
+  return response.data;
+};

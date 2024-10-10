@@ -27,7 +27,7 @@ import {
 import { UniBtn } from "../button/UniBtn";
 import { ErrorMessage } from "../error/ErrorMessage";
 
-// const baseURL = "http://localhost:8080";
+const baseURL = "http://localhost:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
@@ -235,7 +235,7 @@ const ItemRegister = () => {
         <UniBtn type="submit">물품등록하기</UniBtn>
       </BtnBox>
       <RegisterInfo>
-        <ThumbNailImgBox>
+        <ThumbNailImgBox> 
           {thumbNailImg ? (
             <ThumbNailImg src={thumbNailImg} alt="대표이미지" />
           ) : (
