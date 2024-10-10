@@ -61,9 +61,14 @@ export const ItemImg = styled.div`
   font-size: 0.8rem;
   color: #666;
 `;
+export const ItemImgUrl = styled.img`
+  width: 100px;
+  height: 100px;
+`;
 export const ItemName = styled.p``;
 export const ItemPrice = styled.p``;
-export const ItemAmount = styled.p``;
+export const ItemAmount = styled.input``;
+export const ItemAmountZero = styled.p``;
 export const ItemDate = styled.p``;
 export const Span = styled.span`
   color: #ccc;
@@ -96,7 +101,10 @@ export const AmountIcon = styled.img``;
 export const ModifyAmountNumber = styled.p``;
 
 // 페이지네이션 스타일
-export const MoreBtn = styled.div`
-  width: fit-content;
-  margin: auto;
+export const PageBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 `;
+export const Page = styled.p``;

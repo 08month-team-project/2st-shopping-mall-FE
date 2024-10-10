@@ -4,7 +4,7 @@ import { queryAllByAltText } from "@testing-library/react";
 
 const instance = axios.create({
   baseURL:
-    "https://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com :8080",
+    "http://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com:8080",
 
   // baseURL: `${process.env.REACT_APP_SERVER_URL}`,
   headers: {
