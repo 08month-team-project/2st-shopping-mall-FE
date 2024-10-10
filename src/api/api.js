@@ -1,6 +1,7 @@
 import instance from "./instance";
-import { Navigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 import axios from "axios";
+import { setCookie, removeCookie } from "../api/cookies";
 
 const getAllItem = async () => {
   try {
@@ -11,6 +12,7 @@ const getAllItem = async () => {
     throw error;
   }
 };
+
 
 const getItemById = async (item_id) => {
   try {
@@ -66,65 +68,137 @@ const formSubmit = async (formData) => {
   return response.data;
 };
 
-export { getAllItem, getItemById, searchItems, getCategories, searchAllItems, checkEmail, formSubmit };
+export {
+  getAllItem,
+  getItemById,
+  searchItems,
+  getCategories,
+  searchAllItems,
+  checkEmail,
+  formSubmit,
+};
 
 // 로그인 함수
 export const login = async (email, password) => {
   try {
     // 로그인 API 호출
     const response = await instance.post("/users/login", { email, password });
-    console.log(response);
+
+    // 응답 데이터와 응답 헤더 출력하여 디버깅
+    console.log("API 응답 데이터:", response.data);
+    console.log("응답 헤더:", response.headers);
+
+    // 응답 헤더에서 Authorization 헤더 추출 (액세스 토큰)
     const authorizationHeader = response.headers["authorization"];
-
     if (!authorizationHeader) {
-      throw new Error("액세스 토큰이 제공되지 않았습니다.");
-    } // 응답 헤더에서 JWT 액세스 토큰 추출
+      throw new Error("응답 헤더에 액세스 토큰이 없습니다.");
+    }
 
-    const token = authorizationHeader.split(" ")[1];
-    if (!token) {
-      throw new Error("액세스 토큰을 추출할 수 없습니다.");
-    } // Authorization 헤더에서 "Bearer 액세스 토큰" 형식으로 토큰 추출
+    /// Authorization 헤더에서 Bearer 형식으로 토큰 추출
+    const accessToken = authorizationHeader.split(" ")[1];
+    if (!accessToken) {
+      throw new Error("Authorization 헤더에서 토큰을 추출할 수 없습니다.");
+    }
 
-    // JWT 토큰을 로컬 스토리지에 저장
-    localStorage.setItem("accessToken", token);
-    console.log("토큰이 로컬 스토리지에 저장되었습니다:", token);
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; // 모든 요청에 토큰 추가, 사용자가 로그인에 성공했다는 것을 증명하기 위해
+    // 응답 본문에서 refresh 토큰 추출
+    const { refresh } = response.data;
+    if (!refresh) {
+      throw new Error("응답 데이터에 리프레시 토큰이 없습니다.");
+    }
 
-    return response.data.message;
+    // 액세스 토큰을 로컬 스토리지에 저장
+    localStorage.setItem("accessToken", accessToken);
+    console.log("토큰이 로컬 스토리지에 저장되었습니다:", accessToken);
+
+    // 리프레시 토큰을 쿠키에 저장 (유효기간 3일)
+    setCookie("refreshToken", refresh, { path: "/", maxAge: 3 * 24 * 60 * 60 });
+    console.log("리프레시 토큰이 쿠키에 저장되었습니다:", refresh);
+
+    // 모든 요청에 액세스 토큰 추가, 사용자가 로그인에 성공했다는 것을 증명하기 위해
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+
+    return response;
   } catch (error) {
     console.error("로그인 중 오류 발생:", error);
-    throw new Error(error.response?.data?.message || "로그인 요청 중 오류 발생");
+    throw new Error(
+      error.response?.data?.message || "로그인 요청 중 오류 발생"
+    );
   }
 };
 
 // 로그아웃 함수
 export const logout = (navigate) => {
-  localStorage.removeItem("accessToken");
+  localStorage.removeItem("accessToken"); // 로컬 스토리지에서 액세스 토큰 제거
   delete axios.defaults.headers.common["Authorization"];
-  navigate("/login");
+
+  // 리프레시 토큰 쿠키 삭제
+  removeCookie("refreshToken");
+  console.log("리프레시 토큰 쿠키가 삭제되었습니다.");
+
+  if (navigate) {
+    navigate("/users/login");
+  }
 };
 
-// 유저프로필_유저데이터get
+// 유저프로필_유저데이터get >> 🚂구현중...
 export const getUserData = async () => {
-  const response = await instance.get("/users/my-page");
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.get("/users/my-page", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
-// 유저프로필_물품등록_카테고리get
+// 유저프로필_물품등록_카테고리get >> ❓토큰이 필요한가???
 export const getItemCategories = async () => {
   const response = await instance.get("/items/categories");
   return response.data;
 };
 
-// 유저프로필_물품등록_사이즈get
+// 유저프로필_물품등록_사이즈get >> ❓토큰이 필요한가???
 export const getItemSizes = async () => {
   const response = await instance.get("/items/size");
   return response.data;
 };
 
-// 유저프로필_물품등록_post
+// 유저프로필_물품등록_이미지업로드_post >> 🚂구현중...
+export const postImageUpload = async (ImageDataUpload) => {
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.post(
+    "/items/images/upload",
+    ImageDataUpload,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+// 유저프로필_물품등록_post >> 🚂구현중...
 export const postItemData = async (jsonData) => {
-  const response = await instance.post("/items/seller/register", jsonData);
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.post("/items/seller/register", jsonData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+// 유저프로필_물품등록확인_get >> 🚂구현중...
+// api 주소확인필요!!
+export const getRegisteredItemData = async () => {
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.get("/items/status?status=IN_STOCK", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 

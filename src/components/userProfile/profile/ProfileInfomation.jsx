@@ -12,6 +12,7 @@ import {
   UserImg,
   UserInfo,
   UserInfoBox,
+  Zonecode,
 } from "../../../styles/userProfileStyle/profileStyle";
 
 // icon
@@ -53,7 +54,7 @@ const ProfileInfomation = ({ userInfo }) => {
         </TextBox>
         <TextBox>
           <Icon src={AddressIcon} alt="address-icon" />
-          <Text>{`${userInfo.address.zipcode}, `}</Text>
+          <Zonecode>{`${userInfo.address.zipcode},`}</Zonecode>
           <Text>{userInfo.address.city}</Text>
         </TextBox>
         <TextBox>

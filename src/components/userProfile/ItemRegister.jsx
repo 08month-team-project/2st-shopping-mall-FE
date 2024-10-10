@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { containSlang } from "../../utils/validation";
-import UserInput from "./UserInput";
 import { handleKeyDown } from "../../utils/keyDownHandler";
-import { getItemCategories, getItemSizes, postItemData } from "../../api/api";
+import axios from "axios";
+import {
+  getItemCategories,
+  getItemSizes,
+  postImageUpload,
+  postItemData,
+} from "../../api/api";
 
 // style
 import {
@@ -24,10 +28,12 @@ import {
   ItemInfoScript,
   ImgUploadBtn,
 } from "../../styles/userProfileStyle/itemRegisterStyle";
+import UserInput from "./UserInput";
 import { UniBtn } from "../button/UniBtn";
 import { ErrorMessage } from "../error/ErrorMessage";
 
-const baseURL = "http://localhost:8080";
+const baseURL =
+  "http://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
@@ -61,7 +67,9 @@ const ItemRegister = () => {
     files.forEach((file) => {
       // 파일형식 유효성검사
       if (!allowedTypes.includes(file.type)) {
-        setImgError("jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다.");
+        setImgError(
+          "jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다."
+        );
       }
       // 파일용량(1MB) 유효성검사
       else if (file.size > 1 * 1024 * 1024) {
@@ -126,15 +134,20 @@ const ItemRegister = () => {
     }
 
     try {
-      const res = await axios.post(`${baseURL}/items/images/upload`, ImageDataUpload, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await axios.post(
+        `${baseURL}/items/images/upload`,
+        ImageDataUpload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            withCredentials: true,
+          },
+        }
+      );
       setItemId(res.data.itemId);
       console.log("등록결과: ", res.data);
       setNotifyMsg("이미지업로드에 성공하였습니다!");
-      return res.data;
+      return res;
     } catch (error) {
       console.error("등록오류: ", error.message);
       setNotifyMsg("이미지업로드에 실패하였습니다.");
@@ -142,11 +155,13 @@ const ItemRegister = () => {
     }
   };
 
-  // 등록버튼 >> 전체데이터 POST >> ✅성공
+  // 등록버튼 >> 전체데이터 POST
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const isSlangValid = Object.values(slangError).every((error) => error === "");
+    const isSlangValid = Object.values(slangError).every(
+      (error) => error === ""
+    );
 
     if (!isSlangValid) {
       const errorInputs = [
@@ -178,21 +193,11 @@ const ItemRegister = () => {
     };
 
     try {
-      // const res = await axios.post(
-      //   `${baseURL}/items/seller/register`,
-      //   jsonData,
-      //   {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
       const res = await postItemData(jsonData);
       setItemId(res.itemId);
       console.log("등록결과: ", res);
 
       setNotifyMsg("물품등록에 성공하였습니다!");
-      // setNotifyMsg(res.message);
     } catch (error) {
       console.error("등록오류: ", error.message);
       setNotifyMsg("물품등록에 실패하였습니다.");
@@ -203,7 +208,6 @@ const ItemRegister = () => {
   // 카테고리 데이터 GET >> ✅성공
   const fetchCategories = async () => {
     try {
-      // const res = await axios.get(`${baseURL}/items/categories`);
       const res = await getItemCategories();
       console.log(res);
       setCategories(res.categoryList);
@@ -214,7 +218,6 @@ const ItemRegister = () => {
   // 사이즈 데이터 GET >> ✅성공
   const fetchSizes = async () => {
     try {
-      // const res = await axios.get(`${baseURL}/items/size`);
       const res = await getItemSizes();
       console.log(res);
       setSizes(res.sizeItemList);
@@ -246,7 +249,13 @@ const ItemRegister = () => {
         <ItemInfoBox>
           <ItemInfo>
             <InfoLabel>상품이미지</InfoLabel>
-            <InfoInput type="file" id="img" multiple onChange={handleImagesChange} required />
+            <InfoInput
+              type="file"
+              id="img"
+              multiple
+              onChange={handleImagesChange}
+              required
+            />
             <ImgUploadBtn type="button" onClick={handleImageUpload}>
               이미지업로드
             </ImgUploadBtn>
@@ -350,7 +359,9 @@ const ItemRegister = () => {
               onKeyDown={handleKeyDown}
               required
             />
-            {slangError.description && <ErrorMessage>{slangError.description}</ErrorMessage>}
+            {slangError.description && (
+              <ErrorMessage>{slangError.description}</ErrorMessage>
+            )}
           </ItemInfoScript>
         </ItemInfoBox>
       </RegisterInfo>

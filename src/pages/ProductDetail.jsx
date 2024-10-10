@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
-import Slider from 'react-slick';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import 
+
+import
     {
         Wrapper,
         Name,
@@ -39,6 +40,7 @@ import
         ModalButton,
         ModalCloseButton
     } from '../styles/ProductDetailStyle';
+
 
 import HeartIcon from "../icons/heart.png";
 import StoreIcon from "../icons/store.png";
@@ -119,26 +121,25 @@ const [ModalType, setModalType] = useState('');  // 모달 타입 상태 (사이
     // 사이즈 선택 
     //const handleSizeChange = (event) => {
     //    setSelectedSize(event.target.value);
-    //};ㅞㅡ
+    //};
 
-    // 수량 감소 (1개 이하로 내려가지 않도록 제한)
+  // 수량 감소 (1개 이하로 내려가지 않도록 제한)
     const decreaseQuantity = () => {
         setQuantity((prevQuantity) => Math.max(1, prevQuantity - 1));
     };
 
-    // 수량 증가 (10개 이상으로 올라가지 않도록 제한)
+  // 수량 증가 (10개 이상으로 올라가지 않도록 제한)
     const increaseQuantity = () => {
         setQuantity((prevQuantity) => Math.min(10, prevQuantity + 1));
     };
 
-    // 선택한 정보를 삭제하는 함수
+  // 선택한 정보를 삭제하는 함수
     const handleDeleteSelection = () => {
-        setSelectedSize('');  
-        setQuantity(1);       
+        setSelectedSize('');
+        setQuantity(1);
     };
 
-
-    // 장바구니 추가 클릭 시 모달 열기
+// 장바구니 추가 클릭 시 모달 열기
     const handleAddToBasket = (event) => {
         event.preventDefault();
         
@@ -154,9 +155,9 @@ const [ModalType, setModalType] = useState('');  // 모달 타입 상태 (사이
     };
 
 
-    // 모달 닫기 (X 버튼 클릭 시)
+  // 모달 닫기 (X 버튼 클릭 시)
     const closeModal = () => {
-        setModalOpen(false);  // 모달 닫기
+        setModalOpen(false); // 모달 닫기
     };
 
     // 장바구니 페이지로 이동
@@ -254,27 +255,27 @@ const [ModalType, setModalType] = useState('');  // 모달 타입 상태 (사이
                 </InfoContainer> 
             </Wrapper>
 
-            {ModalOpen && ModalType === 'warning' && (
-                <ModalOverlay>
-                    <ModalCloseContent>
-                        <ModalCloseButton onClick={closeModal}>x</ModalCloseButton> 
-                        <ModalCloseWord>사이즈와 수량을 선택해주세요</ModalCloseWord> 
-                    </ModalCloseContent>
-                </ModalOverlay>
-            )}
+        {ModalOpen && ModalType === "warning" && (
+            <ModalOverlay>
+            <ModalCloseContent>
+                <ModalCloseButton onClick={closeModal}>x</ModalCloseButton>
+                <ModalCloseWord>사이즈와 수량을 선택해주세요</ModalCloseWord>
+            </ModalCloseContent>
+            </ModalOverlay>
+        )}
 
-            {ModalOpen && ModalType === 'added' && (
-                <ModalOverlay>
-                    <ModalContent>
-                        <p>장바구니에 추가되었습니다</p> 
-                        <ButtonContainer>
-                            <ModalButton onClick={closeModal}>쇼핑 계속하기</ModalButton>
-                            <ModalButton onClick={handleGoToBasket}>장바구니로 가기</ModalButton>
-                        </ButtonContainer>
-                    </ModalContent>
-                </ModalOverlay>
-            )}
-        </>
+        {ModalOpen && ModalType === 'added' && (
+            <ModalOverlay>
+                <ModalContent>
+                    <p>장바구니에 추가되었습니다</p> 
+                    <ButtonContainer>
+                        <ModalButton onClick={closeModal}>쇼핑 계속하기</ModalButton>
+                        <ModalButton onClick={handleGoToBasket}>장바구니로 가기</ModalButton>
+                    </ButtonContainer>
+                </ModalContent>
+            </ModalOverlay>
+        )}
+    </>
 
     );
 };
