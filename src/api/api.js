@@ -163,11 +163,11 @@ export const getItemSizes = async () => {
   return response.data;
 };
 
-// 유저프로필_물품등록_이미지업로드_post >> 🚂구현중...
+// 유저프로필_물품등록_이미지업로드_post
 export const postImageUpload = async (ImageDataUpload) => {
   const token = localStorage.getItem("accessToken");
   const response = await instance.post(
-    "/items/images/upload",
+    `${baseURL}/items/images/upload`,
     ImageDataUpload,
     {
       headers: {
@@ -190,15 +190,49 @@ export const postItemData = async (jsonData) => {
   return response.data;
 };
 
-// 유저프로필_물품등록확인_get >> 🚂구현중...
-// api 주소확인필요!!
-export const getRegisteredItemData = async () => {
+// 유저프로필_물품등록확인_get
+export const getRegisteredItemData = async (page = 1) => {
   const token = localStorage.getItem("accessToken");
-  const response = await instance.get("/items/status?status=IN_STOCK", {
-    headers: {
-      Authorization: `Bearer ${token}`,
+  const response = await instance.get(
+    `/items/status?status=IN_STOCK&page=${page}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+// 유저프로필_물품등록확인_재고수량put📝
+export const putItemStockData = async (id, newStock, sizeName) => {
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.put(
+    `/items/${id}/stock`,
+    {
+      stuck: newStock,
+      size_name: sizeName || "DEFAULT_SIZE",
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+// 유저프로필_판매완료물품_get📝
+export const getSoldItemData = async (page = 1) => {
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.get(
+    `/items/status?status=ALL_OUT_OF_STOCK&page=${page}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return response.data;
 };
 
