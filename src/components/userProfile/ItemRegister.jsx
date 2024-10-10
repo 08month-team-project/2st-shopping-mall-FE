@@ -336,13 +336,10 @@ const ItemRegister = () => {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
           />
-          {/* 판매기간에서 로컬타임으로 보내지않아 오류발생 */}
           <UserInput
             label="판매기간"
             id="expired_at"
-            // type="datetime-local"
             type="date"
-            // min={new Date().toISOString().split(".")[0]}
             min={new Date().toISOString().split("T")[0]}
             value={formData.expired_at}
             onChange={handleInputChange}

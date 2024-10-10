@@ -1,31 +1,25 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Pagination from "./Pagination";
-import { getRegisteredItemData } from "../../../api/api";
-
-// icon
-import PlusIcon from "../../../icons/plus-circle.svg";
-import MinusIcon from "../../../icons/minus-circle.svg";
+import { getRegisteredItemData, putItemStockData } from "../../../api/api";
 
 // style
 import {
-  AmountIcon,
   Container,
   ItemAmount,
   ItemBox,
   ItemDate,
   ItemImg,
+  ItemImgUrl,
   ItemName,
   ItemPrice,
   ItemWrapper,
   ModifyAmountBox,
-  ModifyAmountBtn,
-  ModifyAmountNumber,
+  Page,
+  PageBox,
   Span,
 } from "../../../styles/userProfileStyle/userSellingStyle";
 import { UniBtn } from "../../button/UniBtn";
 
-// 임시 반복 데이터
+// 테스트 반복 데이터
 const exItems = Array.from({ length: 3 }, (_, i) => ({
   imageUrl: "사진",
   name: `상품명 ${i + 1}`,
@@ -33,123 +27,115 @@ const exItems = Array.from({ length: 3 }, (_, i) => ({
   stock: 10,
   expiredAt: "24.10.31",
 }));
-// 한페이지당 물품개수
-// const ITEMS_PERPAGE = 3;
-
-// content:[
-//   {
-//     nickname: "",
-//     name: "예시1",
-//     imageUrl: "",
-//     description: "",
-//     price: 0,
-//     stock: 0,
-//     sizeName: "S",
-//     categoryName: "MALE",
-//     status: "IN_STOCK",
-//     expiredAt: "00.00.00",
-//   }
-// ]
 
 const OnSale = () => {
   // 받아올 데이터 상태관리
   const [itemsData, setItemsData] = useState([]);
+  //////////////////////
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [stockValues, setStockValues] = useState({});
 
   // 등록된 물품 get
-  const handlegetRegisteredItems = async () => {
+  const handlegetRegisteredItems = async (page) => {
     try {
-      const res = await getRegisteredItemData();
+      const res = await getRegisteredItemData(page);
       console.log(res);
-      setItemsData((prev) => [...prev, ...res.content]);
+      setItemsData(res.content);
+      setTotalPages(res.totalPages);
+      setCurrentPage(page);
 
-      // IN_STOCK <-> OUT_OF_STOCK
-      // 초기 수량 설정
-      // setItemAmount(res.data.map((item) => item.amount));
+      // 📝초기재고값 설정
+      const initialStocks = response.data.content.reduce((acc, item) => {
+        acc[item.id] = item.stock;
+        return acc;
+      }, {});
+      setStockValues(initialStocks);
     } catch (error) {
       console.log("등록된 상품을 가져오는데 실패했습니다.", error.message);
     }
   };
   useEffect(() => {
-    handlegetRegisteredItems();
-  }, []);
+    handlegetRegisteredItems(currentPage);
+  }, [currentPage]);
 
-  // const initialAmounts = items.map((item) => item.amount);
-  // const [itemAmount, setItemAmount] = useState(initialAmounts);
-  // 변경된 재고수량 상태관리
-  // const [onSaleItemsAmount, setOnSaleItemsAmount] = useState(items);
-  // const [showItemsMsg, setShowItemsMsg] = useState(
-  //   Array(items.length).fill(false)
-  // );
+  // 📝재고수정 데이터 put
+  const updateItemStock = async (id, sizeName) => {
+    const newStuck = stockValues[id];
+
+    if (newStuck < 0 || isNaN(newStuck)) {
+      console.error("유효하지 않은 재고 수량:", newStuck);
+      alert("유효하지 않은 재고 수량입니다. 0 이상의 숫자를 입력해 주세요.");
+      return;
+    }
+
+    try {
+      const res = await putItemStockData(id, newStuck, sizeName);
+      console.log("수량이 성공적으로 업데이트되었습니다:", res.data);
+      handlegetRegisteredItems(currentPage);
+    } catch (error) {
+      console.log("수량 업데이트에 실패했습니다.", error.message);
+    }
+  };
+
+  // 재고수정
+  const handleStockChange = (id, value) => {
+    setStockValues((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
 
   // 페이지네이션
-  // const [visibleItems, setVisibleItems] = useState(ITEMS_PERPAGE);
-  // const currentItems = items.slice(0, visibleItems);
-
-  // const handleAmountPlus = (idx) => {
-  //   setItemAmount((prev) => {
-  //     const newAmounts = [...prev];
-  //     newAmounts[idx] += 1;
-  //     return newAmounts;
-  //   });
-  // };
-  // const handleAmountMinus = (idx) => {
-  //   setItemAmount((prev) => {
-  //     const newAmounts = [...prev];
-  //     if (newAmounts[idx] > 0) {
-  //       newAmounts[idx] -= 1;
-  //     }
-  //     return newAmounts;
-  //   });
-  // };
-
-  // 재고수정버튼 클릭
-  // const handleModifyAmount = (idx) => {
-  //   setOnSaleItemsAmount((prev) => {
-  //     const newItems = [...prev];
-  //     newItems[idx].amount = itemAmount[idx];
-  //     return newItems;
-  //   });
-  //   setShowItemsMsg((prev) => {
-  //     const newItemsMsg = [...prev];
-  //     newItemsMsg[idx] = true;
-  //     return newItemsMsg;
-  //   });
-  // };
-
-  // 더보기버튼 클릭
-  // const handleClickMorePage = () => {
-  //   setVisibleItems((prev) => prev + ITEMS_PERPAGE);
-  // };
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <Container>
       {/* 받아온 아이템들 */}
       {itemsData.length > 0 &&
-        itemsData.map((item, idx) => (
+        itemsData.map((item) => (
           <ItemWrapper>
-            <ItemBox key={idx}>
-              <ItemImg>{item.imageUrl}</ItemImg>
+            <ItemBox key={item.id}>
+              <ItemImgUrl src={item.imageUrl} alt={item.name} />
               <ItemName>{item.name}</ItemName>
               <Span>|</Span>
               <ItemPrice>가격: {item.price.toLocaleString()}원</ItemPrice>
               <Span>|</Span>
-              <ItemAmount>재고수량: {item.stock}</ItemAmount>
-              <Span>|</Span>
               <ItemDate>판매기간: {item.expiredAt}</ItemDate>
             </ItemBox>
             <ModifyAmountBox>
-              <ModifyAmountBtn>
-                <AmountIcon src={MinusIcon} alt="minus-circle" />
-              </ModifyAmountBtn>
-              <ModifyAmountNumber>0</ModifyAmountNumber>
-              <ModifyAmountBtn>
-                <AmountIcon src={PlusIcon} alt="plus-circle" />
-              </ModifyAmountBtn>
-              <UniBtn bgColor="#404040">재고수정</UniBtn>
+              {/* 📝재고수량input */}
+              <ItemAmount
+                type="number"
+                value={
+                  stockValues[item.id] !== undefined
+                    ? stockValues[item.id]
+                    : item.stock
+                }
+                onChange={(e) =>
+                  handleStockChange(item.id, parseInt(e.target.value) || 0)
+                }
+                id={`stock-input-${item.id}`}
+              />
+              <UniBtn
+                bgColor="#404040"
+                onClick={() => updateItemStock(item.id, item.sizeName)}
+              >
+                재고수정
+              </UniBtn>
             </ModifyAmountBox>
           </ItemWrapper>
         ))}
-      {/* 테스트아이템 */}
+      {/* 페이지네이션을 위한 테스트아이템 */}
       {exItems.length > 0 &&
         exItems.map((item, idx) => (
           <ItemWrapper>
@@ -159,29 +145,31 @@ const OnSale = () => {
               <Span>|</Span>
               <ItemPrice>가격: {item.price.toLocaleString()}원</ItemPrice>
               <Span>|</Span>
-              <ItemAmount>재고수량: {item.stock}</ItemAmount>
-              <Span>|</Span>
               <ItemDate>판매기간: {item.expiredAt}</ItemDate>
             </ItemBox>
-            <ModifyAmountBox>
-              <ModifyAmountBtn>
-                <AmountIcon src={MinusIcon} alt="minus-circle" />
-              </ModifyAmountBtn>
-              <ModifyAmountNumber>0</ModifyAmountNumber>
-              <ModifyAmountBtn>
-                <AmountIcon src={PlusIcon} alt="plus-circle" />
-              </ModifyAmountBtn>
-              <UniBtn bgColor="#404040">재고수정</UniBtn>
-            </ModifyAmountBox>
           </ItemWrapper>
         ))}
 
-      {/* 더보기버튼 */}
-      {/* <Pagination
-        items={items}
-        handleClickMorePage={handleClickMorePage}
-        visibleItems={visibleItems}
-      /> */}
+      {/* 📝페이지네이션 */}
+      <PageBox>
+        <UniBtn
+          bgColor="#404040"
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+        >
+          이전
+        </UniBtn>
+        <Page>
+          {currentPage} / {totalPages}
+        </Page>
+        <UniBtn
+          bgColor="#404040"
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
+          다음
+        </UniBtn>
+      </PageBox>
     </Container>
   );
 };
