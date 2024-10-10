@@ -65,10 +65,15 @@ const LoginForm = () => {
 
     try {
       const response = await login(email, password);
-      console.log("로그인 성공:", response.data.message);
+      console.log("로그인 응답:", response);
 
-      // 로그인 성공 후 홈으로 이동
+      // 로그인 성공 후 로컬 스토리지에 토큰 저장
+      const accessToken = response.headers["authorization"].split(" ")[1];
+      localStorage.setItem("accessToken", accessToken);
+
+      // 로그인 후 홈으로 이동
       navigate("/");
+      console.log("홈 페이지로 이동 완료.");
     } catch (error) {
       console.error("로그인 에러 발생:", error);
       setError(error.message || "로그인 요청 중 오류가 발생했습니다.");

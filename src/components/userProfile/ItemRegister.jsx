@@ -31,6 +31,9 @@ import UserInput from "./UserInput";
 import { UniBtn } from "../button/UniBtn";
 import { ErrorMessage } from "../error/ErrorMessage";
 
+const baseURL =
+  "http://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com:8080";
+
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -130,9 +133,18 @@ const ItemRegister = () => {
     }
 
     try {
-      const res = await postImageUpload(ImageDataUpload);
-      setItemId(res.itemId);
-      console.log("등록결과: ", res);
+      const res = await axios.post(
+        `${baseURL}/items/images/upload`,
+        ImageDataUpload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            withCredentials: true,
+          },
+        }
+      );
+      setItemId(res.data.itemId);
+      console.log("등록결과: ", res.data);
       setNotifyMsg("이미지업로드에 성공하였습니다!");
       return res;
     } catch (error) {
@@ -183,6 +195,7 @@ const ItemRegister = () => {
       const res = await postItemData(jsonData);
       setItemId(res.itemId);
       console.log("등록결과: ", res);
+
       setNotifyMsg("물품등록에 성공하였습니다!");
     } catch (error) {
       console.error("등록오류: ", error.message);

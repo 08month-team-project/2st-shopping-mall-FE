@@ -19,7 +19,7 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    phoneNumber: "",
+    phone_number: "",
     address: {
       city: "",
       zipcode: "",
@@ -43,7 +43,7 @@ const Signup = () => {
       formData.email !== "" &&
       formData.password !== "" &&
       formData.confirmPassword !== "" &&
-      formData.phoneNumber !== "" &&
+      formData.phone_number !== "" &&
       formData.address !== "" &&
       formData.gender !== "" &&
       formData.name !== "" &&
@@ -241,7 +241,7 @@ const Signup = () => {
     try {
       const response = await formSubmit(dataToSend);
       if (response.message === "success signup") {
-        navigate("/login");
+        navigate("/users/login");
         alert("회원가입 성공");
       }
     } catch (error) {
@@ -319,13 +319,15 @@ const Signup = () => {
           )}
           <S.SignupInput
             type="text"
-            name="phoneNumber"
+            name="phone_number"
             placeholder="전화번호를 입력하세요"
-            value={formData.phoneNumber}
+            value={formData.phone_number}
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          {errors.phone_number && <S.ErrorMsg>{errors.phoneNumber}</S.ErrorMsg>}
+          {errors.phone_number && (
+            <S.ErrorMsg>{errors.phone_number}</S.ErrorMsg>
+          )}
 
           <S.InputWrapper>
             <S.SignupInput

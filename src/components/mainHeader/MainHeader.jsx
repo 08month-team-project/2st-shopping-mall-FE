@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../api/api";
-
 import { Header, Logo, Img, IconBox, Icon } from "../../styles/MainHeaderStyle";
 
 import LogoIcon from "../../icons/Ulogo.svg";
@@ -14,12 +13,23 @@ const MainHeader = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false); // 로그인 상태 로컬 관리
   const navigate = useNavigate();
 
-  // 컴포넌트가 마운트될 때 로컬 스토리지에서 로그인 상태 확인
+  // localStorage가 변경될 때마다 상태 업데이트
   useEffect(() => {
-    const token = localStorage.getItem("accessToken"); // 로컬 스토리지에서 토큰 가져오기
-    if (token) {
-      setIsAuthenticated(true); // 토큰이 있으면 로그인 상태로 설정
-    }
+    const checkAuthStatus = () => {
+      const token = localStorage.getItem("accessToken");
+      setIsAuthenticated(!!token);
+    };
+
+    // 컴포넌트가 처음 마운트될 때 로컬스토리지 확인
+    checkAuthStatus();
+
+    // storage 이벤트 리스너 추가
+    window.addEventListener("storage", checkAuthStatus);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("storage", checkAuthStatus);
+    };
   }, []);
 
   return (
