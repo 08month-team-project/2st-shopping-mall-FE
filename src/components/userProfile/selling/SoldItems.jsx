@@ -4,11 +4,13 @@ import React, { useEffect, useState } from "react";
 import {
   Container,
   ItemAmountZero,
+  ItemBox,
   ItemDate,
   ItemImg,
   ItemImgUrl,
   ItemName,
   ItemPrice,
+  ItemWrapper,
   Page,
   PageBox,
   SelledItem,

@@ -166,7 +166,7 @@ export const getItemSizes = async () => {
 export const postImageUpload = async (ImageDataUpload) => {
   const token = localStorage.getItem("accessToken");
   const response = await instance.post(
-    `${baseURL}/items/images/upload`,
+    "/items/images/upload",
     ImageDataUpload,
     {
       headers: {
@@ -178,7 +178,7 @@ export const postImageUpload = async (ImageDataUpload) => {
   return response.data;
 };
 
-// 유저프로필_물품등록_post >> 🚂구현중...
+// 유저프로필_물품등록_post
 export const postItemData = async (jsonData) => {
   const token = localStorage.getItem("accessToken");
   const response = await instance.post("/items/seller/register", jsonData, {
