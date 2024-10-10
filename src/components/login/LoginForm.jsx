@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { login } from "../../api/api";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../../api/api';
 
-import { isValidEmail, isValidPassword } from "../../utils/validation.js";
+import { isValidEmail, isValidPassword } from '../../utils/Validation.js';
 
-import * as L from "../../styles/LoginStyle";
-import LoginButton from "./LoginButton.jsx";
+import * as L from '../../styles/LoginStyle';
+import LoginButton from './LoginButton.jsx';
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState("");
-  const [error, setError] = useState("");
+  const [passwordError, setPasswordError] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -36,18 +36,18 @@ const LoginForm = () => {
     setPassword(value);
     setPasswordError(
       !isValidPassword(value)
-        ? "비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다."
-        : ""
+        ? '비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다.'
+        : ''
     );
   };
 
   const handlePasswordBlur = () => {
     if (!isValidPassword(password)) {
       setPasswordError(
-        "비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다."
+        '비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다.'
       );
     } else {
-      setPasswordError("");
+      setPasswordError('');
     }
   };
 
@@ -55,23 +55,23 @@ const LoginForm = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    setError("");
+    setError('');
 
     if (emailError || passwordError) {
-      setError("이메일이나 비밀번호를 확인해 주세요.");
+      setError('이메일이나 비밀번호를 확인해 주세요.');
       setIsLoading(false);
       return;
     }
 
     try {
       const response = await login(email, password);
-      console.log("로그인 성공:", response.data.message);
+      console.log('로그인 성공:', response.data.message);
 
       // 로그인 성공 후 홈으로 이동
-      navigate("/");
+      navigate('/');
     } catch (error) {
-      console.error("로그인 에러 발생:", error);
-      setError(error.message || "로그인 요청 중 오류가 발생했습니다.");
+      console.error('로그인 에러 발생:', error);
+      setError(error.message || '로그인 요청 중 오류가 발생했습니다.');
     } finally {
       setIsLoading(false);
     }
@@ -86,7 +86,7 @@ const LoginForm = () => {
           onChange={handleEmailChange}
           onBlur={handleEmailBlur}
           placeholder="이메일을 입력하세요"
-          error={emailError ? "true" : undefined}
+          error={emailError ? 'true' : undefined}
         />
         {emailError && (
           <L.ErrorMessage>유효한 이메일 주소를 입력해 주세요.</L.ErrorMessage>
@@ -99,7 +99,7 @@ const LoginForm = () => {
           onChange={handlePasswordChange}
           onBlur={handlePasswordBlur}
           placeholder="비밀번호를 입력해 주세요."
-          error={passwordError ? "true" : undefined}
+          error={passwordError ? 'true' : undefined}
         />
         {passwordError && <L.ErrorMessage>{passwordError}</L.ErrorMessage>}
       </L.InputWrapper>
