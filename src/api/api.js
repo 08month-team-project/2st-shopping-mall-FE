@@ -234,3 +234,14 @@ export const getSoldItemData = async (page = 1) => {
   );
   return response.data;
 };
+
+// 유저프로필_판매자변경_post
+export const postToSeller = async () => {
+  const token = localStorage.getItem("accessToken");
+  const response = await instance.post("/users/role/seller", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};

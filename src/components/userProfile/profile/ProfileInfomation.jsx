@@ -24,6 +24,7 @@ import FemaleIcon from "../../../icons/female.svg";
 import AddressIcon from "../../../icons/address.svg";
 import PencilIcon from "../../../icons/pencil.svg";
 import UserFillIcon from "../../../icons/userFill.svg";
+import { UniBtn } from "../../button/UniBtn";
 
 const ProfileInfomation = ({ userInfo }) => {
   return (
@@ -45,7 +46,7 @@ const ProfileInfomation = ({ userInfo }) => {
         </TextBox>
         <TextBox>
           <Icon src={PhoneIcon} alt="phone-icon" />
-          <Text>{userInfo.phone_number}</Text>
+          <Text>{userInfo.phone}</Text>
         </TextBox>
         <TextBox>
           <Icon src={EmailIcon} alt="email-icon" />
