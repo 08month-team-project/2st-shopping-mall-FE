@@ -1,28 +1,26 @@
 import axios from "axios";
-// import { getCookie, removeCookie, setCookie } from "./cookies";
+import { getCookie, removeCookie, setCookie } from "./cookies";
 // import { queryAllByAltText } from "@testing-library/react";
 
 const instance = axios.create({
-  baseURL:
-    "http://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com:8080",
-
-  // baseURL: `${process.env.REACT_APP_SERVER_URL}`,
+  baseURL: "http://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com:8080",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// instance.interceptors.request.use(
-//   (config) => {
-//     const accessToken = getCookie("ACCESS_TOKEN");
-//     config.headers["Authorization"] = `Bearer ${accessToken}`;
-//     return config;
-//   },
-
-//   (error) => {
-//     return Promise.reject(error);
-//   },
-// );
+instance.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem("accessToken"); // 또는 쿠키에서 가져올 수 있음
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 // instance.interceptors.response.use(
 //   (response) => {
@@ -70,7 +68,7 @@ instance.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 export default instance;

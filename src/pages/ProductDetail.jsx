@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import { getItemImageById, getItemById } from "../api/api";
 import {
   Wrapper,
   Image,
@@ -44,6 +42,7 @@ import image2 from "../images/image2.jpg";
 import image3 from "../images/image3.jpg";
 
 const ProductDetail = () => {
+  const { item_id } = useParams();
   const [itemImages, setItemImages] = useState([]);
   const navigate = useNavigate();
 
@@ -109,6 +108,23 @@ const ProductDetail = () => {
     autoplaySpeed: 3000,
   };
 
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await getItemImageById(item_id);
+        const response2 = await getItemById(item_id);
+        console.log(response);
+        console.log(response2);
+        setItemImages(response.data.itemImageResponses); // API로부터 이미지 데이터 설정
+        console.log(response.data.itemImageResponses);
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    };
+
+    fetchImages(); // item_id가 있을 때만 API 호출
+  }, [item_id]);
+
   return (
     <>
       <Wrapper>
@@ -117,10 +133,7 @@ const ProductDetail = () => {
             <Slider {...settings}>
               {itemImages.map((image) => (
                 <div key={image.imageUrlId}>
-                  <img
-                    src={`/images/${image.imageUrl}`} // 서버 이미지 URL을 사용
-                    alt={`Image ${image.imageUrlId}`}
-                  />
+                  <img src={`${image.imageUrl}`} alt={`${image.imageUrlId}`} />
                 </div>
               ))}
             </Slider>
@@ -146,13 +159,9 @@ const ProductDetail = () => {
                   </select>
                 </Option>
                 <QuantityButton>
-                  <ProductCheckButton onClick={decreaseQuantity}>
-                    ➖
-                  </ProductCheckButton>
+                  <ProductCheckButton onClick={decreaseQuantity}>➖</ProductCheckButton>
                   <Count>{quantity}</Count>
-                  <ProductCheckButton onClick={increaseQuantity}>
-                    ➕
-                  </ProductCheckButton>
+                  <ProductCheckButton onClick={increaseQuantity}>➕</ProductCheckButton>
                 </QuantityButton>
               </ProductSize>
 
@@ -162,16 +171,12 @@ const ProductDetail = () => {
                   <p>34000원</p>
                   <p>사이즈: {selectedSize}</p>
                   <p>수량: {quantity}</p>
-                  <DeleteButton onClick={handleDeleteSelection}>
-                    ✖️
-                  </DeleteButton>
+                  <DeleteButton onClick={handleDeleteSelection}>✖️</DeleteButton>
                 </ProductCheck>
               )}
             </ProductInfo>
             <DeliveryText>✔︎ 오전 10시까지 결제 완료 시 당일 발송</DeliveryText>
-            <DeliveryText>
-              ✔︎ 제주도 및 도시산간 지역은 추가 배송비 3000원
-            </DeliveryText>
+            <DeliveryText>✔︎ 제주도 및 도시산간 지역은 추가 배송비 3000원</DeliveryText>
           </Product>
           <OptionBox>
             <Button onClick={handleAddToCart}>장바구니에 담기</Button>
@@ -195,9 +200,7 @@ const ProductDetail = () => {
             <p>장바구니에 추가되었습니다</p>
             <ButtonContainer>
               <ModalButton onClick={closeModal}>쇼핑 계속하기</ModalButton>
-              <ModalButton onClick={handleGoToCart}>
-                장바구니로 가기
-              </ModalButton>
+              <ModalButton onClick={handleGoToCart}>장바구니로 가기</ModalButton>
             </ButtonContainer>
           </ModalContent>
         </ModalOverlay>
