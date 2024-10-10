@@ -3,7 +3,7 @@ import {
   containSlang,
   isValidEmail,
   isValidPhone,
-} from "../../../utils/validation";
+} from "../../../utils/Validation";
 import ProfileInfomation from "./ProfileInfomation";
 import ProfileModify from "./ProfileModify";
 import axios from "axios";
