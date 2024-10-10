@@ -1,11 +1,16 @@
 import React from "react";
-import styled from "styled-components";
+import { UserTitle } from "../components/userProfile/UserTitle";
+
+// style
+import { Warpper } from "../styles/userProfileStyle/userBuyingStyle";
+import PurchasedItems from "../components/userProfile/PurchasedItems";
 
 const Buying = () => {
   return (
-    <>
-      <div>Buying</div>
-    </>
+    <Warpper>
+      <UserTitle>구매한 물품</UserTitle>
+      <PurchasedItems />
+    </Warpper>
   );
 };
 
