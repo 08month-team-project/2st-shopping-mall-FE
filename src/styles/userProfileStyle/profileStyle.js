@@ -3,6 +3,12 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   width: 80vw;
 `;
+export const LoginText = styled.p`
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 1.2rem;
+`;
+
 export const UserInfoBox = styled.div`
   width: 100%;
   padding: 3rem 0;
