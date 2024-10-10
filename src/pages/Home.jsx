@@ -7,7 +7,6 @@ import Card from "../components/card/Card";
 import ReactTable from "../components/reactTable/ReactTable";
 import Pagination from "../components/pagination/Pagination";
 
-
 const Home = () => {
   const [items, SetItems] = useState([]);
   const location = useLocation();
@@ -15,12 +14,11 @@ const Home = () => {
   const queryParams = new URLSearchParams(location.search);
   const categoryId = queryParams.get("category_id");
 
-
   useEffect(() => {
     const fetchItems = async () => {
       try {
         const data = await searchItems({ category_id: categoryId });
-        console.log(data);
+        console.log(data.content);
         SetItems(data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -38,8 +36,6 @@ const Home = () => {
       <div> {items.length > 0 ? items.map((item) => <div key={item.id}>{item}</div>) : <p>No items found</p>}</div>
       <Pagination />
     </S.DivContainer>
-
-    
   );
 };
 
