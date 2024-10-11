@@ -1,46 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   containSlang,
   isValidEmail,
   isValidPhone,
-} from "../../../utils/validation";
-import ProfileInfomation from "./ProfileInfomation";
-import ProfileModify from "./ProfileModify";
-import { getUserData } from "../../../api/api";
-import { useOutletContext } from "react-router-dom";
+} from '../../../utils/Validation';
+import ProfileInfomation from './ProfileInfomation';
+import ProfileModify from './ProfileModify';
+import { getUserData } from '../../../api/api';
+import { useOutletContext } from 'react-router-dom';
 
 // icon
-import UserFillIcon from "../../../icons/userFill.svg";
+import UserFillIcon from '../../../icons/userFill.svg';
 
 // style
 import {
   LoginText,
   Wrapper,
-} from "../../../styles/userProfileStyle/profileStyle";
+} from '../../../styles/userProfileStyle/profileStyle';
 
 const Profile = () => {
   const { isLogin, setIsLogin } = useOutletContext();
 
   const [userInfo, setUserInfo] = useState({
-    name: "사용자",
-    nickName: "닉네임",
-    phone: "010-0000-0000",
-    email: "example@gmail.com",
+    name: '사용자',
+    nickName: '닉네임',
+    phone: '010-0000-0000',
+    email: 'example@gmail.com',
     address: {
-      zipcode: "12345",
-      city: "00구 00동",
+      zipcode: '12345',
+      city: '00구 00동',
     },
-    comment: "소개글을 작성해주세요.",
-    gender: "남성",
+    comment: '소개글을 작성해주세요.',
+    gender: '남성',
     profile_image_url: UserFillIcon,
   });
   const [inputValues, setInputValues] = useState({ ...userInfo });
   const [previewImg, setPreviewImg] = useState(UserFillIcon);
-  const [phoneError, setPhoneError] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [slangError, setSlangError] = useState({});
-  const [imgError, setImgError] = useState("");
-  const [isValidModify, setIsValidModify] = useState("");
+  const [imgError, setImgError] = useState('');
+  const [isValidModify, setIsValidModify] = useState('');
 
   const changeInputValue = (e) => {
     const { id, value } = e.target;
@@ -48,9 +48,9 @@ const Profile = () => {
     setInputValues((prev) => {
       const newAddress = { ...prev.address };
 
-      if (id === "zipcode") {
+      if (id === 'zipcode') {
         newAddress.zipcode = value;
-      } else if (id === "city") {
+      } else if (id === 'city') {
         newAddress.city = value;
       }
 
@@ -62,20 +62,20 @@ const Profile = () => {
     });
 
     // 전화번호 유효성검사
-    if (id === "phone") {
+    if (id === 'phone') {
       if (!isValidPhone(value)) {
-        setPhoneError("유효하지 않은 전화번호 형식입니다. (예: 000-0000-0000)");
+        setPhoneError('유효하지 않은 전화번호 형식입니다. (예: 000-0000-0000)');
       } else {
-        setPhoneError("");
+        setPhoneError('');
       }
     }
 
     // 이메일 유효성검사
-    if (id === "email") {
+    if (id === 'email') {
       if (!isValidEmail(value)) {
-        setEmailError("유효하지 않은 이메일 형식입니다.");
+        setEmailError('유효하지 않은 이메일 형식입니다.');
       } else {
-        setEmailError("");
+        setEmailError('');
       }
     }
 
@@ -83,12 +83,12 @@ const Profile = () => {
     if (containSlang(value)) {
       setSlangError((prev) => ({
         ...prev,
-        [id]: "비속어를 포함할 수 없습니다.",
+        [id]: '비속어를 포함할 수 없습니다.',
       }));
     } else {
       setSlangError((prev) => ({
         ...prev,
-        [id]: "",
+        [id]: '',
       }));
     }
   };
@@ -101,26 +101,26 @@ const Profile = () => {
     const isEmailValid = !emailError;
     const isPhoneValid = !phoneError;
     const isSlangValid = Object.values(slangError).every(
-      (error) => error === ""
+      (error) => error === ''
     );
 
     if (isImgValid && isEmailValid && isPhoneValid && isSlangValid) {
       setUserInfo(inputValues);
-      setIsValidModify("프로필이 수정되었습니다.");
+      setIsValidModify('프로필이 수정되었습니다.');
     } else {
       const errorInputs = [
-        { id: "img", error: imgError },
-        { id: "name", error: slangError.name },
-        { id: "nickName", error: slangError.nickName },
-        { id: "phone", error: phoneError },
-        { id: "email", error: emailError },
-        { id: "comment", error: slangError.comment },
+        { id: 'img', error: imgError },
+        { id: 'name', error: slangError.name },
+        { id: 'nickName', error: slangError.nickName },
+        { id: 'phone', error: phoneError },
+        { id: 'email', error: emailError },
+        { id: 'comment', error: slangError.comment },
       ];
       const firstErrorInput = errorInputs.find((input) => input.error);
       if (firstErrorInput) {
         document.getElementById(firstErrorInput.id).focus();
       }
-      setIsValidModify("잘못 입력된 정보가 존재합니다.");
+      setIsValidModify('잘못 입력된 정보가 존재합니다.');
     }
   };
 
@@ -135,22 +135,22 @@ const Profile = () => {
   // 프로필사진변환
   const handleImgChange = (e) => {
     const file = e.target.files[0];
-    setImgError("");
+    setImgError('');
     setPreviewImg(UserFillIcon);
 
     // 파일형식 유효성검사
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
     if (file) {
       if (!allowedTypes.includes(file.type)) {
         setImgError(
-          "jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다."
+          'jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다.'
         );
         return;
       }
 
       // 파일 용량(1MB) 유효성검사
       if (file.size > 1 * 1024 * 1024) {
-        setImgError("이미지 파일 크기는 1MB를 초과할 수 없습니다.");
+        setImgError('이미지 파일 크기는 1MB를 초과할 수 없습니다.');
         return;
       }
 
@@ -190,10 +190,10 @@ const Profile = () => {
         // 401 = 로그인한 회원만 접속이 가능합니다.
         console.error(error.response.data.message);
       } else if (error.response.status === 403) {
-        console.error("접근 권한이 없습니다.");
+        console.error('접근 권한이 없습니다.');
       } else {
         console.error(
-          "사용자 정보를 불러오는데 실패하였습니다.",
+          '사용자 정보를 불러오는데 실패하였습니다.',
           error.message
         );
       }

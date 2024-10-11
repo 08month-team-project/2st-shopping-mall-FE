@@ -1,32 +1,32 @@
-import React, { useEffect, useState } from "react";
-import * as S from "../styles/SignupStyle";
+import React, { useEffect, useState } from 'react';
+import * as S from '../styles/SignupStyle';
 import {
   isValidEmail,
   isValidPassword,
   isValidPhone,
   containSlang,
-} from "../utils/validation";
+} from '../utils/Validation';
 
-import { useNavigate } from "react-router-dom";
-import { checkEmail, formSubmit } from "../api/api";
+import { useNavigate } from 'react-router-dom';
+import { checkEmail, formSubmit } from '../api/api';
 
 const Signup = () => {
-  const [email, setEmail] = useState("");
-  const [emailMessage, setEmailMessage] = useState("");
+  const [email, setEmail] = useState('');
+  const [emailMessage, setEmailMessage] = useState('');
   const [emailStatus, setEmailStatus] = useState(null);
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    phone_number: "",
+    email: '',
+    password: '',
+    phone_number: '',
     address: {
-      city: "",
-      zipcode: "",
+      city: '',
+      zipcode: '',
     },
-    gender: "",
-    name: "",
-    nickname: "",
+    gender: '',
+    name: '',
+    nickname: '',
   });
 
   const [terms, setTerms] = useState({
@@ -40,14 +40,14 @@ const Signup = () => {
 
   useEffect(() => {
     const formFieldsFilled =
-      formData.email !== "" &&
-      formData.password !== "" &&
-      formData.confirmPassword !== "" &&
-      formData.phone_number !== "" &&
-      formData.address !== "" &&
-      formData.gender !== "" &&
-      formData.name !== "" &&
-      formData.nickname !== "";
+      formData.email !== '' &&
+      formData.password !== '' &&
+      formData.confirmPassword !== '' &&
+      formData.phone_number !== '' &&
+      formData.address !== '' &&
+      formData.gender !== '' &&
+      formData.name !== '' &&
+      formData.nickname !== '';
 
     const noErrors = Object.keys(errors).length === 0;
 
@@ -60,42 +60,42 @@ const Signup = () => {
     const { name, value } = e.target;
     const newErrors = { ...errors };
 
-    if (name === "email") {
+    if (name === 'email') {
       if (!isValidEmail(value)) {
-        newErrors.email = "유효하지 않은 이메일 형식입니다.";
+        newErrors.email = '유효하지 않은 이메일 형식입니다.';
       } else {
         delete newErrors.email;
       }
     }
 
-    if (name === "password") {
+    if (name === 'password') {
       if (!isValidPassword(value)) {
         newErrors.password =
-          "비밀번호는 8자에서 20자 사이여야 하며, 최소 하나의 문자와 하나의 숫자를 포함해야 합니다.";
+          '비밀번호는 8자에서 20자 사이여야 하며, 최소 하나의 문자와 하나의 숫자를 포함해야 합니다.';
       } else {
         delete newErrors.password;
       }
     }
 
-    if (name === "confirmPassword") {
+    if (name === 'confirmPassword') {
       if (value !== formData.password) {
-        newErrors.confirmPassword = "비밀번호가 일치하지 않습니다.";
+        newErrors.confirmPassword = '비밀번호가 일치하지 않습니다.';
       } else {
         delete newErrors.confirmPassword;
       }
     }
 
-    if (name === "phone_number") {
+    if (name === 'phone_number') {
       if (!isValidPhone(value)) {
-        newErrors.phone_number = "전화번호 형식은 000-0000-0000여야 합니다.";
+        newErrors.phone_number = '전화번호 형식은 000-0000-0000여야 합니다.';
       } else {
         delete newErrors.phone_number;
       }
     }
 
-    if (name === "nickname") {
+    if (name === 'nickname') {
       if (containSlang(value)) {
-        newErrors.nickname = "닉네임에 부적절한 언어가 포함되어 있습니다.";
+        newErrors.nickname = '닉네임에 부적절한 언어가 포함되어 있습니다.';
       } else {
         delete newErrors.nickname;
       }
@@ -110,7 +110,7 @@ const Signup = () => {
       const response = await checkEmail(email);
 
       if (response.status === 200) {
-        setEmailMessage("사용 가능한 이메일입니다.");
+        setEmailMessage('사용 가능한 이메일입니다.');
         setEmailStatus(true);
       }
     } catch (error) {
@@ -126,7 +126,7 @@ const Signup = () => {
         // 상태 코드 400 (유효성 검증 오류)
         if (status === 400 && data.field_errors) {
           const emailError = data.field_errors.find(
-            (error) => error.field === "email"
+            (error) => error.field === 'email'
           );
 
           if (emailError) {
@@ -135,8 +135,8 @@ const Signup = () => {
           setEmailStatus(false); // 이메일 사용 불가능 상태 설정
         }
       } else {
-        console.error("이메일 체크 중 알 수 없는 오류 발생:", error);
-        setEmailMessage("이메일 확인 중 오류가 발생했습니다."); // 기타 오류 처리
+        console.error('이메일 체크 중 알 수 없는 오류 발생:', error);
+        setEmailMessage('이메일 확인 중 오류가 발생했습니다.'); // 기타 오류 처리
         setEmailStatus(false); // 오류 시 사용 불가능 상태로 설정
       }
     }
@@ -153,9 +153,9 @@ const Signup = () => {
 
   // 주소 검색 처리
   const handleAddressSearch = () => {
-    const script = document.createElement("script");
+    const script = document.createElement('script');
     script.src =
-      "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+      'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
     script.async = true;
     script.onload = () => {
       new window.daum.Postcode({
@@ -194,7 +194,7 @@ const Signup = () => {
   const handleGenderChange = (gender) => {
     setFormData((prevData) => ({
       ...prevData,
-      gender: prevData.gender === gender ? "" : gender,
+      gender: prevData.gender === gender ? '' : gender,
     }));
   };
 
@@ -208,7 +208,7 @@ const Signup = () => {
       };
 
       if (
-        name !== "allAgree" &&
+        name !== 'allAgree' &&
         (!updatedTerms.service ||
           !updatedTerms.personalInfo ||
           !updatedTerms.marketing)
@@ -216,7 +216,7 @@ const Signup = () => {
         updatedTerms.allAgree = false;
       }
 
-      if (name === "allAgree") {
+      if (name === 'allAgree') {
         updatedTerms.service = checked;
         updatedTerms.personalInfo = checked;
         updatedTerms.marketing = checked;
@@ -240,12 +240,12 @@ const Signup = () => {
     const { confirmPassword, ...dataToSend } = formData;
     try {
       const response = await formSubmit(dataToSend);
-      if (response.message === "success signup") {
-        navigate("/users/login");
-        alert("회원가입 성공");
+      if (response.message === 'success signup') {
+        navigate('/users/login');
+        alert('회원가입 성공');
       }
     } catch (error) {
-      console.error("회원가입 중 오류 발생:", error);
+      console.error('회원가입 중 오류 발생:', error);
     }
   };
 
@@ -277,7 +277,7 @@ const Signup = () => {
                 type="email"
                 name="email"
                 placeholder="이메일을 입력하세요"
-                style={{ marginRight: "15px" }}
+                style={{ marginRight: '15px' }}
                 value={formData.email}
                 onChange={(e) => {
                   handleChange(e);
@@ -334,7 +334,7 @@ const Signup = () => {
               type="text"
               name="zipcode"
               placeholder="우편번호"
-              style={{ marginRight: "15px" }}
+              style={{ marginRight: '15px' }}
               value={formData.address.zipcode}
               readOnly
             />
@@ -354,8 +354,8 @@ const Signup = () => {
               <S.Checkbox
                 type="checkbox"
                 name="male"
-                checked={formData.gender === "MALE"}
-                onChange={() => handleGenderChange("MALE")}
+                checked={formData.gender === 'MALE'}
+                onChange={() => handleGenderChange('MALE')}
               />
               남성
             </S.GenderLabel>
@@ -363,8 +363,8 @@ const Signup = () => {
               <S.Checkbox
                 type="checkbox"
                 name="female"
-                checked={formData.gender === "FEMALE"}
-                onChange={() => handleGenderChange("FEMALE")}
+                checked={formData.gender === 'FEMALE'}
+                onChange={() => handleGenderChange('FEMALE')}
               />
               여성
             </S.GenderLabel>
