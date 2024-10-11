@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { getItemImageById, getItemById } from "../api/api";
+import { getItemImageById, getItemById, patchCartItem } from "../api/api";
 import {
   Wrapper,
   Image,
@@ -98,9 +98,18 @@ const ProductDetail = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
-
+  const handleCartPatch = async () => {
+    try {
+      const itemStockId = itemData.size_stock_list[0].item_stock_id;
+      await patchCartItem(itemStockId, quantity); // 서버에 PATCH 요청
+      console.log("상품이 장바구니에 추가되었습니다.");
+    } catch (error) {
+      console.error("장바구니 추가 중 오류 발생:", error);
+    }
+  };
   //장바구니 페이지로 이동
-  const handleGoToCart = () => {
+  const handleGoToCart = async () => {
+    await handleCartPatch();
     navigate("/Basket", { state: { product: productInfo } });
   };
 
@@ -127,7 +136,7 @@ const ProductDetail = () => {
         setItemData(response2);
         setItemImages(response.itemImageResponses); // API로부터 이미지 데이터 설정
         //console.log(response);
-        //console.log(response2);
+        console.log(response2);
         setItemImages(response.itemImageResponses);
         setItemData(response2);
 

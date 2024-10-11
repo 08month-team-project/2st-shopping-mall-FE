@@ -14,12 +14,10 @@ import { XIconCloseBtn } from "../components/button/XIconCloseBtn"; // 경로를
 import { UniBtn } from "../components/button/UniBtn";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-
-
+import { cartGetItem } from "../api/api";
 const Basket = () => {
   const location = useLocation();
   const { product } = location.state || {}; // 전달된 상품 정보 가져오기
-
 
   const [items, setItems] = useState([]);
   const navigate = useNavigate();
@@ -27,11 +25,9 @@ const Basket = () => {
   useEffect(() => {
     const fetchData = async (page) => {
       try {
-        const response = await axios.get(
-          `http://ec2-3-36-69-202.ap-northeast-2.compute.amazonaws.com:8080/carts?page=${page}`
-        );
-        const cartData = response.data;
-        console.log(cartData);
+        const response = await cartGetItem();
+
+        const cartData = response;
 
         const productsWithDetails = cartData.content.map((product) => {
           return {
@@ -49,6 +45,7 @@ const Basket = () => {
           };
         });
         setItems(productsWithDetails);
+        console.log(productsWithDetails);
       } catch (error) {
         console.error("데이터를 가져오는 중 오류 발생:", error);
       }
@@ -62,18 +59,12 @@ const Basket = () => {
   };
 
   const handleEditToggle = (id) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, isEditing: !item.isEditing } : item
-      )
-    );
+    setItems((prevItems) => prevItems.map((item) => (item.id === id ? { ...item, isEditing: !item.isEditing } : item)));
   };
 
   const handleQuantityChange = (id, value) => {
     setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, newQuantity: Math.max(1, value) } : item
-      )
+      prevItems.map((item) => (item.id === id ? { ...item, newQuantity: Math.max(1, value) } : item)),
     );
   };
 
@@ -84,14 +75,10 @@ const Basket = () => {
         `http://ec2-43-201-251-11.ap-northeast-2.compute.amazonaws.com:8080/carts/items/${id}?quantity=${item.newQuantity}`,
         {
           method: "PATCH",
-        }
+        },
       );
       setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.id === id
-            ? { ...item, quantity: item.newQuantity, isEditing: false }
-            : item
-        )
+        prevItems.map((item) => (item.id === id ? { ...item, quantity: item.newQuantity, isEditing: false } : item)),
       );
     } catch (error) {
       console.error("수량 업데이트 중 오류 발생:", error);
@@ -104,7 +91,7 @@ const Basket = () => {
         `http://ec2-43-201-251-11.ap-northeast-2.compute.amazonaws.com:8080/carts/items?cart_item_id=${id}`,
         {
           method: "DELETE",
-        }
+        },
       );
       setItems((prevItems) => prevItems.filter((item) => item.id !== id));
     } catch (error) {
@@ -122,29 +109,13 @@ const Basket = () => {
     <BasketContainer>
       <h1>장바구니 페이지</h1>
       <BasketItems>
-      {product ? (
-        <div>
-          <img src={product.itemImage} alt={product.itemName} style={{ width: "100px", height: "100px;" }}/>
-          <h2>{product.itemName}</h2>
-          <p>가격: {product.itemPrice}</p>
-          <p>사이즈: {product.itemSize}</p>
-          <p>수량: {product.itemQuantity}</p>
-        </div>
-      ) : (
-        <p>장바구니에 상품이 없습니다.</p>
-      )}
         {items.map((item) => (
           <BasketItem key={item.id}>
             <ItemImage>
-              <img
-                src={item.image}
-                alt={item.name}
-                style={{ width: "auto", height: "auto" }}
-              />
+              <img src={item.image} alt={item.name} style={{ width: "auto", height: "auto" }} />
             </ItemImage>
             <ItemDetails>
-              {item.status === "ALL_OUT_OF_STOCK" ||
-              new Date(item.expiredAt) < new Date() ? (
+              {item.status === "ALL_OUT_OF_STOCK" || new Date(item.expiredAt) < new Date() ? (
                 <p>품절 혹은 만료된 상품</p>
               ) : (
                 <>
@@ -159,17 +130,10 @@ const Basket = () => {
                           type="number"
                           min="1"
                           value={item.newQuantity}
-                          onChange={(e) =>
-                            handleQuantityChange(
-                              item.id,
-                              parseInt(e.target.value, 10)
-                            )
-                          }
+                          onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value, 10))}
                           onKeyPress={(e) => handleKeyPress(item.id, e)}
                         />
-                        <button onClick={() => handleUpdate(item.id)}>
-                          수정 완료
-                        </button>
+                        <button onClick={() => handleUpdate(item.id)}>수정 완료</button>
                       </>
                     ) : (
                       `${item.quantity}개`
@@ -179,9 +143,7 @@ const Basket = () => {
               )}
             </ItemDetails>
             <ItemActions>
-              <button onClick={() => handleEditToggle(item.id)}>
-                {item.isEditing ? "취소" : "수정"}
-              </button>
+              <button onClick={() => handleEditToggle(item.id)}>{item.isEditing ? "취소" : "수정"}</button>
               <button onClick={() => handleDelete(item.id)}>삭제</button>
             </ItemActions>
           </BasketItem>
@@ -189,10 +151,7 @@ const Basket = () => {
       </BasketItems>
       <CheckoutSection>
         <button onClick={handleOrder}>주문하기</button>
-        <p>
-          최종 금액:{" "}
-          {items.reduce((acc, item) => acc + item.price * item.quantity, 0)}원
-        </p>
+        <p>최종 금액: {items.reduce((acc, item) => acc + item.price * item.quantity, 0)}원</p>
       </CheckoutSection>
     </BasketContainer>
   );

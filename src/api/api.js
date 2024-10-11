@@ -14,7 +14,6 @@ const getAllItem = async () => {
   }
 };
 
-
 const getItemById = async (item_id) => {
   try {
     const response = await instance.get(`/items/${item_id}`);
@@ -132,9 +131,7 @@ export const login = async (email, password, setUser) => {
     return response;
   } catch (error) {
     console.error("로그인 중 오류 발생:", error);
-    throw new Error(
-      error.response?.data?.message || "로그인 요청 중 오류 발생"
-    );
+    throw new Error(error.response?.data?.message || "로그인 요청 중 오류 발생");
   }
 };
 
@@ -180,16 +177,12 @@ export const getItemSizes = async () => {
 export const postImageUpload = async (ImageDataUpload) => {
   const token = localStorage.getItem("accessToken");
 
-  const response = await instance.post(
-    "/items/images/upload",
-    ImageDataUpload,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await instance.post("/items/images/upload", ImageDataUpload, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
@@ -214,9 +207,7 @@ export const postItemData = async (jsonData) => {
 
 // 유저프로필_물품등록확인_get
 export const getRegisteredItemData = async (page = 1) => {
-  const response = await instance.get(
-    `/items/status?status=IN_STOCK&page=${page}`
-  );
+  const response = await instance.get(`/items/status?status=IN_STOCK&page=${page}`);
   return response.data;
 };
 
@@ -231,9 +222,7 @@ export const putItemStockData = async (id, newStock, sizeName) => {
 
 // 유저프로필_판매완료물품_get
 export const getSoldItemData = async (page = 1) => {
-  const response = await instance.get(
-    `/items/status?status=ALL_OUT_OF_STOCK&page=${page}`
-  );
+  const response = await instance.get(`/items/status?status=ALL_OUT_OF_STOCK&page=${page}`);
   return response.data;
 };
 
@@ -248,5 +237,20 @@ export const postToSeller = async () => {
   return response.data;
 };
 
+export const patchCartItem = async (item_stock_id, quantity) => {
+  try {
+    const response = await instance.post("/carts", {
+      item_stock_id,
+      quantity,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    throw error;
+  }
+};
 
-
+export const cartGetItem = async (page = 1) => {
+  const response = await instance.get(`/carts?page=${page}`);
+  return response.data;
+};
