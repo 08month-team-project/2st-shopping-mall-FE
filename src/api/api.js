@@ -131,7 +131,9 @@ export const login = async (email, password, setUser) => {
     return response;
   } catch (error) {
     console.error("로그인 중 오류 발생:", error);
-    throw new Error(error.response?.data?.message || "로그인 요청 중 오류 발생");
+    throw new Error(
+      error.response?.data?.message || "로그인 요청 중 오류 발생"
+    );
   }
 };
 
@@ -150,7 +152,7 @@ export const logout = (navigate, setUser) => {
   }
 };
 
-// 유저프로필_유저데이터get >> 🚂구현중...
+// 유저프로필_유저데이터get
 export const getUserData = async () => {
   const token = localStorage.getItem("accessToken");
   const response = await instance.get("/users/my-page", {
@@ -161,13 +163,13 @@ export const getUserData = async () => {
   return response.data;
 };
 
-// 유저프로필_물품등록_카테고리get >> ❓토큰이 필요한가???
+// 유저프로필_물품등록_카테고리get
 export const getItemCategories = async () => {
   const response = await instance.get("/items/categories");
   return response.data;
 };
 
-// 유저프로필_물품등록_사이즈get >> ❓토큰이 필요한가???
+// 유저프로필_물품등록_사이즈get
 export const getItemSizes = async () => {
   const response = await instance.get("/items/size");
   return response.data;
@@ -194,7 +196,6 @@ export const postImageUpload = async (ImageDataUpload) => {
 export const postItemData = async (jsonData) => {
   const token = localStorage.getItem("accessToken");
   const response = await instance.post("/items/seller/register", jsonData, {
-
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
@@ -205,14 +206,16 @@ export const postItemData = async (jsonData) => {
 };
 
 // 유저프로필_물품등록_post
-export const postItemData = async (jsonData) => {
-  const response = await instance.post("/items/seller/register", jsonData);
-  return response.data;
-};
+// export const postItemData = async (jsonData) => {
+//   const response = await instance.post("/items/seller/register", jsonData);
+//   return response.data;
+// };
 
 // 유저프로필_물품등록확인_get
 export const getRegisteredItemData = async (page = 1) => {
-  const response = await instance.get(`/items/status?status=IN_STOCK&page=${page}`);
+  const response = await instance.get(
+    `/items/status?status=IN_STOCK&page=${page}`
+  );
   return response.data;
 };
 
@@ -227,11 +230,13 @@ export const putItemStockData = async (id, newStock, sizeName) => {
 
 // 유저프로필_판매완료물품_get📝
 export const getSoldItemData = async (page = 1) => {
-  const response = await instance.get(`/items/status?status=ALL_OUT_OF_STOCK&page=${page}`);
+  const response = await instance.get(
+    `/items/status?status=ALL_OUT_OF_STOCK&page=${page}`
+  );
   return response.data;
 };
 
-// 유저프로필_판매자변경_post
+// 유저프로필_판매자변경_post >> 🚂구현중...
 export const postToSeller = async () => {
   const token = localStorage.getItem("accessToken");
   const response = await instance.post("/users/role/seller", {
