@@ -246,3 +246,21 @@ export const postToSeller = async () => {
   });
   return response.data;
 };
+
+export const patchCartItem = async (item_stock_id, quantity) => {
+  try {
+    const response = await instance.post("/carts", {
+      item_stock_id,
+      quantity,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    throw error;
+  }
+};
+
+export const cartGetItem = async (page = 1) => {
+  const response = await instance.get(`/carts?page=${page}`);
+  return response.data;
+};
