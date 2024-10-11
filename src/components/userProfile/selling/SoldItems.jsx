@@ -4,13 +4,10 @@ import React, { useEffect, useState } from "react";
 import {
   Container,
   ItemAmountZero,
-  ItemBox,
   ItemDate,
-  ItemImg,
   ItemImgUrl,
   ItemName,
   ItemPrice,
-  ItemWrapper,
   Page,
   PageBox,
   SelledItem,
@@ -68,21 +65,13 @@ const SoldItems = () => {
         ))}
       {/* 페이지네이션 */}
       <PageBox>
-        <UniBtn
-          bgColor="#404040"
-          onClick={handlePrevPage}
-          disabled={currentPage === 1}
-        >
+        <UniBtn bgColor="#404040" onClick={handlePrevPage} disabled={currentPage === 1}>
           이전
         </UniBtn>
         <Page>
           {currentPage} / {totalPages}
         </Page>
-        <UniBtn
-          bgColor="#404040"
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-        >
+        <UniBtn bgColor="#404040" onClick={handleNextPage} disabled={currentPage === totalPages}>
           다음
         </UniBtn>
       </PageBox>

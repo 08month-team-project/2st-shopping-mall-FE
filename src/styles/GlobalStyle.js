@@ -75,7 +75,6 @@ const GlobalStyle = createGlobalStyle`
     }
     #root{
         position: relative;
-        width:100vw;
         height:100vh;
     }
 `;

@@ -40,7 +40,6 @@ import {
 import HeartIcon from "../icons/heart.png";
 import StoreIcon from "../icons/store.png";
 
-
 const ProductDetail = () => {
   const { item_id } = useParams();
   const [itemImages, setItemImages] = useState([]);
@@ -50,9 +49,8 @@ const ProductDetail = () => {
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [ModalOpen, setModalOpen] = useState(false);
-  const [ModalType, setModalType] = useState(""); 
+  const [ModalType, setModalType] = useState("");
   const [productInfo, setProductInfo] = useState(null); // 상품 정보를 상태로 추가
-
 
   // 사이즈 선택
   const handleSizeChange = (event) => {
@@ -80,7 +78,6 @@ const ProductDetail = () => {
     event.preventDefault();
 
     if (!selectedSize || quantity <= 0) {
-
       setModalType("warning");
       setModalOpen(true);
     } else {
@@ -91,18 +88,15 @@ const ProductDetail = () => {
         itemQuantity: quantity,
         itemImage: itemImages[0]?.imageUrl,
       };
-      
-      setProductInfo(info); 
+
+      setProductInfo(info);
       setModalType("added");
       setModalOpen(true);
     }
   };
 
-
-
-  
   const closeModal = () => {
-    setModalOpen(false); 
+    setModalOpen(false);
   };
 
   //장바구니 페이지로 이동
@@ -112,9 +106,8 @@ const ProductDetail = () => {
 
   // 결제 페이지로 이동
   const handleGoToPayment = () => {
-    navigate('/Payment');
+    navigate("/Payment");
   };
-
 
   const settings = {
     dots: true,
@@ -126,16 +119,16 @@ const ProductDetail = () => {
     autoplaySpeed: 3000,
   };
 
-
-
   useEffect(() => {
     const fetchImages = async () => {
       try {
         const response = await getItemImageById(item_id);
         const response2 = await getItemById(item_id);
+        setItemData(response2);
+        setItemImages(response.itemImageResponses); // API로부터 이미지 데이터 설정
         //console.log(response);
         //console.log(response2);
-        setItemImages(response.itemImageResponses); 
+        setItemImages(response.itemImageResponses);
         setItemData(response2);
 
         console.log("Fetched itemImages:", response.itemImageResponses);
@@ -144,7 +137,7 @@ const ProductDetail = () => {
       }
     };
 
-    fetchImages(); 
+    fetchImages();
   }, [item_id]);
 
   return (
@@ -152,38 +145,38 @@ const ProductDetail = () => {
       <Wrapper>
         <ImageContainer>
           <Image>
-          <Slider {...settings}>
-            {itemImages.length > 0 ? (
-              [...Array(3)].map((_, index) => ( 
-                <div key={index}>
-                  <img src={itemImages[0].imageUrl} alt={`Image ${itemImages[0].imageUrlId}`} />
-                </div>
-              ))
-            ) : (
-              <p>No images available</p>
-            )}
-          </Slider>
+            <Slider {...settings}>
+              {itemImages.length > 0 ? (
+                [...Array(3)].map((_, index) => (
+                  <div key={index}>
+                    <img src={itemImages[0].imageUrl} alt={`Image ${itemImages[0].imageUrlId}`} />
+                  </div>
+                ))
+              ) : (
+                <p>No images available</p>
+              )}
+            </Slider>
           </Image>
           <Date>한정판매</Date>
         </ImageContainer>
         <InfoContainer>
-            <Icon>
-              <Name>{itemData.seller_nickname} 님</Name>
-                <IconImage src={StoreIcon} alt="StoreIcon" />
-                <IconImage src={HeartIcon} alt="HeartIcon" />
-            </Icon>
-            <Product>
-                <ProductName>{itemData.item_name}</ProductName>
-                <ProductPrice>{itemData.item_price}원</ProductPrice>
-                <ProductInfo>
-                <ProductSize>
-                    <Option>
-                      <select onChange={handleSizeChange}>
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                      </select>
-                    </Option>
+          <Icon>
+            <Name>{itemData.seller_nickname} 님</Name>
+            <IconImage src={StoreIcon} alt="StoreIcon" />
+            <IconImage src={HeartIcon} alt="HeartIcon" />
+          </Icon>
+          <Product>
+            <ProductName>{itemData.item_name}</ProductName>
+            <ProductPrice>{itemData.item_price}원</ProductPrice>
+            <ProductInfo>
+              <ProductSize>
+                <Option>
+                  <select onChange={handleSizeChange}>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                  </select>
+                </Option>
                 <QuantityButton>
                   <ProductCheckButton onClick={decreaseQuantity}>➖</ProductCheckButton>
                   <Count>{quantity}</Count>
@@ -227,11 +220,14 @@ const ProductDetail = () => {
             <p>장바구니에 추가되었습니다</p>
             <ButtonContainer>
               <ModalButton onClick={closeModal}>쇼핑 계속하기</ModalButton>
-              <ModalButton 
+              <ModalButton
                 onClick={() => {
                   closeModal();
                   handleGoToCart(); // 장바구니로 이동
-                }}>장바구니로 가기</ModalButton>
+                }}
+              >
+                장바구니로 가기
+              </ModalButton>
             </ButtonContainer>
           </ModalContent>
         </ModalOverlay>
