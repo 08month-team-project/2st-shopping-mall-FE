@@ -14,7 +14,6 @@ const getAllItem = async () => {
   }
 };
 
-
 const getItemById = async (item_id) => {
   try {
     const response = await instance.get(`/items/${item_id}`);
@@ -198,7 +197,7 @@ export const postItemData = async (jsonData) => {
   const token = localStorage.getItem("accessToken");
   const response = await instance.post("/items/seller/register", jsonData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      // "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
     },
   });
@@ -247,6 +246,3 @@ export const postToSeller = async () => {
   });
   return response.data;
 };
-
-
-
