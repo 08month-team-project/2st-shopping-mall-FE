@@ -10,6 +10,13 @@ import { getCategories } from "../../api/api";
 import LogoIcon from "../../icons/Ulogo.svg";
 import UserIcon from "../../icons/user.svg";
 
+const categoryMapping = {
+  MALE: 1,
+  FEMALE: 2,
+  UNISEX: 3,
+  CHILDREN: 4,
+};
+
 const Navbar = () => {
   const [categories, setCategories] = useState([]);
   // const [cookies, setCookie, removeCookie] = useCookies(["ACCESS_TOKEN"]);
@@ -18,7 +25,6 @@ const Navbar = () => {
   const queryClient = new QueryClient();
 
   useEffect(() => {
-    // const accessToken = getCookie("ACCESS_TOKEN");
     const fetchCategories = async () => {
       try {
         const data = await getCategories();
@@ -32,24 +38,11 @@ const Navbar = () => {
     fetchCategories();
   }, []);
 
-  const handleCategoryClick = (categoryId) => {
-    navigate(`/home?category_id=${categoryId}`); // URL 파라미터로 category_id를 전달
-  };
-  // const removeAllAccessTokenCookies = () => {
-  //   const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
-  //   cookies.filter((cookie) => cookie.startsWith("ACCESS_TOKEN")).map((cookie) => removeCookie(cookie.split("=")[0]));
-  //   localStorage.removeItem("name");
-  //   localStorage.removeItem("REFRESH_TOKEN");
-  //   localStorage.removeItem("usertype");
-  // };
-  const logoutHandler = () => {
-    // removeAllAccessTokenCookies();
-    navigate("/");
-  };
-
-  // navigate 이동 함수
-  const navigateLoginPage = () => {
-    navigate("/login");
+  const handleCategoryClick = (categoryName) => {
+    const categoryId = categoryMapping[categoryName];
+    if (categoryId) {
+      navigate(`/?category_id=${categoryId}`);
+    }
   };
 
   return (
@@ -64,7 +57,10 @@ const Navbar = () => {
           <S.StCategoriesContainer>
             <S.StCategoriesUl>
               {categories.map((category) => (
-                <S.StCategoriesLi key={category.id}>
+                <S.StCategoriesLi
+                  key={category.categoryName}
+                  onClick={() => handleCategoryClick(category.categoryName)}
+                >
                   {category.categoryName}
                 </S.StCategoriesLi>
               ))}
@@ -79,12 +75,8 @@ const Navbar = () => {
             </Link>
             <Link to={"/"}>
               <S.StLogOutContainer>
-                <S.StLogOut onClick={logoutHandler}>로그아웃</S.StLogOut>
-                <S.StLogOutImg
-                  src={logout}
-                  alt="logoutImg"
-                  onClick={logoutHandler}
-                ></S.StLogOutImg>
+                <S.StLogOut>로그아웃</S.StLogOut>
+                <S.StLogOutImg src={logout} alt="logoutImg"></S.StLogOutImg>
               </S.StLogOutContainer>
             </Link>
           </S.StUserSection>

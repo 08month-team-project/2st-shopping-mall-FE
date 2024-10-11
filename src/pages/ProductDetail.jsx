@@ -45,7 +45,7 @@ const ProductDetail = () => {
   const { item_id } = useParams();
   const [itemImages, setItemImages] = useState([]);
   const navigate = useNavigate();
-
+  const [itemData, setItemData] = useState(null);
   const [images, setImages] = useState([image1, image2, image3]);
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -113,10 +113,8 @@ const ProductDetail = () => {
       try {
         const response = await getItemImageById(item_id);
         const response2 = await getItemById(item_id);
-        console.log(response);
-        console.log(response2);
-        setItemImages(response.data.itemImageResponses); // API로부터 이미지 데이터 설정
-        console.log(response.data.itemImageResponses);
+        setItemData(response2);
+        setItemImages(response.itemImageResponses); // API로부터 이미지 데이터 설정
       } catch (error) {
         console.error("Error fetching images:", error);
       }
@@ -133,7 +131,7 @@ const ProductDetail = () => {
             <Slider {...settings}>
               {itemImages.map((image) => (
                 <div key={image.imageUrlId}>
-                  <img src={`${image.imageUrl}`} alt={`${image.imageUrlId}`} />
+                  <img src={image.imageUrl} alt={`${image.imageUrlId}`} />
                 </div>
               ))}
             </Slider>
@@ -147,36 +145,42 @@ const ProductDetail = () => {
           </Icon>
 
           <Product>
-            <ProductName>세시토 싱글 블레이저</ProductName>
-            <ProductPrice>89000원</ProductPrice>
-            <ProductInfo>
-              <ProductSize>
-                <Option>
-                  <select onChange={handleSizeChange}>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                  </select>
-                </Option>
-                <QuantityButton>
-                  <ProductCheckButton onClick={decreaseQuantity}>➖</ProductCheckButton>
-                  <Count>{quantity}</Count>
-                  <ProductCheckButton onClick={increaseQuantity}>➕</ProductCheckButton>
-                </QuantityButton>
-              </ProductSize>
+            {itemData ? (
+              <>
+                <ProductName>{itemData.item_name}</ProductName>
+                <ProductPrice>{itemData.item_price}</ProductPrice>
+                <ProductInfo>
+                  <ProductSize>
+                    <Option>
+                      <select onChange={handleSizeChange}>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                      </select>
+                    </Option>
+                    <QuantityButton>
+                      <ProductCheckButton onClick={decreaseQuantity}>➖</ProductCheckButton>
+                      <Count>{quantity}</Count>
+                      <ProductCheckButton onClick={increaseQuantity}>➕</ProductCheckButton>
+                    </QuantityButton>
+                  </ProductSize>
 
-              {selectedSize && (
-                <ProductCheck>
-                  <p>루즈핏 체크 셔츠</p>
-                  <p>34000원</p>
-                  <p>사이즈: {selectedSize}</p>
-                  <p>수량: {quantity}</p>
-                  <DeleteButton onClick={handleDeleteSelection}>✖️</DeleteButton>
-                </ProductCheck>
-              )}
-            </ProductInfo>
-            <DeliveryText>✔︎ 오전 10시까지 결제 완료 시 당일 발송</DeliveryText>
-            <DeliveryText>✔︎ 제주도 및 도시산간 지역은 추가 배송비 3000원</DeliveryText>
+                  {selectedSize && (
+                    <ProductCheck>
+                      <p>루즈핏 체크 셔츠</p>
+                      <p>34000원</p>
+                      <p>사이즈: {selectedSize}</p>
+                      <p>수량: {quantity}</p>
+                      <DeleteButton onClick={handleDeleteSelection}>✖️</DeleteButton>
+                    </ProductCheck>
+                  )}
+                </ProductInfo>
+                <DeliveryText>✔︎ 오전 10시까지 결제 완료 시 당일 발송</DeliveryText>
+                <DeliveryText>✔︎ 제주도 및 도시산간 지역은 추가 배송비 3000원</DeliveryText>
+              </>
+            ) : (
+              <p>Loading...</p>
+            )}
           </Product>
           <OptionBox>
             <Button onClick={handleAddToCart}>장바구니에 담기</Button>

@@ -46,7 +46,7 @@ const OnSale = () => {
       setCurrentPage(page);
 
       // 📝초기재고값 설정
-      const initialStocks = response.data.content.reduce((acc, item) => {
+      const initialStocks = res.data.content.reduce((acc, item) => {
         acc[item.id] = item.stock;
         return acc;
       }, {});
@@ -116,20 +116,11 @@ const OnSale = () => {
               {/* 📝재고수량input */}
               <ItemAmount
                 type="number"
-                value={
-                  stockValues[item.id] !== undefined
-                    ? stockValues[item.id]
-                    : item.stock
-                }
-                onChange={(e) =>
-                  handleStockChange(item.id, parseInt(e.target.value) || 0)
-                }
+                value={stockValues[item.id] !== undefined ? stockValues[item.id] : item.stock}
+                onChange={(e) => handleStockChange(item.id, parseInt(e.target.value) || 0)}
                 id={`stock-input-${item.id}`}
               />
-              <UniBtn
-                bgColor="#404040"
-                onClick={() => updateItemStock(item.id, item.sizeName)}
-              >
+              <UniBtn bgColor="#404040" onClick={() => updateItemStock(item.id, item.sizeName)}>
                 재고수정
               </UniBtn>
             </ModifyAmountBox>
@@ -152,21 +143,13 @@ const OnSale = () => {
 
       {/* 📝페이지네이션 */}
       <PageBox>
-        <UniBtn
-          bgColor="#404040"
-          onClick={handlePrevPage}
-          disabled={currentPage === 1}
-        >
+        <UniBtn bgColor="#404040" onClick={handlePrevPage} disabled={currentPage === 1}>
           이전
         </UniBtn>
         <Page>
           {currentPage} / {totalPages}
         </Page>
-        <UniBtn
-          bgColor="#404040"
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-        >
+        <UniBtn bgColor="#404040" onClick={handleNextPage} disabled={currentPage === totalPages}>
           다음
         </UniBtn>
       </PageBox>

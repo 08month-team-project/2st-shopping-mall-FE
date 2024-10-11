@@ -13,6 +13,8 @@ import {
   PageBox,
   SelledItem,
   Span,
+  ItemWrapper,
+  ItemBox,
 } from "../../../styles/userProfileStyle/userSellingStyle";
 import { getSoldItemData } from "../../../api/api";
 import { UniBtn } from "../../button/UniBtn";
@@ -90,21 +92,13 @@ const SoldItems = () => {
       ))}
       {/* 페이지네이션 */}
       <PageBox>
-        <UniBtn
-          bgColor="#404040"
-          onClick={handlePrevPage}
-          disabled={currentPage === 1}
-        >
+        <UniBtn bgColor="#404040" onClick={handlePrevPage} disabled={currentPage === 1}>
           이전
         </UniBtn>
         <Page>
           {currentPage} / {totalPages}
         </Page>
-        <UniBtn
-          bgColor="#404040"
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-        >
+        <UniBtn bgColor="#404040" onClick={handleNextPage} disabled={currentPage === totalPages}>
           다음
         </UniBtn>
       </PageBox>

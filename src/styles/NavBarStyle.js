@@ -22,14 +22,17 @@ export const StCategoriesContainer = styled.div``;
 export const StCategoriesUl = styled.ul`
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 50px;
   font-size: 16px;
   font-weight: 700;
-  color: white;
 `;
 
 export const StCategoriesLi = styled.li`
   list-style: none;
+  cursor: pointer;
+  &:hover {
+    color: #ed1e25;
+  }
 `;
 
 export const StUserSection = styled.div`
