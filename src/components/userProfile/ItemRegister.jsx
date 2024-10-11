@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { containSlang } from "../../utils/validation";
 import { handleKeyDown } from "../../utils/keyDownHandler";
-import { getItemCategories, getItemSizes, postImageUpload, postItemData } from "../../api/api";
+import axios from "axios";
+import {
+  getItemCategories,
+  getItemSizes,
+  postImageUpload,
+  postItemData,
+} from "../../api/api";
+
 
 // style
 import {

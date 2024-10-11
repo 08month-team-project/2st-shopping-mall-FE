@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import { postToSeller } from "../api/api";
 
 const User = () => {
+  const [isLogin, setIsLogin] = useState(false);
   const [isSeller, setIsSeller] = useState(false);
 
   const handleSwitchUser = async () => {
@@ -24,8 +25,12 @@ const User = () => {
   };
   return (
     <>
-      <UserNav isSeller={isSeller} handleSwitchUser={handleSwitchUser} />
-      <Outlet />
+      <UserNav
+        isLogin={isLogin}
+        isSeller={isSeller}
+        handleSwitchUser={handleSwitchUser}
+      />
+      <Outlet context={{ isLogin, setIsLogin }} />
     </>
   );
 };
