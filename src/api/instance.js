@@ -3,7 +3,7 @@ import { getCookie, removeCookie, setCookie } from "./cookies";
 // import { queryAllByAltText } from "@testing-library/react";
 
 const instance = axios.create({
-  baseURL: "http://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com:8080",
+  baseURL: "http://ec2-3-35-135-46.ap-northeast-2.compute.amazonaws.com:8080",
   headers: {
     "Content-Type": "application/json",
   },
@@ -19,7 +19,7 @@ instance.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  },
+  }
 );
 
 // instance.interceptors.response.use(
@@ -68,7 +68,7 @@ instance.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  },
+  }
 );
 
 export default instance;

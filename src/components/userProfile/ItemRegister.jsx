@@ -184,7 +184,7 @@ const ItemRegister = () => {
       const res = await postItemData(jsonData);
       setItemId(res.itemId);
       console.log("등록결과: ", res);
-
+      setFormData(res);
       setNotifyMsg("물품등록에 성공하였습니다!");
     } catch (error) {
       console.error("등록오류: ", error.message);
@@ -226,7 +226,7 @@ const ItemRegister = () => {
         <UniBtn type="submit">물품등록하기</UniBtn>
       </BtnBox>
       <RegisterInfo>
-        <ThumbNailImgBox> 
+        <ThumbNailImgBox>
           {thumbNailImg ? (
             <ThumbNailImg src={thumbNailImg} alt="대표이미지" />
           ) : (

@@ -131,7 +131,9 @@ export const login = async (email, password, setUser) => {
     return response;
   } catch (error) {
     console.error("로그인 중 오류 발생:", error);
-    throw new Error(error.response?.data?.message || "로그인 요청 중 오류 발생");
+    throw new Error(
+      error.response?.data?.message || "로그인 요청 중 오류 발생"
+    );
   }
 };
 
@@ -177,12 +179,16 @@ export const getItemSizes = async () => {
 export const postImageUpload = async (ImageDataUpload) => {
   const token = localStorage.getItem("accessToken");
 
-  const response = await instance.post("/items/images/upload", ImageDataUpload, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const response = await instance.post(
+    "/items/images/upload",
+    ImageDataUpload,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return response.data;
 };
 
@@ -191,7 +197,7 @@ export const postItemData = async (jsonData) => {
   const token = localStorage.getItem("accessToken");
   const response = await instance.post("/items/seller/register", jsonData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      // "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
     },
   });
@@ -207,7 +213,9 @@ export const postItemData = async (jsonData) => {
 
 // 유저프로필_물품등록확인_get
 export const getRegisteredItemData = async (page = 1) => {
-  const response = await instance.get(`/items/status?status=IN_STOCK&page=${page}`);
+  const response = await instance.get(
+    `/items/status?status=IN_STOCK&page=${page}`
+  );
   return response.data;
 };
 
@@ -222,7 +230,9 @@ export const putItemStockData = async (id, newStock, sizeName) => {
 
 // 유저프로필_판매완료물품_get
 export const getSoldItemData = async (page = 1) => {
-  const response = await instance.get(`/items/status?status=ALL_OUT_OF_STOCK&page=${page}`);
+  const response = await instance.get(
+    `/items/status?status=ALL_OUT_OF_STOCK&page=${page}`
+  );
   return response.data;
 };
 
