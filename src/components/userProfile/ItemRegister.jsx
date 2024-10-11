@@ -225,7 +225,7 @@ const ItemRegister = () => {
         <UniBtn type="submit">물품등록하기</UniBtn>
       </BtnBox>
       <RegisterInfo>
-        <ThumbNailImgBox>
+        <ThumbNailImgBox> 
           {thumbNailImg ? (
             <ThumbNailImg src={thumbNailImg} alt="대표이미지" />
           ) : (

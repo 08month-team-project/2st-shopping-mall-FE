@@ -14,6 +14,7 @@ const getAllItem = async () => {
   }
 };
 
+
 const getItemById = async (item_id) => {
   try {
     const response = await instance.get(`/items/${item_id}`);
@@ -246,3 +247,6 @@ export const postToSeller = async () => {
   });
   return response.data;
 };
+
+
+
