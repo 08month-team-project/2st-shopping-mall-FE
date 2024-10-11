@@ -164,6 +164,7 @@ const Basket = () => {
               )}
             </ItemDetails>
             <ItemActions>
+
               <button onClick={() => handleEditToggle(item.id)}>
                 {item.isEditing ? '취소' : '수정'}
               </button>

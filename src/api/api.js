@@ -201,7 +201,7 @@ export const postItemData = async (jsonData) => {
       Authorization: `Bearer ${token}`,
     },
   });
-
+  console.log("서버 응답:", response);
   return response.data;
 };
 

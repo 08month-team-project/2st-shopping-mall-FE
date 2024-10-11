@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { logout } from "../../api/api";
+import { logout, cartGetItem } from "../../api/api";
 import { Header, Logo, Img, IconBox, Icon } from "../../styles/MainHeaderStyle";
 import { UserContext } from "../../hook/context/UserContext";
 import LogoIcon from "../../icons/Ulogo.svg";
@@ -21,6 +21,7 @@ const categoryMapping = {
 const MainHeader = () => {
   const { setUser } = useContext(UserContext);
   const [categories, setCategories] = useState([]);
+  const [countItem, setCountItem] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false); // 로그인 상태 로컬 관리
   const navigate = useNavigate();
   const queryClient = new QueryClient();
@@ -40,8 +41,11 @@ const MainHeader = () => {
     const fetchCategories = async () => {
       try {
         const data = await getCategories();
+        const data2 = await cartGetItem();
         console.log(data);
+        console.log(data2.content.length);
         setCategories(data.categoryList);
+        setCountItem(data2.content.length);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -80,6 +84,19 @@ const MainHeader = () => {
       navigate(`/?category_id=${categoryId}`);
     }
   };
+
+  const updateCartCount = async () => {
+    try {
+      const data = await cartGetItem(); // 장바구니 데이터 가져오기
+      setCountItem(data.content.length); // 개수 업데이트
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+  };
+  useEffect(() => {
+    updateCartCount();
+  }, [countItem]);
+
   // isAuthenticated 상태가 변경될 때마다 로그를 출력하여 상태 변화 확인
   useEffect(() => {
     console.log("로그인 상태 변경됨: ", isAuthenticated); // 상태 변경 로그 확인
@@ -103,7 +120,10 @@ const MainHeader = () => {
           </S.StCategoriesUl>
         </S.StCategoriesContainer>
         <IconBox>
-          <Link to="/Basket">장바구니</Link>
+          <S.Cart>
+            {countItem > 0 ? <S.Haha>{countItem}</S.Haha> : null}
+            <Link to="/Basket">장바구니</Link>
+          </S.Cart>
           <Link to="/signup">회원가입</Link>
           {isAuthenticated ? (
             // 로그아웃 아이콘 (로그인 상태일 때 표시)

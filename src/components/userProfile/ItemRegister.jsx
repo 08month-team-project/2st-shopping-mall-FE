@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { containSlang } from '../../utils/Validation';
-import { handleKeyDown } from '../../utils/keyDownHandler';
-import axios from 'axios';
-import {
-  getItemCategories,
-  getItemSizes,
-  postImageUpload,
-  postItemData,
-} from '../../api/api';
+
+import React, { useEffect, useState } from "react";
+import { containSlang } from "../../utils/validation";
+import { handleKeyDown } from "../../utils/keyDownHandler";
+import { getItemCategories, getItemSizes, postImageUpload, postItemData } from "../../api/api";
+
 
 // style
 import {
@@ -183,9 +179,10 @@ const ItemRegister = () => {
     try {
       const res = await postItemData(jsonData);
       setItemId(res.itemId);
-      console.log('등록결과: ', res);
+      console.log("등록결과: ", res);
+      setFormData(res);
+      setNotifyMsg("물품등록에 성공하였습니다!");
 
-      setNotifyMsg('물품등록에 성공하였습니다!');
     } catch (error) {
       console.error('등록오류: ', error.message);
       setNotifyMsg('물품등록에 실패하였습니다.');
