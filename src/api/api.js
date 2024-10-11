@@ -220,7 +220,7 @@ export const getRegisteredItemData = async (page = 1) => {
   return response.data;
 };
 
-// 유저프로필_물품등록확인_재고수량put📝
+// 유저프로필_물품등록확인_재고수량put
 export const putItemStockData = async (id, newStock, sizeName) => {
   const response = await instance.put(`/items/${id}/stock`, {
     stuck: newStock,
@@ -229,7 +229,7 @@ export const putItemStockData = async (id, newStock, sizeName) => {
   return response.data;
 };
 
-// 유저프로필_판매완료물품_get📝
+// 유저프로필_판매완료물품_get
 export const getSoldItemData = async (page = 1) => {
   const response = await instance.get(
     `/items/status?status=ALL_OUT_OF_STOCK&page=${page}`
