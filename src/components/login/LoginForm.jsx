@@ -4,6 +4,7 @@ import { login } from "../../api/api";
 import { isValidEmail, isValidPassword } from "../../utils/validation.js";
 import * as L from "../../styles/LoginStyle";
 import LoginButton from "./LoginButton.jsx";
+import { UserContext } from "../../hook/context/UserContext.js";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -34,13 +35,17 @@ const LoginForm = () => {
     const value = event.target.value;
     setPassword(value);
     setPasswordError(
-      !isValidPassword(value) ? "비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다." : "",
+      !isValidPassword(value)
+        ? "비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다."
+        : ""
     );
   };
 
   const handlePasswordBlur = () => {
     if (!isValidPassword(password)) {
-      setPasswordError("비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다.");
+      setPasswordError(
+        "비밀번호는 영문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해야 합니다."
+      );
     } else {
       setPasswordError("");
     }
@@ -91,7 +96,9 @@ const LoginForm = () => {
           placeholder="이메일을 입력하세요"
           error={emailError ? "true" : undefined}
         />
-        {emailError && <L.ErrorMessage>유효한 이메일 주소를 입력해 주세요.</L.ErrorMessage>}
+        {emailError && (
+          <L.ErrorMessage>유효한 이메일 주소를 입력해 주세요.</L.ErrorMessage>
+        )}
       </L.InputWrapper>
       <L.InputWrapper>
         <L.Input
