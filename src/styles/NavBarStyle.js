@@ -74,3 +74,23 @@ export const StLogOutImg = styled.img`
 export const Icon = styled.img`
   width: 32px;
 `;
+
+export const Cart = styled.div`
+  position: relative;
+`;
+export const Haha = styled.div`
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #ed1e25; /* 배경색 */
+  color: white; /* 글씨 색 */
+  border-radius: 50%; /* 둥근 모양 */
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px; /* 글씨 크기 */
+  font-weight: bold;
+  z-index: -1;
+`;

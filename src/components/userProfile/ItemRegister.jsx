@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { containSlang } from "../../utils/validation";
 import { handleKeyDown } from "../../utils/keyDownHandler";
-import axios from "axios";
-import {
-  getItemCategories,
-  getItemSizes,
-  postImageUpload,
-  postItemData,
-} from "../../api/api";
-
+import { getItemCategories, getItemSizes, postImageUpload, postItemData } from "../../api/api";
 
 // style
 import {
@@ -183,7 +176,7 @@ const ItemRegister = () => {
       const res = await postItemData(jsonData);
       setItemId(res.itemId);
       console.log("등록결과: ", res);
-
+      setFormData(res);
       setNotifyMsg("물품등록에 성공하였습니다!");
     } catch (error) {
       console.error("등록오류: ", error.message);
@@ -225,7 +218,7 @@ const ItemRegister = () => {
         <UniBtn type="submit">물품등록하기</UniBtn>
       </BtnBox>
       <RegisterInfo>
-        <ThumbNailImgBox> 
+        <ThumbNailImgBox>
           {thumbNailImg ? (
             <ThumbNailImg src={thumbNailImg} alt="대표이미지" />
           ) : (

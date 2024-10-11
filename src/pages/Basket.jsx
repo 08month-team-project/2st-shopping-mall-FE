@@ -143,8 +143,8 @@ const Basket = () => {
               )}
             </ItemDetails>
             <ItemActions>
-              <button onClick={() => handleEditToggle(item.id)}>{item.isEditing ? "취소" : "수정"}</button>
-              <button onClick={() => handleDelete(item.id)}>삭제</button>
+              <button onClick={() => handleEditToggle(item.item_id)}>{item.isEditing ? "취소" : "수정"}</button>
+              <button onClick={() => handleDelete(item.item_id)}>삭제</button>
             </ItemActions>
           </BasketItem>
         ))}

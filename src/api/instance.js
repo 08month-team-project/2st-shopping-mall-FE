@@ -3,7 +3,7 @@ import { getCookie, removeCookie, setCookie } from "./cookies";
 // import { queryAllByAltText } from "@testing-library/react";
 
 const instance = axios.create({
-  baseURL: "http://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com:8080",
+  baseURL: "http://ec2-3-35-135-46.ap-northeast-2.compute.amazonaws.com:8080",
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,7 +11,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem("accessToken"); // 또는 쿠키에서 가져올 수 있음
+    const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       config.headers["Authorization"] = `Bearer ${accessToken}`;
     }
