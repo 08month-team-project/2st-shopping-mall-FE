@@ -9,7 +9,6 @@ import {
   postItemData,
 } from "../../api/api";
 
-
 // style
 import {
   BtnBox,
@@ -32,8 +31,6 @@ import {
 import UserInput from "./UserInput";
 import { UniBtn } from "../button/UniBtn";
 import { ErrorMessage } from "../error/ErrorMessage";
-
-const baseURL = "http://ec2-13-125-200-223.ap-northeast-2.compute.amazonaws.com:8080";
 
 const ItemRegister = () => {
   const [formData, setFormData] = useState({
@@ -67,7 +64,9 @@ const ItemRegister = () => {
     files.forEach((file) => {
       // 파일형식 유효성검사
       if (!allowedTypes.includes(file.type)) {
-        setImgError("jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다.");
+        setImgError(
+          "jpg, jpeg, png 형식의 이미지 파일만 업로드할 수 있습니다."
+        );
       }
       // 파일용량(1MB) 유효성검사
       else if (file.size > 1 * 1024 * 1024) {
@@ -148,7 +147,9 @@ const ItemRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const isSlangValid = Object.values(slangError).every((error) => error === "");
+    const isSlangValid = Object.values(slangError).every(
+      (error) => error === ""
+    );
 
     if (!isSlangValid) {
       const errorInputs = [
@@ -236,7 +237,13 @@ const ItemRegister = () => {
         <ItemInfoBox>
           <ItemInfo>
             <InfoLabel>상품이미지</InfoLabel>
-            <InfoInput type="file" id="img" multiple onChange={handleImagesChange} required />
+            <InfoInput
+              type="file"
+              id="img"
+              multiple
+              onChange={handleImagesChange}
+              required
+            />
             <ImgUploadBtn type="button" onClick={handleImageUpload}>
               이미지업로드
             </ImgUploadBtn>
@@ -337,7 +344,9 @@ const ItemRegister = () => {
               onKeyDown={handleKeyDown}
               required
             />
-            {slangError.description && <ErrorMessage>{slangError.description}</ErrorMessage>}
+            {slangError.description && (
+              <ErrorMessage>{slangError.description}</ErrorMessage>
+            )}
           </ItemInfoScript>
         </ItemInfoBox>
       </RegisterInfo>
