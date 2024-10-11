@@ -86,7 +86,6 @@ const ProfileModify = ({
                 value={inputValues.name}
                 onChange={changeInputValue}
                 onKeyDown={handleKeyDown}
-                required
               />
             </InfoText>
             {slangError.name && <ErrorMessage>{slangError.name}</ErrorMessage>}
@@ -103,7 +102,6 @@ const ProfileModify = ({
                 value={inputValues.nickName}
                 onChange={changeInputValue}
                 onKeyDown={handleKeyDown}
-                required
               />
             </InfoText>
             {slangError.nickName && (
@@ -113,13 +111,13 @@ const ProfileModify = ({
           <InfoBox>
             <InfoText>
               <LabelBox>
-                <Label htmlFor="phone_number">전화번호</Label>
+                <Label htmlFor="phone">전화번호</Label>
                 <Dot />
               </LabelBox>
               <Input
-                id="phone_number"
+                id="phone"
                 type="tel"
-                value={inputValues.phone_number}
+                value={inputValues.phone}
                 onChange={changeInputValue}
                 onKeyDown={handleKeyDown}
               />

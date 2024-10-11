@@ -23,13 +23,19 @@ import MaleIcon from "../../../icons/male.svg";
 import FemaleIcon from "../../../icons/female.svg";
 import AddressIcon from "../../../icons/address.svg";
 import PencilIcon from "../../../icons/pencil.svg";
+import UserFillIcon from "../../../icons/userFill.svg";
+
 
 const ProfileInfomation = ({ userInfo }) => {
   return (
     <UserInfoBox>
       <UserImg>
         <ProfileImg>
-          <Image src={userInfo.profile_image_url} alt="프로필사진" />
+          {userInfo.profile_image_url ? (
+            <Image src={userInfo.profile_image_url} alt="프로필사진" />
+          ) : (
+            <Image src={UserFillIcon} alt="기본프로필사진" />
+          )}
         </ProfileImg>
         <Title>{userInfo.name}님, 환영합니다</Title>
       </UserImg>
@@ -40,7 +46,7 @@ const ProfileInfomation = ({ userInfo }) => {
         </TextBox>
         <TextBox>
           <Icon src={PhoneIcon} alt="phone-icon" />
-          <Text>{userInfo.phone_number}</Text>
+          <Text>{userInfo.phone}</Text>
         </TextBox>
         <TextBox>
           <Icon src={EmailIcon} alt="email-icon" />

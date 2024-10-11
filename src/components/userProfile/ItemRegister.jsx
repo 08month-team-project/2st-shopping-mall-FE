@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { containSlang } from "../../utils/validation";
 import { handleKeyDown } from "../../utils/keyDownHandler";
-import { getItemCategories, getItemSizes, postImageUpload, postItemData } from "../../api/api";
+import axios from "axios";
+import {
+  getItemCategories,
+  getItemSizes,
+  postImageUpload,
+  postItemData,
+} from "../../api/api";
+
 
 // style
 import {
@@ -218,7 +225,7 @@ const ItemRegister = () => {
         <UniBtn type="submit">물품등록하기</UniBtn>
       </BtnBox>
       <RegisterInfo>
-        <ThumbNailImgBox>
+        <ThumbNailImgBox> 
           {thumbNailImg ? (
             <ThumbNailImg src={thumbNailImg} alt="대표이미지" />
           ) : (

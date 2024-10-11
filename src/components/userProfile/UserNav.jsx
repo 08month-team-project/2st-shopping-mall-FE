@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { Nav, Ul, Li, StyledNavLink } from "../../styles/userProfileStyle/userNavStyle";
+import {
+  Nav,
+  Ul,
+  Li,
+  StyledNavLink,
+  SellerLi,
+  SellerBtnBox,
+} from "../../styles/userProfileStyle/userNavStyle";
+import { UniBtn } from "../button/UniBtn";
 
-const UserNav = () => {
+const UserNav = ({ isLogin, isSeller, handleSwitchUser }) => {
   return (
     <Nav>
       <Ul>
@@ -11,14 +19,23 @@ const UserNav = () => {
             개인정보
           </StyledNavLink>
         </Li>
-        <Li>
+        <SellerLi isActive={isSeller}>
           <StyledNavLink to="/user/register">물품등록 및 판매</StyledNavLink>
-        </Li>
-        <Li>
+        </SellerLi>
+        <SellerLi isActive={isSeller}>
           <StyledNavLink to="/user/selling">판매등록된 물품</StyledNavLink>
-        </Li>
-        <Li>{/* <StyledNavLink to="/user/buying">구매한 물품</StyledNavLink> */}</Li>
+        </SellerLi>
+        {/* <Li>
+          <StyledNavLink to="/user/buying">구매한 물품</StyledNavLink>
+        </Li> */}
       </Ul>
+      <SellerBtnBox>
+        {isLogin && (
+          <UniBtn onClick={handleSwitchUser}>
+            {isSeller ? "구매자로 변경" : "판매자로 변경"}
+          </UniBtn>
+        )}
+      </SellerBtnBox>
     </Nav>
   );
 };

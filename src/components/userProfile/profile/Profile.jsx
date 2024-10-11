@@ -7,6 +7,7 @@ import {
 import ProfileInfomation from "./ProfileInfomation";
 import ProfileModify from "./ProfileModify";
 import { getUserData } from "../../../api/api";
+import { useOutletContext } from "react-router-dom";
 
 // icon
 import UserFillIcon from "../../../icons/userFill.svg";
@@ -18,10 +19,12 @@ import {
 } from "../../../styles/userProfileStyle/profileStyle";
 
 const Profile = () => {
+  const { isLogin, setIsLogin } = useOutletContext();
+
   const [userInfo, setUserInfo] = useState({
     name: "사용자",
     nickName: "닉네임",
-    phone_number: "010-0000-0000",
+    phone: "010-0000-0000",
     email: "example@gmail.com",
     address: {
       zipcode: "12345",
@@ -38,8 +41,6 @@ const Profile = () => {
   const [slangError, setSlangError] = useState({});
   const [imgError, setImgError] = useState("");
   const [isValidModify, setIsValidModify] = useState("");
-  // 로그인 상태관리
-  const [isLogin, setIsLogin] = useState(false);
 
   const changeInputValue = (e) => {
     const { id, value } = e.target;
@@ -55,12 +56,13 @@ const Profile = () => {
 
       return {
         ...prev,
+        [id]: value,
         address: newAddress,
       };
     });
 
     // 전화번호 유효성검사
-    if (id === "phone_number") {
+    if (id === "phone") {
       if (!isValidPhone(value)) {
         setPhoneError("유효하지 않은 전화번호 형식입니다. (예: 000-0000-0000)");
       } else {
@@ -110,7 +112,7 @@ const Profile = () => {
         { id: "img", error: imgError },
         { id: "name", error: slangError.name },
         { id: "nickName", error: slangError.nickName },
-        { id: "phone_number", error: phoneError },
+        { id: "phone", error: phoneError },
         { id: "email", error: emailError },
         { id: "comment", error: slangError.comment },
       ];
@@ -175,7 +177,7 @@ const Profile = () => {
     }));
   };
 
-  // 유저데이터 get >> 🚂구현중...
+  // 유저데이터 get
   const getUserProfileData = async () => {
     try {
       const res = await getUserData();
